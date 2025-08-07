@@ -14,6 +14,7 @@ export const cmrpConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     providePrimeNG({
+      ripple: true,
       theme: {
         preset: Aura,
         options: {
