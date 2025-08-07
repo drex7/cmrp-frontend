@@ -17,7 +17,11 @@ export const cmrpConfig: ApplicationConfig = {
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: false
+          darkModeSelector: false,
+          cssLayer: {
+            name: "primeng",
+            order: "theme, base, primeng"
+          }
         }
       }
     })

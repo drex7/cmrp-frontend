@@ -6,7 +6,7 @@ import {Button} from 'primeng/button';
   selector: 'app-root',
   imports: [RouterOutlet, Button],
   templateUrl: './cmrp.html',
-  styleUrl: './cmrp.scss'
+  styleUrl: './cmrp.css'
 })
 export class Cmrp {
   protected readonly title = signal('cmrp-frontend');
