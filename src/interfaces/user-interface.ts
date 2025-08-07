@@ -1,8 +1,11 @@
 export interface UserInterface {
   isAuthenticated: boolean;
   isLoading: boolean;
-  name: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
   email: string;
+  telephone: string;
   username: string;
   city: string;
   region: string;

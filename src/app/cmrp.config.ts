@@ -1,10 +1,9 @@
 import {ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
-
-import {routes} from './cmrp.routes';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
-import Aura from '@primeuix/themes/aura';
 import {providePrimeNG} from 'primeng/config';
+import {routes} from './cmrp.routes';
+import {Noir} from './prime-ng.config';
 
 
 export const cmrpConfig: ApplicationConfig = {
@@ -16,7 +15,7 @@ export const cmrpConfig: ApplicationConfig = {
     providePrimeNG({
       ripple: true,
       theme: {
-        preset: Aura,
+        preset: Noir,
         options: {
           darkModeSelector: false,
           cssLayer: {
