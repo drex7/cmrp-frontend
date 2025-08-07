@@ -25,6 +25,15 @@
       ],
       "@/lib/*": [
         "./lib/*"
+      ],
+      "@/store/*": [
+        "./store/*"
+      ],
+      "@/types/*": [
+        "./types/*"
+      ],
+      "@/interfaces/*": [
+        "./interfaces/*"
       ]
     }
   },
