@@ -1,26 +1,26 @@
 <div class="h-dvh p-4 sm:p-6 md:p-8 flex items-center justify-center">
   <p-card class="w-md max-w-md">
     <form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2 text-center">
-        <span class="capitalize font-semibold text-3xl">welcome back </span>
-        <span class="text-xs">Today is a new day. It's your day. Shape it</span>
-      </div>
-      <!--      Map through dynamic form elements-->
+      <!--      Conditionally render form description-->
+      <ng-container [ngTemplateOutlet]="formType() === 'login' ? loginDescription : signupDescription"></ng-container>
+
       <div [class]="cn('grid grid-cols-1 gap-4',
       {
       'grid-cols-2': formType() === 'signup'
       }
       )">
+        <!--      Map through dynamic form elements-->
         @for (control of authFormControls(); track control) {
           @let
           inputError = authForm.get(control)?.invalid && (authForm.get(control)?.dirty || authForm.get(control)?.touched);
+          @let label = control.split('_').join(' ');
           <div>
             <p-float-label variant="on">
-              @if (control === 'password') {
+              @if (control === 'password' || control === 'confirm_password') {
                 <label class="text-sm" [for]="control">{{ control | titlecase }}</label>
                 <p-password [toggleMask]="true" autocomplete="on" [id]="control" [formControlName]="control"
                             [invalid]="inputError"
-                            [feedback]="formType() === 'signup'"
+                            [feedback]="formType() === 'signup' && control === 'password'"
                             [class]="cn('w-full invalid:text-red-600', {
                             '!text-red-600': inputError
                             })"
@@ -45,6 +45,9 @@
                   size="small"
                   class="w-full"
                   [invalid]="inputError"
+                  [id]="control"
+                  [formControlName]="control"
+                  [unmask]="true"
                 />
               } @else {
                 <input autocomplete="on" [type]="getInputType(control)" [id]="control" [formControlName]="control"
@@ -54,13 +57,13 @@
                        [invalid]="inputError"
                 />
               }
-              <label class="text-sm" [for]="control">{{ control | titlecase }}</label>
+              <label class="text-sm" [for]="control">{{ label | titlecase }}</label>
             </p-float-label>
 
             @if (inputError) {
               <div class="text-xs text-red-600">
                 @if (authForm.get(control)?.errors?.['required']) {
-                  <div>{{ control | titlecase }} is required</div>
+                  <div>{{ label | titlecase }} is required</div>
                 }
                 @if (authForm.get(control)?.errors?.['email']) {
                   <div>Please enter a valid email address</div>
@@ -68,14 +71,38 @@
                 @if (authForm.get(control)?.errors?.['minlength']) {
                   <div>{{ control | titlecase }} must be at least 5 characters long</div>
                 }
+                @if (authForm.get(control)?.errors?.['invalidGhanaPhone']) {
+                  <div>Enter a valid 10-digit Ghanaian phone number (e.g., 0241234567).</div>
+                }
+                @if (authForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+                  <div>Passwords do not match.</div>
+                }
               </div>
             }
           </div>
         }
       </div>
-      <button [disabled]="authForm.invalid" pButton
-              type="submit">{{ formType() === "signup" ? "Sign Up" : "Sign In" }}
+      <button
+        [disabled]="authForm.invalid"
+        pButton
+        type="submit">{{ formType() === "signup" ? "Sign Up" : "Sign In" }}
       </button>
     </form>
   </p-card>
 </div>
+
+<!-- Login Description Template -->
+<ng-template #loginDescription>
+  <div class="flex flex-col gap-2 text-center">
+    <h2 class="capitalize font-semibold text-3xl">welcome back </h2>
+    <p class="text-xs">Today is a new day. It's your day. Shape it</p>
+  </div>
+</ng-template>
+
+<!-- Signup Description Template -->
+<ng-template #signupDescription>
+  <div class="flex flex-col gap-2 text-center">
+    <h2 class="capitalize font-semibold text-3xl">Create an Account</h2>
+    <p class="text-xs">Sign up to get started with our service.</p>
+  </div>
+</ng-template>
