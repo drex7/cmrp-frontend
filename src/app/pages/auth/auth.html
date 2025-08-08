@@ -1,12 +1,15 @@
-<div class="h-dvh p-4 sm:p-6 md:p-8 flex items-center justify-center">
-  <p-card class="w-md max-w-md">
+<div
+  class="h-dvh p-4 sm:p-6 md:p-8 flex items-center justify-center">
+  <p-card class="w-md max-w-xl">
+    <h2 class="text-3xl font-bold text-center my-2">CMRP</h2>
+    <!--    Form container-->
     <form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="flex flex-col gap-4">
       <!--      Conditionally render form description-->
       <ng-container [ngTemplateOutlet]="formType() === 'login' ? loginDescription : signupDescription"></ng-container>
 
       <div [class]="cn('grid grid-cols-1 gap-4',
       {
-      'grid-cols-2': formType() === 'signup'
+      'md:grid-cols-2': formType() === 'signup'
       }
       )">
         <!--      Map through dynamic form elements-->
@@ -14,7 +17,9 @@
           @let
           inputError = authForm.get(control)?.invalid && (authForm.get(control)?.dirty || authForm.get(control)?.touched);
           @let label = control.split('_').join(' ');
-          <div>
+          <div [class]="cn('', {
+          'md:col-span-2': control === 'name' && formType() === 'signup'
+          })">
             <p-float-label variant="on">
               @if (control === 'password' || control === 'confirm_password') {
                 <label class="text-sm" [for]="control">{{ control | titlecase }}</label>
@@ -39,11 +44,11 @@
                     </ng-template>
                   }
                 </p-password>
-              } @else if (control === 'telephone') {
+              } @else if (control === 'telephone' && formType() === 'signup') {
                 <p-input-mask
                   mask="(999) 999-9999"
                   size="small"
-                  class="w-full"
+                  styleClass="w-full"
                   [invalid]="inputError"
                   [id]="control"
                   [formControlName]="control"
@@ -85,24 +90,35 @@
       <button
         [disabled]="authForm.invalid"
         pButton
+        size="small"
         type="submit">{{ formType() === "signup" ? "Sign Up" : "Sign In" }}
       </button>
+      <div class="text-xs **:text-sm flex items-center -mt-4">
+        <span>{{ formType() === 'signup' ? 'Already have an account?' : "Don't have an account?" }}</span>
+        <p-button
+          (onClick)="formType.set(formType() === 'signup' ? 'login' : 'signup')"
+          [label]="formType() === 'signup' ? 'Sign In' : 'Sign Up'"
+          link
+          styleClass="text-blue-600 -ml-2"
+        />
+      </div>
     </form>
+
   </p-card>
 </div>
 
 <!-- Login Description Template -->
 <ng-template #loginDescription>
-  <div class="flex flex-col gap-2 text-center">
-    <h2 class="capitalize font-semibold text-3xl">welcome back </h2>
+  <div class="flex flex-col text-center">
+    <h3 class="capitalize font-semibold text-2xl">welcome back </h3>
     <p class="text-xs">Today is a new day. It's your day. Shape it</p>
   </div>
 </ng-template>
 
 <!-- Signup Description Template -->
 <ng-template #signupDescription>
-  <div class="flex flex-col gap-2 text-center">
-    <h2 class="capitalize font-semibold text-3xl">Create an Account</h2>
+  <div class="flex flex-col text-center">
+    <h3 class="capitalize font-semibold text-2xl">Create an Account</h3>
     <p class="text-xs">Sign up to get started with our service.</p>
   </div>
 </ng-template>
