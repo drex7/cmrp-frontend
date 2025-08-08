@@ -28,6 +28,9 @@
       ],
       "@/interfaces/*": [
         "./interfaces/*"
+      ],
+      "@/assets/*": [
+        "./assets/*"
       ]
     }
   },

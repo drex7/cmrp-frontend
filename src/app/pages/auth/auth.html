@@ -1,10 +1,81 @@
 <div class="h-dvh p-4 sm:p-6 md:p-8 flex items-center justify-center">
-  <form action="">
-    <p-card class="w-md max-w-md flex flex-col gap-2">
-      <p-float-label variant="on">
-        <input autocomplete="off" id="on_label" pInputText pSize="small"/>
-        <label class="text-sm" for="on_label">On Label</label>
-      </p-float-label>
-    </p-card>
-  </form>
+  <p-card class="w-md max-w-md">
+    <form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2 text-center">
+        <span class="capitalize font-semibold text-3xl">welcome back </span>
+        <span class="text-xs">Today is a new day. It's your day. Shape it</span>
+      </div>
+      <!--      Map through dynamic form elements-->
+      <div [class]="cn('grid grid-cols-1 gap-4',
+      {
+      'grid-cols-2': formType() === 'signup'
+      }
+      )">
+        @for (control of authFormControls(); track control) {
+          @let
+          inputError = authForm.get(control)?.invalid && (authForm.get(control)?.dirty || authForm.get(control)?.touched);
+          <div>
+            <p-float-label variant="on">
+              @if (control === 'password') {
+                <label class="text-sm" [for]="control">{{ control | titlecase }}</label>
+                <p-password [toggleMask]="true" autocomplete="on" [id]="control" [formControlName]="control"
+                            [invalid]="inputError"
+                            [feedback]="formType() === 'signup'"
+                            [class]="cn('w-full invalid:text-red-600', {
+                            '!text-red-600': inputError
+                            })"
+                            inputStyleClass="w-full"
+                            size="small"
+                >
+
+                  @if (formType() === 'signup') {
+                    <ng-template #footer>
+                      <ul class="pl-2 mt-2 text-xs">
+                        <li>At least one lowercase</li>
+                        <li>At least one uppercase</li>
+                        <li>At least one numeric</li>
+                        <li>Minimum 8 characters</li>
+                      </ul>
+                    </ng-template>
+                  }
+                </p-password>
+              } @else if (control === 'telephone') {
+                <p-input-mask
+                  mask="(999) 999-9999"
+                  size="small"
+                  class="w-full"
+                  [invalid]="inputError"
+                />
+              } @else {
+                <input autocomplete="on" [type]="getInputType(control)" [id]="control" [formControlName]="control"
+                       pInputText
+                       pSize="small"
+                       class="w-full"
+                       [invalid]="inputError"
+                />
+              }
+              <label class="text-sm" [for]="control">{{ control | titlecase }}</label>
+            </p-float-label>
+
+            @if (inputError) {
+              <div class="text-xs text-red-600">
+                @if (authForm.get(control)?.errors?.['required']) {
+                  <div>{{ control | titlecase }} is required</div>
+                }
+                @if (authForm.get(control)?.errors?.['email']) {
+                  <div>Please enter a valid email address</div>
+                }
+                @if (authForm.get(control)?.errors?.['minlength']) {
+                  <div>{{ control | titlecase }} must be at least 5 characters long</div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <button [disabled]="authForm.invalid" pButton
+              type="submit">{{ formType() === "signup" ? "Sign Up" : "Sign In" }}
+      </button>
+    </form>
+  </p-card>
 </div>
