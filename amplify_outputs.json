@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "eu-west-1_deYAJ44yx",
+    "user_pool_id": "eu-west-1_RLt48zquD",
     "aws_region": "eu-west-1",
-    "user_pool_client_id": "3g5c1adohidtavef1hik25kh96",
-    "identity_pool_id": "eu-west-1:bab2e47a-faa1-41b5-96aa-2f3ee9e68676",
+    "user_pool_client_id": "4aab363vcrs9r0vk7dt553mrho",
+    "identity_pool_id": "eu-west-1:37e2cf0e-e54c-419b-add5-87f7784cead8",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -24,5 +24,88 @@
       "require_uppercase": true
     },
     "unauthenticated_identities_enabled": true
-  }
+  },
+  "data": {
+    "url": "https://5ztasbtvffalpi2cwkmeylbd4e.appsync-api.eu-west-1.amazonaws.com/graphql",
+    "aws_region": "eu-west-1",
+    "api_key": "da2-35mih3tswbaarobk2ygeyw3tku",
+    "default_authorization_type": "API_KEY",
+    "authorization_types": [
+      "AMAZON_COGNITO_USER_POOLS",
+      "AWS_IAM"
+    ],
+    "model_introspection": {
+      "version": 1,
+      "models": {
+        "Todo": {
+          "name": "Todo",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "content": {
+              "name": "content",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "Todos",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        }
+      },
+      "enums": {},
+      "nonModels": {}
+    }
+  },
+  "version": "1.4"
 }
