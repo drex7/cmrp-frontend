@@ -6,7 +6,35 @@
     "outDir": "./out-tsc/spec",
     "types": [
       "jasmine"
-    ]
+    ],
+    /* Import alias */
+    "baseUrl": "./src",
+    "paths": {
+      "@/components/*": [
+        "./app/components/*"
+      ],
+      "@/pages/*": [
+        "./app/pages/*"
+      ],
+      "@/guards/*": [
+        "./app/guards/*"
+      ],
+      "@/lib/*": [
+        "./lib/*"
+      ],
+      "@/store/*": [
+        "./store/*"
+      ],
+      "@/types/*": [
+        "./types/*"
+      ],
+      "@/interfaces/*": [
+        "./interfaces/*"
+      ],
+      "@/assets/*": [
+        "./assets/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"
