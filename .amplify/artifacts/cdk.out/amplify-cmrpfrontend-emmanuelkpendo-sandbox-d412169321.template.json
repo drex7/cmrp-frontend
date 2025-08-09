@@ -135,7 +135,7 @@
    }
   },
   "groups": {
-   "Value": "[]"
+   "Value": "[{\"ADMINS\":{\"precedence\":0}},{\"OFFICIALS\":{\"precedence\":1}},{\"CITIZENS\":{\"precedence\":2}}]"
   },
   "awsAppsyncApiId": {
    "Value": {
@@ -240,7 +240,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/911125f51f6fd21c98efc13e09e464e3f96a065679c3f62c1bcbde37b9263f99.json"
+       "/f50c4d9089dd3c1e358e05b4c58576ee3ae5b6159ec45109321b1319375b0e4d.json"
       ]
      ]
     }
@@ -308,7 +308,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/c559b08264efcd014e0919bd509b913ee8ec7a5db58d5fa0a753e06b54ac5cfb.json"
+       "/5e32a06af414d9ddcf8a98fd2bca2435a6669098ef6ed6dee0c740c05b25cb57.json"
       ]
      ]
     }

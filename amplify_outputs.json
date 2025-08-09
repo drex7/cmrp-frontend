@@ -14,7 +14,23 @@
     "user_verification_types": [
       "email"
     ],
-    "groups": [],
+    "groups": [
+      {
+        "ADMINS": {
+          "precedence": 0
+        }
+      },
+      {
+        "OFFICIALS": {
+          "precedence": 1
+        }
+      },
+      {
+        "CITIZENS": {
+          "precedence": 2
+        }
+      }
+    ],
     "mfa_configuration": "NONE",
     "password_policy": {
       "min_length": 8,

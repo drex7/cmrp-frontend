@@ -22,7 +22,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e34aa1810d532a61fb44183b9abad1cc43b7d753c7efbf75be5a426154b6fa5f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/54a7c84a6fed65f5baa50a5551a18e2839f935c1b1795cf52a1c64ebc6d33cf7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -99,6 +99,42 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyAuthIdentityPoolRoleAttachment045F17C8"
+          }
+        ],
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/auth/amplifyAuth/ADMINSGroupRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthADMINSGroupRole474FA206"
+          }
+        ],
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/auth/amplifyAuth/ADMINSGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthADMINSGroup50EC39D2"
+          }
+        ],
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/auth/amplifyAuth/OFFICIALSGroupRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthOFFICIALSGroupRole52D8011B"
+          }
+        ],
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/auth/amplifyAuth/OFFICIALSGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthOFFICIALSGroup5D630882"
+          }
+        ],
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/auth/amplifyAuth/CITIZENSGroupRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthCITIZENSGroupRoleCBC87A98"
+          }
+        ],
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/auth/amplifyAuth/CITIZENSGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthCITIZENSGroup58FB7CBA"
           }
         ],
         "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/auth/CDKMetadata/Default": [
