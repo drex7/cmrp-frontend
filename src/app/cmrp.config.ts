@@ -4,6 +4,7 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {providePrimeNG} from 'primeng/config';
 import {routes} from './cmrp.routes';
 import {Noir} from './prime-ng.config';
+import {MessageService} from 'primeng/api';
 
 
 export const cmrpConfig: ApplicationConfig = {
@@ -12,6 +13,7 @@ export const cmrpConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideAnimationsAsync(),
+    MessageService,
     providePrimeNG({
       ripple: true,
       theme: {
