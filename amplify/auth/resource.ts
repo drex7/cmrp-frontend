@@ -16,6 +16,14 @@ export const auth = defineAuth({
         fullname: {
             required: false,
             mutable: true,
-        }
+        },
+        'custom:region': {
+            dataType: "String",
+            mutable: true,
+        },
+        'custom:city': {
+            dataType: "String",
+            mutable: true,
+        },
     }
 });

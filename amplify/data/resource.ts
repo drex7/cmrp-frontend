@@ -12,10 +12,10 @@ const schema = a.schema({
             name: a.string(),
             email: a.string(),
             telephone: a.string(),
-            password: a.string(),
             region: a.string(),
             city: a.string(),
-
+            createdAt: a.datetime(),
+            updatedAt: a.datetime(),
         })
         .authorization((allow) => [allow.publicApiKey()]),
 });

@@ -70,6 +70,7 @@ export class Auth {
         return types[key] || 'text';
     }
 
+    // Submit form data
     protected async onSubmit() {
         this.isSubmitting.set(true);
         if (this.authForm.valid) {
@@ -79,7 +80,8 @@ export class Auth {
             if (this.formType() === 'signup') {
                 await this.signUp()
             } else if (this.formType() === 'login') {
-                await this.signIn()
+                // await this.signIn()
+                // await this.authService.getAuthSession()
             } else {
                 console.log(this.authForm.value)
                 await this.confirmOtp()
@@ -104,6 +106,8 @@ export class Auth {
             } else {
                 if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
                     this.formType.set("otp")
+                } else {
+                    console.log(this.userName())
                 }
             }
             this.isSubmitting.set(false);
