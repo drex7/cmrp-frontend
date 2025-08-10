@@ -88,7 +88,7 @@
    "Value": "true"
   },
   "signupAttributes": {
-   "Value": "[\"email\"]"
+   "Value": "[\"email\",\"phone_number\",\"name\"]"
   },
   "usernameAttributes": {
    "Value": "[\"email\"]"
@@ -240,7 +240,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/f50c4d9089dd3c1e358e05b4c58576ee3ae5b6159ec45109321b1319375b0e4d.json"
+       "/24d3c18292643bad000eeaae95648bb67b60918d858893a33a3e1ea02f97f37b.json"
       ]
      ]
     }
@@ -308,7 +308,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/5e32a06af414d9ddcf8a98fd2bca2435a6669098ef6ed6dee0c740c05b25cb57.json"
+       "/0ff3aeed7fcd79323fc07b1ce6629b37f5f2bbb75b7766f7bdac17fa9ecd5bdc.json"
       ]
      ]
     }

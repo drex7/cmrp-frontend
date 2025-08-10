@@ -22,7 +22,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/54a7c84a6fed65f5baa50a5551a18e2839f935c1b1795cf52a1c64ebc6d33cf7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/46eb651b23a04632c6fbefd1930ba7e4c4db0ad88a6a4af8a07c3c9d182526c3.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -417,512 +417,512 @@
             "data": "amplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource86290833"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/DynamoDBModelTableReadIOPS": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/DynamoDBModelTableReadIOPS": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBModelTableReadIOPS"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/DynamoDBModelTableWriteIOPS": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/DynamoDBModelTableWriteIOPS": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBModelTableWriteIOPS"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/DynamoDBBillingMode": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/DynamoDBBillingMode": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBBillingMode"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/DynamoDBEnablePointInTimeRecovery": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/DynamoDBEnablePointInTimeRecovery": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBEnablePointInTimeRecovery"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/DynamoDBEnableServerSideEncryption": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/DynamoDBEnableServerSideEncryption": [
           {
             "type": "aws:cdk:logicalId",
             "data": "DynamoDBEnableServerSideEncryption"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/HasEnvironmentParameter": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/HasEnvironmentParameter": [
           {
             "type": "aws:cdk:logicalId",
             "data": "HasEnvironmentParameter"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/ShouldUsePayPerRequestBilling": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/ShouldUsePayPerRequestBilling": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ShouldUsePayPerRequestBilling"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/ShouldUsePointInTimeRecovery": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/ShouldUsePointInTimeRecovery": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ShouldUsePointInTimeRecovery"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/TodoTable": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/UserTable": [
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Todo"
+            "data": "User"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/TodoTable/Default/Default": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/UserTable/Default/Default": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "TodoTable"
+            "data": "UserTable"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Todo"
+            "data": "User"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/CustomTableTodoTable": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/CustomTableUserTable": [
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Todo"
+            "data": "User"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/GetAttTodoTableStreamArn": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/GetAttUserTableStreamArn": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "GetAttTodoTableStreamArn"
+            "data": "GetAttUserTableStreamArn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/GetAttTodoTableName": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/GetAttUserTableName": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "GetAttTodoTableName"
+            "data": "GetAttUserTableName"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/TodoIAMRole": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/UserIAMRole": [
           {
             "type": "graphqltransformer:resourceName",
-            "data": "TodoIAMRole"
+            "data": "UserIAMRole"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/TodoIAMRole/Resource": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/UserIAMRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "TodoIAMRole2DA8E66E"
+            "data": "UserIAMRole93CEE926"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "TodoIAMRole"
+            "data": "UserIAMRole"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/TodoDataSource": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/UserDataSource": [
           {
             "type": "graphqltransformer:resourceName",
-            "data": "TodoTable"
+            "data": "UserTable"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/TodoDataSource/Resource": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/UserDataSource/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "TodoDataSource"
+            "data": "UserDataSource"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "TodoTable"
+            "data": "UserTable"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/QuerygetTodoauth0Function/QuerygetTodoauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/QuerygetUserauth0Function/QuerygetUserauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "QuerygetTodoauth0FunctionQuerygetTodoauth0FunctionAppSyncFunction846D8436"
+            "data": "QuerygetUserauth0FunctionQuerygetUserauth0FunctionAppSyncFunction9E6250B0"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "QuerygetTodoauth0Function"
+            "data": "QuerygetUserauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/QuerygetTodopostAuth0Function/QuerygetTodopostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/QuerygetUserpostAuth0Function/QuerygetUserpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "QuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction6BE14593"
+            "data": "QuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction2792AC60"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "QuerygetTodopostAuth0Function"
+            "data": "QuerygetUserpostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/QueryGetTodoDataResolverFn/QueryGetTodoDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/QueryGetUserDataResolverFn/QueryGetUserDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "QueryGetTodoDataResolverFnQueryGetTodoDataResolverFnAppSyncFunctionE2B57DAD"
+            "data": "QueryGetUserDataResolverFnQueryGetUserDataResolverFnAppSyncFunction36A3E4CF"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "QueryGetTodoDataResolverFn"
+            "data": "QueryGetUserDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/queryGetTodoResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/queryGetUserResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "GetTodoResolver"
+            "data": "GetUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Query.getTodo"
+            "data": "Query.getUser"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/QuerylistTodosauth0Function/QuerylistTodosauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/QuerylistUsersauth0Function/QuerylistUsersauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "QuerylistTodosauth0FunctionQuerylistTodosauth0FunctionAppSyncFunction7D761961"
+            "data": "QuerylistUsersauth0FunctionQuerylistUsersauth0FunctionAppSyncFunctionA1FF61AB"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "QuerylistTodosauth0Function"
+            "data": "QuerylistUsersauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/QuerylistTodospostAuth0Function/QuerylistTodospostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/QuerylistUserspostAuth0Function/QuerylistUserspostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "QuerylistTodospostAuth0FunctionQuerylistTodospostAuth0FunctionAppSyncFunction154D8577"
+            "data": "QuerylistUserspostAuth0FunctionQuerylistUserspostAuth0FunctionAppSyncFunction37C5583D"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "QuerylistTodospostAuth0Function"
+            "data": "QuerylistUserspostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/QueryListTodosDataResolverFn/QueryListTodosDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/QueryListUsersDataResolverFn/QueryListUsersDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "QueryListTodosDataResolverFnQueryListTodosDataResolverFnAppSyncFunctionF825FE47"
+            "data": "QueryListUsersDataResolverFnQueryListUsersDataResolverFnAppSyncFunction83574EBA"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "QueryListTodosDataResolverFn"
+            "data": "QueryListUsersDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/queryListTodosResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/queryListUsersResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ListTodoResolver"
+            "data": "ListUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Query.listTodos"
+            "data": "Query.listUsers"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationcreateTodoinit0Function/MutationcreateTodoinit0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationcreateUserinit0Function/MutationcreateUserinit0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction54DE5B8B"
+            "data": "MutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunctionEDF87EC6"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationcreateTodoinit0Function"
+            "data": "MutationcreateUserinit0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationcreateTodoauth0Function/MutationcreateTodoauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationcreateUserauth0Function/MutationcreateUserauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationcreateTodoauth0FunctionMutationcreateTodoauth0FunctionAppSyncFunction21817E36"
+            "data": "MutationcreateUserauth0FunctionMutationcreateUserauth0FunctionAppSyncFunction30556A6C"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationcreateTodoauth0Function"
+            "data": "MutationcreateUserauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationcreateTodopostAuth0Function/MutationcreateTodopostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationcreateUserpostAuth0Function/MutationcreateUserpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationcreateTodopostAuth0FunctionMutationcreateTodopostAuth0FunctionAppSyncFunctionED59EB9F"
+            "data": "MutationcreateUserpostAuth0FunctionMutationcreateUserpostAuth0FunctionAppSyncFunction176E20CB"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationcreateTodopostAuth0Function"
+            "data": "MutationcreateUserpostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationCreateTodoDataResolverFn/MutationCreateTodoDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationCreateUserDataResolverFn/MutationCreateUserDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationCreateTodoDataResolverFnMutationCreateTodoDataResolverFnAppSyncFunction900EC5CF"
+            "data": "MutationCreateUserDataResolverFnMutationCreateUserDataResolverFnAppSyncFunction22E7974E"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationCreateTodoDataResolverFn"
+            "data": "MutationCreateUserDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/mutationCreateTodoResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/mutationCreateUserResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "CreateTodoResolver"
+            "data": "CreateUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Mutation.createTodo"
+            "data": "Mutation.createUser"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationupdateTodoinit0Function/MutationupdateTodoinit0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationupdateUserinit0Function/MutationupdateUserinit0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunction1B95BB19"
+            "data": "MutationupdateUserinit0FunctionMutationupdateUserinit0FunctionAppSyncFunctionC2E8A924"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationupdateTodoinit0Function"
+            "data": "MutationupdateUserinit0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationupdateTodoauth0Function/MutationupdateTodoauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationupdateUserauth0Function/MutationupdateUserauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationupdateTodoauth0FunctionMutationupdateTodoauth0FunctionAppSyncFunction1E4A3112"
+            "data": "MutationupdateUserauth0FunctionMutationupdateUserauth0FunctionAppSyncFunctionDF95DA65"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationupdateTodoauth0Function"
+            "data": "MutationupdateUserauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationupdateTodopostAuth0Function/MutationupdateTodopostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationupdateUserpostAuth0Function/MutationupdateUserpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationupdateTodopostAuth0FunctionMutationupdateTodopostAuth0FunctionAppSyncFunction50C507D7"
+            "data": "MutationupdateUserpostAuth0FunctionMutationupdateUserpostAuth0FunctionAppSyncFunctionD4B80000"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationupdateTodopostAuth0Function"
+            "data": "MutationupdateUserpostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationUpdateTodoDataResolverFn/MutationUpdateTodoDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationUpdateUserDataResolverFn/MutationUpdateUserDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationUpdateTodoDataResolverFnMutationUpdateTodoDataResolverFnAppSyncFunctionBC238C49"
+            "data": "MutationUpdateUserDataResolverFnMutationUpdateUserDataResolverFnAppSyncFunction6ADF3910"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationUpdateTodoDataResolverFn"
+            "data": "MutationUpdateUserDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/mutationUpdateTodoResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/mutationUpdateUserResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "UpdateTodoResolver"
+            "data": "UpdateUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Mutation.updateTodo"
+            "data": "Mutation.updateUser"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationdeleteTodoauth0Function/MutationdeleteTodoauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationdeleteUserauth0Function/MutationdeleteUserauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationdeleteTodoauth0FunctionMutationdeleteTodoauth0FunctionAppSyncFunctionC82C218C"
+            "data": "MutationdeleteUserauth0FunctionMutationdeleteUserauth0FunctionAppSyncFunction9B900ACD"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationdeleteTodoauth0Function"
+            "data": "MutationdeleteUserauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationdeleteTodopostAuth0Function/MutationdeleteTodopostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationdeleteUserpostAuth0Function/MutationdeleteUserpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationdeleteTodopostAuth0FunctionMutationdeleteTodopostAuth0FunctionAppSyncFunction483271A2"
+            "data": "MutationdeleteUserpostAuth0FunctionMutationdeleteUserpostAuth0FunctionAppSyncFunction9B804910"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationdeleteTodopostAuth0Function"
+            "data": "MutationdeleteUserpostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/MutationDeleteTodoDataResolverFn/MutationDeleteTodoDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/MutationDeleteUserDataResolverFn/MutationDeleteUserDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MutationDeleteTodoDataResolverFnMutationDeleteTodoDataResolverFnAppSyncFunction3879153F"
+            "data": "MutationDeleteUserDataResolverFnMutationDeleteUserDataResolverFnAppSyncFunction0B4F366A"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "MutationDeleteTodoDataResolverFn"
+            "data": "MutationDeleteUserDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/mutationDeleteTodoResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/mutationDeleteUserResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "DeleteTodoResolver"
+            "data": "DeleteUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Mutation.deleteTodo"
+            "data": "Mutation.deleteUser"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptiononCreateTodoauth0Function/SubscriptiononCreateTodoauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptiononCreateUserauth0Function/SubscriptiononCreateUserauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononCreateTodoauth0FunctionSubscriptiononCreateTodoauth0FunctionAppSyncFunction042EF9E1"
+            "data": "SubscriptiononCreateUserauth0FunctionSubscriptiononCreateUserauth0FunctionAppSyncFunctionE9B4721A"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptiononCreateTodoauth0Function"
+            "data": "SubscriptiononCreateUserauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptiononCreateTodopostAuth0Function/SubscriptiononCreateTodopostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptiononCreateUserpostAuth0Function/SubscriptiononCreateUserpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononCreateTodopostAuth0FunctionSubscriptiononCreateTodopostAuth0FunctionAppSyncFunction18E34C4E"
+            "data": "SubscriptiononCreateUserpostAuth0FunctionSubscriptiononCreateUserpostAuth0FunctionAppSyncFunction62AE12DA"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptiononCreateTodopostAuth0Function"
+            "data": "SubscriptiononCreateUserpostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptionOnCreateTodoDataResolverFn/SubscriptionOnCreateTodoDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptionOnCreateUserDataResolverFn/SubscriptionOnCreateUserDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunction462A70C9"
+            "data": "SubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunction23B2F1B9"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptionOnCreateTodoDataResolverFn"
+            "data": "SubscriptionOnCreateUserDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/subscriptionOnCreateTodoResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/subscriptionOnCreateUserResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononCreateTodoResolver"
+            "data": "SubscriptiononCreateUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Subscription.onCreateTodo"
+            "data": "Subscription.onCreateUser"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptiononUpdateTodoauth0Function/SubscriptiononUpdateTodoauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptiononUpdateUserauth0Function/SubscriptiononUpdateUserauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononUpdateTodoauth0FunctionSubscriptiononUpdateTodoauth0FunctionAppSyncFunction80D0DFA3"
+            "data": "SubscriptiononUpdateUserauth0FunctionSubscriptiononUpdateUserauth0FunctionAppSyncFunction78530C9F"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptiononUpdateTodoauth0Function"
+            "data": "SubscriptiononUpdateUserauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptiononUpdateTodopostAuth0Function/SubscriptiononUpdateTodopostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptiononUpdateUserpostAuth0Function/SubscriptiononUpdateUserpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononUpdateTodopostAuth0FunctionSubscriptiononUpdateTodopostAuth0FunctionAppSyncFunction04445BC7"
+            "data": "SubscriptiononUpdateUserpostAuth0FunctionSubscriptiononUpdateUserpostAuth0FunctionAppSyncFunctionF3EF85D1"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptiononUpdateTodopostAuth0Function"
+            "data": "SubscriptiononUpdateUserpostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptionOnUpdateTodoDataResolverFn/SubscriptionOnUpdateTodoDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptionOnUpdateUserDataResolverFn/SubscriptionOnUpdateUserDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptionOnUpdateTodoDataResolverFnSubscriptionOnUpdateTodoDataResolverFnAppSyncFunction523DF0E4"
+            "data": "SubscriptionOnUpdateUserDataResolverFnSubscriptionOnUpdateUserDataResolverFnAppSyncFunction93FA5DF6"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptionOnUpdateTodoDataResolverFn"
+            "data": "SubscriptionOnUpdateUserDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/subscriptionOnUpdateTodoResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/subscriptionOnUpdateUserResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononUpdateTodoResolver"
+            "data": "SubscriptiononUpdateUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Subscription.onUpdateTodo"
+            "data": "Subscription.onUpdateUser"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptiononDeleteTodoauth0Function/SubscriptiononDeleteTodoauth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptiononDeleteUserauth0Function/SubscriptiononDeleteUserauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononDeleteTodoauth0FunctionSubscriptiononDeleteTodoauth0FunctionAppSyncFunctionF69F2220"
+            "data": "SubscriptiononDeleteUserauth0FunctionSubscriptiononDeleteUserauth0FunctionAppSyncFunction0C5B7186"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptiononDeleteTodoauth0Function"
+            "data": "SubscriptiononDeleteUserauth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptiononDeleteTodopostAuth0Function/SubscriptiononDeleteTodopostAuth0Function.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptiononDeleteUserpostAuth0Function/SubscriptiononDeleteUserpostAuth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononDeleteTodopostAuth0FunctionSubscriptiononDeleteTodopostAuth0FunctionAppSyncFunctionE131CBE7"
+            "data": "SubscriptiononDeleteUserpostAuth0FunctionSubscriptiononDeleteUserpostAuth0FunctionAppSyncFunction24A5E815"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptiononDeleteTodopostAuth0Function"
+            "data": "SubscriptiononDeleteUserpostAuth0Function"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/SubscriptionOnDeleteTodoDataResolverFn/SubscriptionOnDeleteTodoDataResolverFn.AppSyncFunction": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/SubscriptionOnDeleteUserDataResolverFn/SubscriptionOnDeleteUserDataResolverFn.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptionOnDeleteTodoDataResolverFnSubscriptionOnDeleteTodoDataResolverFnAppSyncFunction3E641E8C"
+            "data": "SubscriptionOnDeleteUserDataResolverFnSubscriptionOnDeleteUserDataResolverFnAppSyncFunction2BEB0972"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "SubscriptionOnDeleteTodoDataResolverFn"
+            "data": "SubscriptionOnDeleteUserDataResolverFn"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/subscriptionOnDeleteTodoResolver": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/subscriptionOnDeleteUserResolver": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SubscriptiononDeleteTodoResolver"
+            "data": "SubscriptiononDeleteUserResolver"
           },
           {
             "type": "graphqltransformer:resourceName",
-            "data": "Subscription.onDeleteTodo"
+            "data": "Subscription.onDeleteUser"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/CDKMetadata/Default": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/CDKMetadata/Condition": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/CDKMetadata/Condition": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadataAvailable"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource31F3B3F9Outputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent808476A4Arn": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource31F3B3F9Outputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent808476A4Arn": [
           {
             "type": "aws:cdk:logicalId",
             "data": "referencetoamplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource31F3B3F9Outputsamplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataAmplifyTableMana3E1237B0"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataGraphQLAPIE8DA6A96ApiId": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataGraphQLAPIE8DA6A96ApiId": [
           {
             "type": "aws:cdk:logicalId",
             "data": "referencetoamplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataGraphQLAPIE8DA6A96ApiId"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataGraphQLAPINONEDSE3C90283Name": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataGraphQLAPINONEDSE3C90283Name": [
           {
             "type": "aws:cdk:logicalId",
             "data": "referencetoamplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataGraphQLAPINONEDSE3C90283Name"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthauthenticatedUserRole2ECE9AA7Ref": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthauthenticatedUserRole2ECE9AA7Ref": [
           {
             "type": "aws:cdk:logicalId",
             "data": "referencetoamplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputsamplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthauthenticatedUserRole2ECE9AA7Ref"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthunauthenticatedUserRole6C2921DBRef": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthunauthenticatedUserRole6C2921DBRef": [
           {
             "type": "aws:cdk:logicalId",
             "data": "referencetoamplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputsamplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthunauthenticatedUserRole6C2921DBRef"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthIdentityPool5BCB5EC6Ref": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User/reference-to-amplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputs.amplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthIdentityPool5BCB5EC6Ref": [
           {
             "type": "aws:cdk:logicalId",
             "data": "referencetoamplifycmrpfrontendemmanuelkpendosandboxd412169321authNestedStackauthNestedStackResourceD527B24EOutputsamplifycmrpfrontendemmanuelkpendosandboxd412169321authamplifyAuthIdentityPool5BCB5EC6Ref"
           }
         ],
-        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo.NestedStack/Todo.NestedStackResource": [
+        "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User.NestedStack/User.NestedStackResource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "amplifyDataTodoNestedStackTodoNestedStackResource551CEA56"
+            "data": "amplifyDataUserNestedStackUserNestedStackResource9488907F"
           }
         ],
         "/amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Resource": [

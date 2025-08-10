@@ -9,6 +9,7 @@ import {Button, ButtonDirective} from 'primeng/button';
 import {Password} from 'primeng/password';
 import {InputMask} from 'primeng/inputmask';
 import {AuthService} from "../../services/auth-service/auth-service";
+import {MessageService} from "primeng/api";
 
 @Component({
     selector: 'cmrp-auth',
@@ -35,7 +36,7 @@ export class Auth {
     protected readonly cn = cn;
 
     protected authService = inject(AuthService);
-
+    private messageService = inject(MessageService);
 
     constructor() {
         this.authForm = this.createLoginForm()
@@ -74,10 +75,18 @@ export class Auth {
                 console.log(signup);
 
             } catch (err) {
-
+                console.error("Error: ", err);
             }
         } else {
-
+            try {
+                const signIn = await this.authService.signIn(this.authForm.value);
+                console.log(signIn);
+            } catch (err) {
+                console.error("Error: ", err);
+                console.log(typeof err)
+                // const errorMessage = (err.message as string).split(":")[1]
+                // this.messageService.add({severity: 'error', detail: errorMessage});
+            }
         }
 
 

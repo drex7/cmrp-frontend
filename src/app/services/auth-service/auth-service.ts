@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {signUp as awsSignUp} from "aws-amplify/auth"
+import {signIn as awsSignIn, signUp as awsSignUp} from "aws-amplify/auth"
 import {AuthFormInterface} from '@/interfaces/user-interface';
 
 @Injectable({
@@ -7,6 +7,7 @@ import {AuthFormInterface} from '@/interfaces/user-interface';
 })
 export class AuthService {
   public async signUp(data: AuthFormInterface) {
+    console.log(data)
     const user = {
       username: data.email,
       password: data.password,
@@ -17,5 +18,13 @@ export class AuthService {
       }
     }
     return await awsSignUp(user)
+  }
+
+  public async signIn(data: AuthFormInterface) {
+    const user = {
+      username: data.email,
+      password: data.password,
+    }
+    return await awsSignIn(user)
   }
 }

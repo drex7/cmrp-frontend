@@ -53,7 +53,7 @@
      ]
     },
     "DefinitionS3Location": {
-     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1db5a9b062a884749d0491972d5f030e4161d40698de48b5fc5c1c119de03607.graphql"
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f34a9045407fd451eef94495aa52a13f01442cf9084541a0cdd3a08b2963389f.graphql"
     }
    },
    "UpdateReplacePolicy": "Delete",
@@ -71,7 +71,7 @@
       "ApiId"
      ]
     },
-    "Expires": 1757261089
+    "Expires": 1757360859
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
@@ -152,7 +152,7 @@
     "aws:asset:property": "TemplateURL"
    }
   },
-  "amplifyDataTodoNestedStackTodoNestedStackResource551CEA56": {
+  "amplifyDataUserNestedStackUserNestedStackResource9488907F": {
    "Type": "AWS::CloudFormation::Stack",
    "Properties": {
     "Parameters": {
@@ -229,7 +229,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/5c5bbd79876d662b4765df548b9363fc5a74b23139f161d373fe2e68a5b579dc.json"
+       "/86746b9f8486493ef2d766afbcd1479bf2fd7228c8f1aa0b9840c7464e669cef.json"
       ]
      ]
     }
@@ -240,8 +240,8 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/Todo.NestedStack/Todo.NestedStackResource",
-    "aws:asset:path": "amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataTodo1C571F91.nested.template.json",
+    "aws:cdk:path": "amplify-cmrpfrontend-emmanuelkpendo-sandbox-d412169321/data/amplifyData/User.NestedStack/User.NestedStackResource",
+    "aws:asset:path": "amplifycmrpfrontendemmanuelkpendosandboxd412169321dataamplifyDataUser180B5181.nested.template.json",
     "aws:asset:property": "TemplateURL"
    }
   },
@@ -418,7 +418,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "f99e250b07298c1eeb19f4da0ad795be74c098a424ba42c5d0f28add468f5a29.zip"
+     "76c61efd8adc96ecddeffe54e0c5ca09c84a941651554d60ed1fab969bf15c3f.zip"
     ],
     "SourceMarkers": [
      {}
@@ -930,7 +930,7 @@
      }
     ],
     "SourceObjectKeys": [
-     "0ca82f2db3d810076dae08a1570d9c1fc6e7eb723b32c633b9e7f080f54f5982.zip"
+     "05724c92b09aa68c38eec6ce422dd47257149d1e23abb34e05e34dd57ff54534.zip"
     ],
     "SourceMarkers": [
      {}

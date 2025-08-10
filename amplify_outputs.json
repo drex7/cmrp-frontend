@@ -1,12 +1,14 @@
 {
   "auth": {
-    "user_pool_id": "eu-west-1_RLt48zquD",
+    "user_pool_id": "eu-west-1_LRc88R3zh",
     "aws_region": "eu-west-1",
-    "user_pool_client_id": "4aab363vcrs9r0vk7dt553mrho",
-    "identity_pool_id": "eu-west-1:37e2cf0e-e54c-419b-add5-87f7784cead8",
+    "user_pool_client_id": "6caf92kehk0kmqp4e5v026vnl8",
+    "identity_pool_id": "eu-west-1:d782ab54-4530-4846-9269-5391572eb2fe",
     "mfa_methods": [],
     "standard_required_attributes": [
-      "email"
+      "email",
+      "phone_number",
+      "name"
     ],
     "username_attributes": [
       "email"
@@ -42,9 +44,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://5ztasbtvffalpi2cwkmeylbd4e.appsync-api.eu-west-1.amazonaws.com/graphql",
+    "url": "https://7d62jyisarhntnjxdcb5267yfm.appsync-api.eu-west-1.amazonaws.com/graphql",
     "aws_region": "eu-west-1",
-    "api_key": "da2-35mih3tswbaarobk2ygeyw3tku",
+    "api_key": "da2-ykssxeaeija7nngtiza76flqjm",
     "default_authorization_type": "API_KEY",
     "authorization_types": [
       "AMAZON_COGNITO_USER_POOLS",
@@ -53,8 +55,8 @@
     "model_introspection": {
       "version": 1,
       "models": {
-        "Todo": {
-          "name": "Todo",
+        "User": {
+          "name": "User",
           "fields": {
             "id": {
               "name": "id",
@@ -63,8 +65,43 @@
               "isRequired": true,
               "attributes": []
             },
-            "content": {
-              "name": "content",
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "telephone": {
+              "name": "telephone",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "password": {
+              "name": "password",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "region": {
+              "name": "region",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "city": {
+              "name": "city",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -88,7 +125,7 @@
             }
           },
           "syncable": true,
-          "pluralName": "Todos",
+          "pluralName": "Users",
           "attributes": [
             {
               "type": "model",
