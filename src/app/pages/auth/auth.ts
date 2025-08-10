@@ -33,7 +33,8 @@ export class Auth {
     protected authForm: FormGroup;
     protected authFormControls = signal<string[]>([]);
     protected isSubmitting = signal(false);
-    protected formType = signal<"login" | "signup" | "otp">("otp")
+    protected userName = signal('');
+    protected formType = signal<"login" | "signup" | "otp">("login")
     protected minLengthValidator = Validators.minLength(5);
     protected readonly cn = cn;
 
@@ -72,21 +73,43 @@ export class Auth {
     protected async onSubmit() {
         this.isSubmitting.set(true);
         if (this.authForm.valid) {
+            if (this.formType() !== 'otp') {
+                this.userName.set(this.authForm.value.email);
+            }
             if (this.formType() === 'signup') {
                 await this.signUp()
-            } else {
+            } else if (this.formType() === 'login') {
                 await this.signIn()
+            } else {
+                console.log(this.authForm.value)
+                await this.confirmOtp()
             }
         }
 
     }
 
+    private async confirmOtp() {
+        const formValue = this.authForm.value
+        console.log(this.userName())
+        const res = await this.authService.confirmSignUp(this.userName(), formValue.otp)
+        console.log(res)
+    }
+
     private async signIn() {
         try {
-            const signIn = await this.authService.signIn(this.authForm.value);
-            console.log(signIn);
+            const {nextStep: {signInStep}, isSignedIn} = await this.authService.signIn(this.authForm.value);
+            console.log(isSignedIn);
+            if (isSignedIn) {
+                console.log(isSignedIn);
+            } else {
+                if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
+                    this.formType.set("otp")
+                }
+            }
+            this.isSubmitting.set(false);
         } catch (err) {
             const error = err as Error;
+            console.log(error);
             this.toastService.showToast("error", "Login failed", error.message);
             this.isSubmitting.set(false);
         }

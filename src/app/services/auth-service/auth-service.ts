@@ -1,5 +1,10 @@
 import {Injectable} from '@angular/core';
-import {signIn as awsSignIn, signUp as awsSignUp, SignUpInput} from "aws-amplify/auth"
+import {
+  confirmSignUp as awsConfirmSignUp,
+  signIn as awsSignIn,
+  signUp as awsSignUp,
+  SignUpInput
+} from "aws-amplify/auth"
 import {AuthFormInterface} from '@/interfaces/user-interface';
 
 @Injectable({
@@ -17,7 +22,6 @@ export class AuthService {
         }
       }
     }
-    console.log(user)
     return await awsSignUp(user)
   }
 
@@ -27,5 +31,14 @@ export class AuthService {
       password: data.password,
     }
     return await awsSignIn(user)
+  }
+
+  public async confirmSignUp(username: string, confirmationCode: string) {
+    console.log(`Confirm signing up for ${username}: ${confirmationCode}`)
+
+    return await awsConfirmSignUp({
+      username,
+      confirmationCode
+    })
   }
 }
