@@ -80,8 +80,7 @@ export class Auth {
             if (this.formType() === 'signup') {
                 await this.signUp()
             } else if (this.formType() === 'login') {
-                // await this.signIn()
-                // await this.authService.getAuthSession()
+                await this.signIn()
             } else {
                 console.log(this.authForm.value)
                 await this.confirmOtp()
@@ -93,43 +92,62 @@ export class Auth {
     private async confirmOtp() {
         const formValue = this.authForm.value
         console.log(this.userName())
-        const res = await this.authService.confirmSignUp(this.userName(), formValue.otp)
-        console.log(res)
+        const {isSignUpComplete} = await this.authService.confirmSignUp(this.userName(), formValue.otp)
+        if (isSignUpComplete) {
+            await this.authService.fetchAuthAndCurrentUser()
+        }
     }
 
-    private async signIn() {
+    private async signIn(): Promise<void> {
+        this.isSubmitting.set(true);
+
         try {
             const {nextStep: {signInStep}, isSignedIn} = await this.authService.signIn(this.authForm.value);
-            console.log(isSignedIn);
-            if (isSignedIn) {
-                console.log(isSignedIn);
-            } else {
-                if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
-                    this.formType.set("otp")
-                } else {
-                    console.log(this.userName())
-                }
-            }
+
+            console.log(isSignedIn, signInStep);
+            await this.handleSignInStep(signInStep);
+        } catch (error) {
+            this.handleError(error as Error);
+        } finally {
             this.isSubmitting.set(false);
-        } catch (err) {
-            const error = err as Error;
-            console.log(error);
-            this.toastService.showToast("error", "Login failed", error.message);
-            this.isSubmitting.set(false);
+        }
+    }
+
+    private async handleSignInStep(signInStep: string): Promise<void> {
+        if (signInStep === "DONE") {
+            await this.authService.fetchAuthAndCurrentUser()
+            return;
+        }
+
+        if (signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
+            // TODO: implement update password feature
+            console.log(signInStep);
+        }
+
+        if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
+            this.formType.set("otp");
         }
     }
 
     private async signUp() {
         try {
-            const signup = await this.authService.signUp(this.authForm.value);
-            console.log(signup);
-        } catch (err) {
-            const error = err as Error;
-            this.toastService.showToast("error", "Login failed", error.message);
-            this.isSubmitting.set(false);
+            const {nextStep: {signUpStep}} = await this.authService.signUp(this.authForm.value);
+            if (signUpStep === "CONFIRM_SIGN_UP") {
+                this.formType.set("otp");
+            }
+            if (signUpStep === "DONE") {
+                await this.signIn()
+            }
+        } catch (error) {
+            this.handleError(error as Error, "Sign Up");
             this.isSubmitting.set(false);
 
         }
+    }
+
+    private handleError(error: Error, type = "Login"): void {
+        this.toastService.showToast("error", `${type} failed`, error.message);
+        this.isSubmitting.set(false);
     }
 
     private createLoginForm() {

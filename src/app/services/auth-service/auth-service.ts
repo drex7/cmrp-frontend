@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {
   confirmSignUp as awsConfirmSignUp,
+  fetchAuthSession,
   getCurrentUser,
   signIn as awsSignIn,
   signUp as awsSignUp,
@@ -45,10 +46,22 @@ export class AuthService {
     })
   }
 
-  public async getAuthSession() {
-    const currentUser = await getCurrentUser();
-    // const session = await fetchAuthSession()
-    // console.log(session)
-    console.log(currentUser);
+  public async fetchAuthAndCurrentUser() {
+    const res = await Promise.all([
+      this.getAuthSession(),
+      this.getCurrentUser()
+    ]);
+
+    console.log(res)
+    console.log(res[0])
+    console.log(res[1])
+  }
+
+  private async getAuthSession() {
+    return await fetchAuthSession()
+  }
+
+  private async getCurrentUser() {
+    return await getCurrentUser();
   }
 }
