@@ -9,9 +9,13 @@ export const auth = defineAuth({
         email: true,
     },
     userAttributes: {
-        email: {required: true},
-        fullname: {required: true},
-        phoneNumber: {required: true},
-    },
-    groups: ["ADMINS", "OFFICIALS", "CITIZENS"]
+        phoneNumber: {
+            mutable: true,
+            required: false,
+        },
+        fullname: {
+            required: false,
+            mutable: true,
+        }
+    }
 });
