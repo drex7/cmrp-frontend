@@ -33,9 +33,6 @@
       ],
       "@/assets/*": [
         "./assets/*"
-      ],
-      "@/amplify/*": [
-        ".././amplify/*"
       ]
     }
   },
