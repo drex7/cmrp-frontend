@@ -10,6 +10,7 @@ import {Password} from 'primeng/password';
 import {InputMask} from 'primeng/inputmask';
 import {AuthService} from "../../services/auth-service/auth-service";
 import {ToastService} from "../../services/toast-service/toast-service";
+import {InputOtp} from "primeng/inputotp";
 
 @Component({
     selector: 'cmrp-auth',
@@ -22,7 +23,8 @@ import {ToastService} from "../../services/toast-service/toast-service";
         Password,
         InputMask,
         NgTemplateOutlet,
-        Button
+        Button,
+        InputOtp
     ],
     templateUrl: './auth.html',
     styleUrl: './auth.css'
@@ -31,18 +33,23 @@ export class Auth {
     protected authForm: FormGroup;
     protected authFormControls = signal<string[]>([]);
     protected isSubmitting = signal(false);
-    protected formType = signal<"login" | "signup">("login")
+    protected formType = signal<"login" | "signup" | "otp">("otp")
     protected minLengthValidator = Validators.minLength(5);
     protected readonly cn = cn;
 
     protected authService = inject(AuthService);
     protected toastService = inject(ToastService);
+    private readonly formCreators: Record<string, () => FormGroup> = {
+        login: () => this.createLoginForm(),
+        signup: () => this.createSignUpForm(),
+        otp: () => this.createOtpForm(),
+    };
 
     constructor() {
         this.authForm = this.createLoginForm()
         effect(() => {
             if (this.formType()) {
-                this.authForm = this.formType() === "login" ? this.createLoginForm() : this.createSignUpForm()
+                this.authForm = this.formCreators[this.formType()]?.()
                 this.authFormControls.set(Object.keys(this.authForm.controls))
             }
         });
@@ -119,5 +126,11 @@ export class Auth {
                 validators: [matchPasswordValidator('password', 'confirm_password')]
             }
         )
+    }
+
+    private createOtpForm() {
+        return new FormGroup({
+            otp: new FormControl("", [Validators.required, Validators.minLength(6)]),
+        })
     }
 }
