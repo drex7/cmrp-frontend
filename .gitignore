@@ -47,6 +47,7 @@ Thumbs.db
 /.amplify
 /.amplify/*
 amplify_outputs.json
+/amplify_outputs.json
 
 #Bun
 bun.lock
