@@ -40,3 +40,13 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+#AWS
+.amplify
+.amplify/*
+/.amplify
+/.amplify/*
+amplify_outputs.json
+
+#Bun
+bun.lock
