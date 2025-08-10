@@ -1,12 +1,13 @@
-export interface UserInterface {
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  firstName: string;
-  middleName: string;
-  lastName: string;
+export interface AuthFormInterface {
+  name: string;
   email: string;
+  password: string;
   telephone: string;
-  username: string;
   city: string;
   region: string;
+}
+
+export interface UserInterface extends AuthFormInterface {
+  isAuthenticated: boolean;
+  isLoading: boolean;
 }

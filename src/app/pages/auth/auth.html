@@ -1,6 +1,6 @@
 <div
   class="h-dvh p-4 sm:p-6 md:p-8 flex items-center justify-center">
-  <p-card class="w-md max-w-xl">
+  <p-card class="w-md max-w-xl shadow shadow-black/60">
     <h2 class="text-3xl font-bold text-center my-2">CMRP</h2>
     <!--    Form container-->
     <form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="flex flex-col gap-4">
@@ -79,7 +79,7 @@
                 @if (authForm.get(control)?.errors?.['invalidGhanaPhone']) {
                   <div>Enter a valid 10-digit Ghanaian phone number (e.g., 0241234567).</div>
                 }
-                @if (authForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+                @if (authForm.get('confirm_password')?.errors?.['passwordMismatch']) {
                   <div>Passwords do not match.</div>
                 }
               </div>
@@ -112,6 +112,7 @@
   <div class="flex flex-col text-center">
     <h3 class="capitalize font-semibold text-2xl">welcome back </h3>
     <p class="text-xs">Today is a new day. It's your day. Shape it</p>
+    <p class="text-xs">Access your city management dashboard.</p>
   </div>
 </ng-template>
 
@@ -119,6 +120,6 @@
 <ng-template #signupDescription>
   <div class="flex flex-col text-center">
     <h3 class="capitalize font-semibold text-2xl">Create an Account</h3>
-    <p class="text-xs">Sign up to get started with our service.</p>
+    <p class="text-xs">Join the urban management revolution.</p>
   </div>
 </ng-template>
