@@ -1,5 +1,5 @@
 <div class="flex h-dvh bg-gray">
-  <aside class=" w-[16rem] flex flex-col gap-6 pb-6 bg-primary">
+  <aside class="w-[20rem] flex flex-col gap-6 pb-6 bg-primary relative">
     <div class="flex items-center justify-center h-[6rem] border-b border-b-neutral-400">
       <!--    Custom logo-->
       <div
@@ -19,9 +19,23 @@
       }
     </nav>
 
+    <div
+      class="absolute rounded-md bg-primary-light/60 backdrop-blur-md bottom-4 left-4 w-10/12 p-4 flex flex-col gap-4">
+      <div class="flex items-center gap-2">
+        <p-avatar icon="pi pi-user" shape="circle" size="large"/>
+        <div class="flex flex-col text-white">
+          <span class="font-semibold">Admin</span>
+          <span class="text-dark-gray text-sm">{{ "admin@example.com" }}</span>
+        </div>
+      </div>
+      <button class="flex items-center gap-2 bg-dark-gray/10 backdrop-blur border-none" pButton>
+        <i class="pi pi-sign-out"></i>
+        <span>Sign Out</span>
+      </button>
+    </div>
   </aside>
   <div class="flex-auto flex flex-col border-4 border-green-600">
-    <header></header>
+    <section></section>
     <section></section>
   </div>
 </div>

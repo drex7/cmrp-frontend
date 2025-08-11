@@ -1,12 +1,16 @@
 import {Component} from '@angular/core';
 import {dashboardData} from "@/constants/index";
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {Avatar} from 'primeng/avatar';
+import {ButtonDirective} from 'primeng/button';
 
 @Component({
   selector: 'cmrp-dashboard',
   imports: [
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    Avatar,
+    ButtonDirective
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
