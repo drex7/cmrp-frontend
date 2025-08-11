@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {dashboardData} from "@/constants/index";
-import {RouterLink} from '@angular/router';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'cmrp-dashboard',
   imports: [
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'

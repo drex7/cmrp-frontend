@@ -1,16 +1,21 @@
-<div class="flex border-4 border-blue-600 h-dvh bg-neutral-200">
-  <aside class=" w-[20rem] flex flex-col gap-4 pb-6 bg-white">
+<div class="flex h-dvh bg-gray">
+  <aside class=" w-[16rem] flex flex-col gap-6 pb-6 bg-primary">
     <div class="flex items-center justify-center h-[6rem] border-b border-b-neutral-400">
       <!--    Custom logo-->
       <div
-        class="h-14 w-14 rounded-md bg-black/90 text-white uppercase flex items-center justify-center font-black tracking-wider">
+        class="h-12 w-12 rounded-md pointer-events-none bg-black/90 text-white text-3xl uppercase flex items-center justify-center font-black tracking-wider">
         cmrp
       </div>
     </div>
 
     <nav class="flex flex-col gap-4 px-4">
       @for (nav of dashboardData; track nav.title) {
-        <a [routerLink]="nav.link" class="border-2 h-10 flex items-center">{{ nav.title }}</a>
+        <a [routerLink]="[nav.link]"
+           routerLinkActive="bg-primary-light text-white font-semibold pointer-events-none"
+           class=" h-10 flex items-center px-4 gap-2 rounded-md text-dark-gray hover:bg-primary-light hover:text-white transition-all duration-100 ease-linear">
+          <i [class]="`${nav.icon} text-lg`"></i>
+          <span> {{ nav.title }} </span>
+        </a>
       }
     </nav>
 
