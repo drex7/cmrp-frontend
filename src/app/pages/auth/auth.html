@@ -1,9 +1,9 @@
 <div
-  class="h-dvh p-4 sm:p-6 md:p-8 flex items-center justify-center">
-  <p-card class="w-md max-w-xl shadow shadow-black/60">
+  class="h-dvh p-4 sm:p-6 md:p-8 flex items-center justify-center bg-slate-200">
+  <p-card class="w-md max-w-xl shadow shadow-black/20">
     <h2 class="text-3xl font-bold text-center my-2">CMRP</h2>
     <!--    Form container-->
-    <form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="flex flex-col gap-4">
+    <form (ngSubmit)="onSubmit()" [formGroup]="authForm" class="flex flex-col gap-5">
       <!--      Conditionally render form description-->
       @if (formType() === 'otp') {
         <div class="flex flex-col  text-center">
@@ -15,7 +15,7 @@
           [ngTemplateOutlet]="formType() === 'login' ? loginDescription : signupDescription"></ng-container>
       }
 
-      <div [class]="cn('grid grid-cols-1 gap-4 mt-4',
+      <div [class]="cn('grid grid-cols-1 gap-5 mt-4',
       {
       'md:grid-cols-2': formType() === 'signup'
       }
@@ -138,7 +138,7 @@
 <ng-template #loginDescription>
   <div class="flex flex-col text-center">
     <h3 class="capitalize font-semibold text-2xl">welcome back </h3>
-    <p class="text-sm">Today is a new day. It's your day. Shape it</p>
+    <p class="text-sm">Login to</p>
     <p class="text-sm">Access your city management dashboard.</p>
   </div>
 </ng-template>
