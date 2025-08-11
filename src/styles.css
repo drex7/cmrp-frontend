@@ -2,3 +2,6 @@
 
 @plugin "tailwindcss-primeui";
 
+p-password > svg {
+  @apply cursor-pointer;
+}
