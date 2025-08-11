@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {dashboardData} from "@/constants/index";
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {Avatar} from 'primeng/avatar';
 import {ButtonDirective} from 'primeng/button';
 
@@ -10,7 +10,8 @@ import {ButtonDirective} from 'primeng/button';
     RouterLink,
     RouterLinkActive,
     Avatar,
-    ButtonDirective
+    ButtonDirective,
+    RouterOutlet
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
