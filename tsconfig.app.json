@@ -32,6 +32,9 @@
       "@/assets/*": [
         "./assets/*"
       ],
+      "@/constants/*": [
+        "./constants/*"
+      ],
       "@/amplify/*": [
         ".././amplify/*"
       ]
