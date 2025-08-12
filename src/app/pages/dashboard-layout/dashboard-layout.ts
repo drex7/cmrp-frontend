@@ -1,29 +1,29 @@
-import {Component} from '@angular/core';
-import {Avatar} from "primeng/avatar";
+import {Component, computed, inject} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {dashboardData} from '@/constants/index';
+import {RouterOutlet} from "@angular/router";
 import {Message} from 'primeng/message';
 import {Dialog} from 'primeng/dialog';
 import {Auth} from '@/components/auth/auth';
+import {UserStore} from '@/store/user-store';
+import {Sidebar} from '@/components/sidebar/sidebar';
 
 @Component({
   selector: 'cmrp-dashboard-layout',
   imports: [
-    Avatar,
     ButtonDirective,
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
     Message,
     Dialog,
-    Auth
+    Auth,
+    Sidebar
   ],
   templateUrl: './dashboard-layout.html',
   styleUrl: './dashboard-layout.css'
 })
 export class DashboardLayout {
 
-  protected readonly dashboardData = dashboardData;
+  protected userStore = inject(UserStore)
+  protected user = this.userStore.user;
+  protected isSignedIn = computed(() => this.user.isSignedIn());
   protected showAuthDialog = false
 }

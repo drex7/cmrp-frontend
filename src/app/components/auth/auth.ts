@@ -10,7 +10,6 @@ import {InputMask} from 'primeng/inputmask';
 import {AuthService} from "../../services/auth-service/auth-service";
 import {ToastService} from "../../services/toast-service/toast-service";
 import {InputOtp} from "primeng/inputotp";
-import {SelectButton} from 'primeng/selectbutton';
 
 @Component({
   selector: 'cmrp-auth',
@@ -24,7 +23,6 @@ import {SelectButton} from 'primeng/selectbutton';
     NgTemplateOutlet,
     Button,
     InputOtp,
-    SelectButton
   ],
   templateUrl: './auth.html',
   styleUrl: './auth.css'
@@ -56,7 +54,7 @@ export class Auth {
     });
 
   }
-  
+
   protected getInputType(key: string): string {
     const types: { [key: string]: string } = {
       email: 'email',

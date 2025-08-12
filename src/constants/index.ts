@@ -1,26 +1,29 @@
 import {PrimeIcons} from 'primeng/api';
 
-export const dashboardData = [
+export const sidebarData = [
   {
     title: "Dashboard",
-    link: "",
-    icon: PrimeIcons.HOME
+    route: "",
+    icon: PrimeIcons.HOME,
+    isAccessible: true,
   }, {
     title: "Incidents",
-    link: "/incidents",
-    icon: PrimeIcons.FLAG
+    route: "/incidents",
+    icon: PrimeIcons.EXCLAMATION_TRIANGLE,
+    isAccessible: false,
   },
   {
     title: "Users",
-    link: "/users",
-    icon: PrimeIcons.USERS
+    route: "/users",
+    icon: PrimeIcons.USERS,
+    isAccessible: false
   },
   // {
   //   title: "Roles and Permissions",
-  //   link: "/dashboard/roles",
+  //   route: "/dashboard/roles",
   //   icon: PrimeIcons.SHIELD
   // }
-] as const
+]
 
 export const incidentsData = [
   {

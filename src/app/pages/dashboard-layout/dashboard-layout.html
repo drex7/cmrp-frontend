@@ -1,43 +1,7 @@
 <div class="flex h-dvh bg-background">
-  <aside class="w-[22rem] flex flex-col gap-6 pb-6 bg-primary relative">
-    <div class="flex flex-col gap-1 items-center justify-center h-[6rem] border-b border-b-neutral-400">
-      <!--    Custom logo-->
-      <div
-        class="button-container h-max w-max p-3 flex-col font-black text-xl text-white rounded-md pointer-events-none">
-        <div class="bg-linear-to-t from-sky-500 to-indigo-500 h-8 w-8 flex items-center justify-center rounded-md">
-          <i class="pi pi-warehouse"></i>
-        </div>
-      </div>
-      <span class="text-dark-gray font-semibold text-sm">CMRP</span>
-    </div>
+  <!--Sidebar component-->
+  <cmrp-sidebar/>
 
-    <nav class="flex flex-col gap-4 px-4">
-      @for (nav of dashboardData; track nav.title) {
-        <a [routerLink]="[nav.link]"
-           routerLinkActive="bg-primary-light text-white font-semibold pointer-events-none"
-           [routerLinkActiveOptions]="{ exact: true }"
-           class=" h-10 flex items-center px-4 gap-2 rounded-md text-dark-gray hover:bg-primary-light hover:text-white transition-all duration-100 ease-linear">
-          <i [class]="`${nav.icon} text-lg`"></i>
-          <span> {{ nav.title }} </span>
-        </a>
-      }
-    </nav>
-
-    <div
-      class="absolute rounded-md bg-primary-light/60 backdrop-blur-md bottom-4 left-4 w-10/12 p-4 flex flex-col gap-4">
-      <div class="flex items-center gap-2">
-        <p-avatar icon="pi pi-user" shape="circle" size="large"/>
-        <div class="flex flex-col text-white">
-          <span class="font-semibold">Admin</span>
-          <span class="text-dark-gray text-sm">{{ "admin@example.com" }}</span>
-        </div>
-      </div>
-      <button class="button-container" pButton>
-        <i class="pi pi-sign-out"></i>
-        <span>Sign Out</span>
-      </button>
-    </div>
-  </aside>
   <div class="flex-auto flex flex-col relative overflow-y-auto">
     <section
       class="h-[6rem] flex items-center sticky top-0 z-50 justify-between gap-6 px-4 backdrop-blur border-b border-b-dark-gray">
@@ -45,26 +9,30 @@
         <span class="text-primary font-semibold text-xl">Welcome Back,</span>
         <span class="text-primary-light font-black text-2xl">Admin</span>
       </div>
-      <div class="flex">
+      @if (!isSignedIn()) {
         <button (click)="showAuthDialog = true" class="button-container text-white !bg-primary-light" pButton>
           <i class="pi pi-sign-in"></i>
           <span>Sign In</span>
         </button>
-      </div>
+      }
     </section>
     <section class="p-4">
       <router-outlet/>
     </section>
-    <p-message class="absolute top-4 left-[35%] z-50" closable icon="pi pi-exclamation-triangle"
-               severity="info"
-               styleClass="h-max w-max">
-      <div class="flex flex-col gap-1 text-neutral-500">
-        <span class="font-black text-black">Want to Report and Issue?</span>
-        <p>Citizens can sign in to report incidents and track their resolution status.
-        </p>
-        <span><b>Average Resolution Time:</b> 2.3days</span>
-      </div>
-    </p-message>
+
+    <!--Report issue message-->
+    @if (!isSignedIn()) {
+      <p-message class="absolute top-4 left-[35%] z-50" closable icon="pi pi-exclamation-triangle"
+                 severity="info"
+                 styleClass="h-max w-max">
+        <div class="flex flex-col gap-1 text-neutral-500">
+          <span class="font-black text-black">Want to Report and Issue?</span>
+          <p>Citizens can sign in to report incidents and track their resolution status.
+          </p>
+          <span><b>Average Resolution Time:</b> 2.3days</span>
+        </div>
+      </p-message>
+    }
   </div>
 </div>
 
