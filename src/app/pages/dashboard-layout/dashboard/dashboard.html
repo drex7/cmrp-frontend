@@ -56,8 +56,22 @@
         <div class="grid grid-cols-2 gap-2 items-center">
           <span class="font-bold capitalize">{{ incident.title }}</span>
           <div class="flex items-center gap-2">
-            <p-chip>{{ incident.status }}</p-chip>
-            <p-chip>{{ incident.severity }}</p-chip>
+            <p-chip
+              [class]="cn('text-sm text-white font-semibold', {
+            'bg-blue-500': incident.status === 'in progress',
+            'bg-yellow-500': incident.status === 'pending',
+            'bg-green-500': incident.status === 'resolved',
+            })"
+            >{{ incident.status }}
+            </p-chip>
+            <p-chip
+              [class]="cn('text-sm text-white font-semibold', {
+            'bg-yellow-500': incident.severity === 'medium',
+            'bg-orange-500': incident.severity === 'high',
+            'bg-red-500': incident.severity === 'critical',
+            })"
+            >{{ incident.severity }}
+            </p-chip>
           </div>
         </div>
         <p class="text-sm text-neutral-500">{{ incident.details }}</p>
