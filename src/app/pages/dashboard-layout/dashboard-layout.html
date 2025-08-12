@@ -8,7 +8,7 @@
           <i class="pi pi-warehouse"></i>
         </div>
       </div>
-      <span class="text-dark-gray font-semibold text-sm">City Management and Reporting platform</span>
+      <span class="text-dark-gray font-semibold text-sm">CMRP</span>
     </div>
 
     <nav class="flex flex-col gap-4 px-4">
@@ -46,7 +46,7 @@
         <span class="text-primary-light font-black text-2xl">Admin</span>
       </div>
       <div class="flex">
-        <button class="button-container text-white !bg-primary-light" pButton>
+        <button (click)="showAuthDialog = true" class="button-container text-white !bg-primary-light" pButton>
           <i class="pi pi-sign-in"></i>
           <span>Sign In</span>
         </button>
@@ -67,3 +67,11 @@
     </p-message>
   </div>
 </div>
+
+
+<!--Authentication Dialog-->
+@if (showAuthDialog) {
+  <p-dialog [(visible)]="showAuthDialog" [modal]="true" maskStyleClass="backdrop-blur-sm">
+    <cmrp-auth/>
+  </p-dialog>
+}

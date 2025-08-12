@@ -4,6 +4,8 @@ import {ButtonDirective} from "primeng/button";
 import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {dashboardData} from '@/constants/index';
 import {Message} from 'primeng/message';
+import {Dialog} from 'primeng/dialog';
+import {Auth} from '@/components/auth/auth';
 
 @Component({
   selector: 'cmrp-dashboard-layout',
@@ -13,7 +15,9 @@ import {Message} from 'primeng/message';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    Message
+    Message,
+    Dialog,
+    Auth
   ],
   templateUrl: './dashboard-layout.html',
   styleUrl: './dashboard-layout.css'
@@ -21,4 +25,5 @@ import {Message} from 'primeng/message';
 export class DashboardLayout {
 
   protected readonly dashboardData = dashboardData;
+  protected showAuthDialog = false
 }
