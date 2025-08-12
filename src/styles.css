@@ -15,3 +15,10 @@ p-password > svg {
   --color-dark-gray: oklch(0.8137 0.006 264.53);
 
 }
+
+
+/*Custom styles*/
+
+.button-container {
+  @apply flex items-center gap-2 bg-dark-gray/10 backdrop-blur border-none;
+}
