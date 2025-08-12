@@ -3,6 +3,7 @@ import {Avatar} from "primeng/avatar";
 import {ButtonDirective} from "primeng/button";
 import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {dashboardData} from '@/constants/index';
+import {Message} from 'primeng/message';
 
 @Component({
   selector: 'cmrp-dashboard-layout',
@@ -11,7 +12,8 @@ import {dashboardData} from '@/constants/index';
     ButtonDirective,
     RouterOutlet,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    Message
   ],
   templateUrl: './dashboard-layout.html',
   styleUrl: './dashboard-layout.css'
