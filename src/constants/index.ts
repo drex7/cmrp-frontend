@@ -3,16 +3,16 @@ import {PrimeIcons} from 'primeng/api';
 export const dashboardData = [
   {
     title: "Dashboard",
-    link: "/dashboard",
+    link: "",
     icon: PrimeIcons.HOME
   }, {
     title: "Incidents",
-    link: "/dashboard/incidents",
+    link: "/incidents",
     icon: PrimeIcons.FLAG
   },
   {
     title: "Users",
-    link: "/dashboard/users",
+    link: "/users",
     icon: PrimeIcons.USERS
   },
   // {

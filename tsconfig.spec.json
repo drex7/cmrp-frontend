@@ -10,9 +10,6 @@
     /* Import alias */
     "baseUrl": "./src",
     "paths": {
-      "@/routes/*": [
-        "./app/routes/*"
-      ],
       "@/components/*": [
         "./app/components/*"
       ],
