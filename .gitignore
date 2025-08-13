@@ -50,3 +50,9 @@ amplify_outputs.json
 
 #Bun
 bun.lock
+
+#Env
+envrironments
+envrironments/*
+/src/environments
+/src/environments/*
