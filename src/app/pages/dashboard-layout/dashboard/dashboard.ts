@@ -2,13 +2,14 @@ import {Component} from '@angular/core';
 import {incidentsData, recentIncidentsData} from "@/constants/index";
 import {Card} from 'primeng/card';
 import {cn} from '@/lib/utils';
-import {Chip} from 'primeng/chip';
+import {IncidentCard} from '@/components/incident-card/incident-card';
 
 @Component({
   selector: 'cmrp-dashboard',
   imports: [
     Card,
-    Chip
+    IncidentCard,
+    IncidentCard
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'

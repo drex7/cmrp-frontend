@@ -5,6 +5,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 import {Avatar} from 'primeng/avatar';
 import {UserStore} from '@/store/user-store';
 import {SidebarInterface} from '@/interfaces/sidebar-interface';
+import {AuthService} from '../../services/auth-service/auth-service';
 
 @Component({
   selector: 'cmrp-sidebar',
@@ -22,6 +23,7 @@ export class Sidebar implements OnInit {
   protected userStore = inject(UserStore)
   protected user = this.userStore.user;
   protected isSignedIn = computed(() => this.user.isSignedIn());
+  protected authService = inject(AuthService);
 
   protected navLinks = signal<SidebarInterface[]>([])
   protected readonly sidebarData = sidebarData;
@@ -39,5 +41,11 @@ export class Sidebar implements OnInit {
 
 
     this.navLinks.set(data)
+  }
+
+  protected signOut() {
+    this.authService.signOut().then(() => {
+      console.log('Sign Out');
+    })
   }
 }

@@ -1,18 +1,22 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {
   confirmSignUp as awsConfirmSignUp,
   fetchAuthSession,
   getCurrentUser,
   signIn as awsSignIn,
+  signOut as awsSignOut,
   signUp as awsSignUp,
-  SignUpInput
+  SignUpInput,
 } from "aws-amplify/auth"
 import {AuthFormInterface} from '@/interfaces/user-interface';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  protected router = inject(Router)
+
   public async signUp(data: AuthFormInterface) {
     const user: SignUpInput = {
       username: data.email,
@@ -55,6 +59,14 @@ export class AuthService {
     console.log(res)
     console.log(res[0])
     console.log(res[1])
+  }
+
+  public async signOut() {
+    localStorage.clear()
+    await awsSignOut()
+    return Promise.all([await awsSignOut(),
+      await this.router.navigate([""])
+    ])
   }
 
   private async getAuthSession() {

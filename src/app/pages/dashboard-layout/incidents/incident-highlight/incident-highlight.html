@@ -1,0 +1,15 @@
+<div class="rounded-md border border-dark-gray flex flex-col gap-4 p-4">
+  <div class="flex items-center justify-between gap-4">
+    <span>{{ incident().title }}</span>
+    <i [class]="cn(`${incident().icon}`, {
+    '':''
+    })"></i>
+  </div>
+  <span>{{ incident().number }}</span>
+  <span class="flex items-center gap-1">
+  <span>{{ incident().description }}</span>
+    @if (incident().title.toLowerCase() === 'response time') {
+      <span>h</span>
+    }
+  </span>
+</div>
