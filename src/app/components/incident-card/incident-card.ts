@@ -1,12 +1,12 @@
 import {Component, input} from '@angular/core';
-import {Chip} from "primeng/chip";
 import {cn} from '@/lib/utils';
 import {IIncident} from '@/interfaces/incident-interface';
+import {Chip} from 'primeng/chip';
 
 @Component({
   selector: 'cmrp-incident-card',
   imports: [
-    Chip
+    Chip,
   ],
   templateUrl: './incident-card.html',
   styleUrl: './incident-card.css'
