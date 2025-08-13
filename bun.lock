@@ -18,6 +18,7 @@
         "aws-amplify": "^6.15.5",
         "clsx": "^2.1.1",
         "postcss": "^8.5.6",
+        "primeicons": "^7.0.0",
         "primeng": "^20.0.1",
         "rxjs": "~7.8.0",
         "tailwind-merge": "^3.3.1",
@@ -1956,6 +1957,8 @@
     "prettier": ["prettier@3.6.2", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ=="],
 
     "pretty-ms": ["pretty-ms@9.2.0", "", { "dependencies": { "parse-ms": "^4.0.0" } }, "sha512-4yf0QO/sllf/1zbZWYnvWw3NxCQwLXKzIj0G849LSufP15BXKM0rbD2Z3wVnkMfjdn/CB0Dpp444gYAACdsplg=="],
+
+    "primeicons": ["primeicons@7.0.0", "", {}, "sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw=="],
 
     "primeng": ["primeng@20.0.1", "", { "dependencies": { "@primeuix/styled": "^0.7.1", "@primeuix/styles": "^1.2.2", "@primeuix/utils": "^0.6.0", "tslib": "^2.3.0" }, "peerDependencies": { "@angular/animations": "^20.0.4", "@angular/cdk": "^20.0.3", "@angular/common": "^20.0.4", "@angular/core": "^20.0.4", "@angular/forms": "^20.0.4", "@angular/platform-browser": "^20.0.4", "@angular/router": "^20.0.4", "rxjs": "^6.0.0 || ^7.8.1" } }, "sha512-TDt0e8/fwVCRghXPzDiuZK679/d0jYU7sZN3/Xm2YWsGLe0W2uewLuaxzCj1HYT4RsIFwIYtumJooWq13SNPaA=="],
 

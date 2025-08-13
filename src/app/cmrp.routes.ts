@@ -1,15 +1,41 @@
 import {Routes} from '@angular/router';
 
-const ReportsPage = () => import("@/pages/reports/reports").then(m => m.Reports);
-const AuthPage = () => import("@/pages/auth/auth").then(m => m.Auth);
+const DashboardLayout = () => import("@/pages/dashboard-layout/dashboard-layout").then(m => m.DashboardLayout);
+
+const DashboardPage = () => import("@/pages/dashboard-layout/dashboard/dashboard").then(m => m.Dashboard);
+const IncidentsPage = () => import("@/pages/dashboard-layout/incidents/incidents").then(m => m.Incidents);
+const UsersPage = () => import("@/pages/dashboard-layout/users/users").then(m => m.Users);
+const RolesAndPermissionsPage = () => import("@/pages/dashboard-layout/roles-and-permissions/roles-and-permissions").then(m => m.RolesAndPermissions);
+
+
 export const routes: Routes = [
   {
-    title: "CMRP - Reports",
-    path: "reports",
-    loadComponent: ReportsPage,
-  },
-  {
-    path: "auth",
-    loadComponent: AuthPage,
+    title: "CMRP - Dashboard",
+    path: "",
+    loadComponent: DashboardLayout,
+    children: [
+      {
+        path: "",
+        loadComponent: DashboardPage
+      },
+      {
+        path: "incidents",
+        loadComponent: IncidentsPage,
+      },
+      {
+        path: "users",
+        loadComponent: UsersPage
+      },
+      {
+        path: "roles",
+        loadComponent: RolesAndPermissionsPage
+      }
+    ]
+  }, {
+    path: "**",
+    redirectTo: ""
   }
 ];
+
+
+

@@ -7,7 +7,10 @@ export interface AuthFormInterface {
   region: string;
 }
 
-export interface UserInterface extends AuthFormInterface {
-  isAuthenticated: boolean;
+export interface UserInterface {
+  user: AuthFormInterface & {
+    isSignedIn: boolean;
+    role: "admin" | "city_official" | "citizen";
+  };
   isLoading: boolean;
 }

@@ -2,13 +2,16 @@ import {UserInterface} from '@/interfaces/user-interface';
 import {signalStore, withState} from '@ngrx/signals';
 
 const initialState: UserInterface = {
-  city: "Accra",
-  region: "Greater Accra",
-  name: "Sample user",
-  password: "123456",
-  email: "sample@sample.com",
-  telephone: "0241234567",
-  isAuthenticated: false,
+  user: {
+    city: "Accra",
+    region: "Greater Accra",
+    name: "Sample user",
+    password: "123456",
+    email: "sample@sample.com",
+    telephone: "0241234567",
+    role: "admin",
+    isSignedIn: true,
+  },
   isLoading: false,
 }
 

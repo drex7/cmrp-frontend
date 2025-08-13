@@ -1,0 +1,45 @@
+<div class="flex h-dvh bg-background">
+  <!--Sidebar component-->
+  <cmrp-sidebar/>
+
+  <div class="flex-auto flex flex-col relative overflow-y-auto">
+    <section
+      class="h-[6rem] flex items-center sticky top-0 z-50 justify-between gap-6 px-4 py-5 backdrop-blur border-b border-b-dark-gray">
+      <div class="flex flex-col">
+        <span class="text-primary font-semibold text-xl">Welcome Back,</span>
+        <span class="text-primary-light font-black text-2xl">Admin</span>
+      </div>
+      @if (!isSignedIn()) {
+        <button (click)="showAuthDialog = true" class="button-container text-white !bg-primary-light" pButton>
+          <i class="pi pi-sign-in"></i>
+          <span>Sign In</span>
+        </button>
+      }
+    </section>
+    <section class="p-4">
+      <router-outlet/>
+    </section>
+
+    <!--Report issue message-->
+    @if (!isSignedIn()) {
+      <p-message class="absolute top-4 left-[35%] z-50" closable icon="pi pi-exclamation-triangle"
+                 severity="info"
+                 styleClass="h-max w-max">
+        <div class="flex flex-col gap-1 text-neutral-500">
+          <span class="font-black text-black">Want to Report and Issue?</span>
+          <p>Citizens can sign in to report incidents and track their resolution status.
+          </p>
+          <span><b>Average Resolution Time:</b> 2.3days</span>
+        </div>
+      </p-message>
+    }
+  </div>
+</div>
+
+
+<!--Authentication Dialog-->
+@if (showAuthDialog) {
+  <p-dialog [(visible)]="showAuthDialog" [modal]="true" maskStyleClass="backdrop-blur-sm">
+    <cmrp-auth/>
+  </p-dialog>
+}
