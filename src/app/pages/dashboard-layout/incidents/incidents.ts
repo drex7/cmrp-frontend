@@ -10,7 +10,7 @@ import {cn, getIncidentSeverity} from "@/lib/utils";
 import {TableModule} from "primeng/table";
 import {TitleCasePipe} from "@angular/common";
 import {Tag} from "primeng/tag";
-import {Button} from "primeng/button";
+import {Button, ButtonDirective} from "primeng/button";
 import {Tooltip} from "primeng/tooltip";
 import {Dialog} from "primeng/dialog";
 import {IncidentDetails} from "@/pages/dashboard-layout/incidents/incident-details/incident-details";
@@ -30,7 +30,8 @@ import {IncidentDetails} from "@/pages/dashboard-layout/incidents/incident-detai
         Button,
         Tooltip,
         Dialog,
-        IncidentDetails
+        IncidentDetails,
+        ButtonDirective
     ],
     templateUrl: './incidents.html',
     styleUrl: './incidents.css'

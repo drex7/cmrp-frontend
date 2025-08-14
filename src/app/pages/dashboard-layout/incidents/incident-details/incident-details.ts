@@ -1,9 +1,10 @@
-import {Component, input, OnInit} from '@angular/core';
+import {Component, effect, input, OnInit, output} from '@angular/core';
 import {IIncidentDetails} from '@/interfaces/incident-interface';
 import {Tag} from 'primeng/tag';
 import {getIncidentSeverity} from '@/lib/utils';
 import {Select} from 'primeng/select';
 import {FormsModule} from '@angular/forms';
+import {Textarea} from 'primeng/textarea';
 
 @Component({
   selector: 'cmrp-incident-details',
@@ -11,6 +12,7 @@ import {FormsModule} from '@angular/forms';
     Tag,
     Select,
     FormsModule,
+    Textarea,
   ],
   templateUrl: './incident-details.html',
   styleUrl: './incident-details.css'
@@ -26,7 +28,9 @@ export class IncidentDetails implements OnInit {
     reported: "",
     status: " "
   })
+  public updateInfo = output()
   protected readonly getIncidentSeverity = getIncidentSeverity;
+  protected updateValue = "";
 
   protected selectedStatus = {
     name: "",
@@ -38,6 +42,15 @@ export class IncidentDetails implements OnInit {
     {name: 'Investigating', code: 'investigating'},
     {name: 'Resolved', code: 'resolved'}
   ];
+
+
+  constructor() {
+    effect(() => {
+      if (this.selectedStatus || this.updateValue) {
+        console.log(this.updateValue, this.selectedStatus);
+      }
+    });
+  }
 
   ngOnInit() {
     this.selectedStatus = {
