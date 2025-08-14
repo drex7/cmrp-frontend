@@ -119,7 +119,7 @@ export const incidentsSummary: IIncidentSummary[] = [
   },
   {
     title: "resolved today",
-    icon: PrimeIcons.VERIFIED,
+    icon: PrimeIcons.CHECK_CIRCLE,
     number: 41,
     description: "+18% fro yesterday",
   },
