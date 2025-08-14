@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnDestroy, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Toast} from 'primeng/toast';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
@@ -10,7 +10,7 @@ import {map, Subject, takeUntil} from 'rxjs';
   templateUrl: './cmrp.html',
   styleUrl: './cmrp.css'
 })
-export class Cmrp {
+export class Cmrp implements OnDestroy {
   protected destroy$ = new Subject<void>();
   protected breakpointObserver = inject(BreakpointObserver);
   protected isSmallerScreen = signal(false)

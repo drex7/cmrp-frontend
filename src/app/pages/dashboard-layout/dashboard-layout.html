@@ -39,7 +39,11 @@
 
 <!--Authentication Dialog-->
 @if (showAuthDialog) {
-  <p-dialog [(visible)]="showAuthDialog" [modal]="true" maskStyleClass="backdrop-blur-sm">
+  <p-dialog [(visible)]="showAuthDialog" [modal]="true" maskStyleClass="backdrop-blur-sm"
+            [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"
+            [style]="{ width: '50vw' }"
+            [draggable]="false"
+            [resizable]="false">
     <cmrp-auth/>
   </p-dialog>
 }

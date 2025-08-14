@@ -8,7 +8,7 @@ export interface AuthFormInterface {
 }
 
 export interface UserInterface {
-  user: AuthFormInterface & {
+  user: Omit<AuthFormInterface, "password"> & {
     isSignedIn: boolean;
     role: "admin" | "city_official" | "citizen";
   };

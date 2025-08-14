@@ -18,6 +18,12 @@ export const sidebarData = [
     icon: PrimeIcons.USERS,
     isAccessible: false
   },
+  {
+    title: "My Incidents",
+    route: "/my-incidents",
+    icon: PrimeIcons.EXCLAMATION_CIRCLE,
+    isAccessible: false
+  },
   // {
   //   title: "Roles and Permissions",
   //   route: "/dashboard/roles",

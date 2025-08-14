@@ -5,8 +5,7 @@ const DashboardLayout = () => import("@/pages/dashboard-layout/dashboard-layout"
 const DashboardPage = () => import("@/pages/dashboard-layout/dashboard/dashboard").then(m => m.Dashboard);
 const IncidentsPage = () => import("@/pages/dashboard-layout/incidents/incidents").then(m => m.Incidents);
 const UsersPage = () => import("@/pages/dashboard-layout/users/users").then(m => m.Users);
-const RolesAndPermissionsPage = () => import("@/pages/dashboard-layout/roles-and-permissions/roles-and-permissions").then(m => m.RolesAndPermissions);
-
+const MyIncidentsPage = () => import("@/pages/dashboard-layout/my-incidents/my-incidents").then(m => m.MyIncidents);
 
 export const routes: Routes = [
   {
@@ -27,8 +26,8 @@ export const routes: Routes = [
         loadComponent: UsersPage
       },
       {
-        path: "roles",
-        loadComponent: RolesAndPermissionsPage
+        path: "my-incidents",
+        loadComponent: MyIncidentsPage
       }
     ]
   }, {

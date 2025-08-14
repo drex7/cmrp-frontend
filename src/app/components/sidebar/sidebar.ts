@@ -33,9 +33,14 @@ export class Sidebar implements OnInit {
       if (item.title === 'Dashboard') {
         return {...item, isAccessible: true};
       }
+
+      if (item.title.toLowerCase() === 'my incidents') {
+        const isAccessible = this.user.isSignedIn() && this.user.role() === 'citizen'
+        return {...item, isAccessible};
+      }
+
       const canAccess =
         this.user.isSignedIn() && ['admin', 'city_official'].includes(this.user.role());
-      console.log(canAccess)
       return {...item, isAccessible: canAccess};
     }).filter(item => item.isAccessible);
 
