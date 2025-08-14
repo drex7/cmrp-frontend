@@ -1,7 +1,7 @@
 <div class="rounded-md border border-dark-gray flex flex-col gap-3 p-4">
   <div class="flex items-center justify-between gap-4">
     <span class="font-semibold capitalize">{{ incident().title }}</span>
-    <i [class]="cn(`${incident().icon} text-lg`, {
+    <i [class]="cn(`${incident().icon} text-xl`, {
     'text-red-600': incident().title === 'active incidents',
     'text-blue-600': incident().title === 'under investigation',
     'text-green-600': incident().title === 'resolved today',
@@ -20,3 +20,5 @@
   </span>
   <span class="text-neutral-500 text-sm">{{ incident().description }}</span>
 </div>
+
+
