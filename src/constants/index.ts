@@ -1,4 +1,5 @@
 import {PrimeIcons} from 'primeng/api';
+import {IIncidentSummary} from '@/interfaces/incident-interface';
 
 export const sidebarData = [
   {
@@ -100,5 +101,32 @@ export const recentIncidentsData = [
     date: "28/07/2025",
     reporter: "Mike Johnson",
     assignedTo: "Water Department"
+  },
+]
+
+export const incidentsSummary: IIncidentSummary[] = [
+  {
+    title: "active incidents",
+    icon: PrimeIcons.EXCLAMATION_TRIANGLE,
+    number: 23,
+    description: "3+ since yesterday",
+  },
+  {
+    title: "under investigation",
+    icon: PrimeIcons.CLOCK,
+    number: 15,
+    description: "Average resolution: 4.2h",
+  },
+  {
+    title: "resolved today",
+    icon: PrimeIcons.VERIFIED,
+    number: 41,
+    description: "+18% fro yesterday",
+  },
+  {
+    title: "response time",
+    icon: PrimeIcons.CLOCK,
+    number: 2.1,
+    description: "average response time",
   },
 ]

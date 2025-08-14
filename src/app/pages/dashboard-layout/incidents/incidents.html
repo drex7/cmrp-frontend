@@ -3,6 +3,8 @@
   <p class="text-neutral-500">Monitor and manage active incidents across the city</p>
 </div>
 
-<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-  
+<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+  @for (incident of incidentsSummary; track incident.title) {
+    <cmrp-incident-highlight [incident]="incident"/>
+  }
 </div>
