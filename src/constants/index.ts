@@ -1,5 +1,5 @@
 import {PrimeIcons} from 'primeng/api';
-import {IIncidentSummary} from '@/interfaces/incident-interface';
+import {IIncidentDetails, IIncidentSummary} from '@/interfaces/incident-interface';
 
 export const sidebarData = [
   {
@@ -135,7 +135,7 @@ export const incidentTableHeaders = [
   "incident id", "title", "location", "priority", "status", "assigned officer", "reported", "actions"
 ]
 
-export const incidentTable = [
+export const incidentTable: IIncidentDetails[] = [
   {
     id: "INC-001",
     title: "Water on road",

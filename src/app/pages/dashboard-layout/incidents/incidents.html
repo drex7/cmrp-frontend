@@ -23,11 +23,9 @@
         <input pInputText placeholder="Search" type="search"/>
       </p-icon-field>
 
-      <div class="card flex justify-center">
-        <p-select [(ngModel)]="selectedFilter" [options]="filters" class="w-44"
-                  optionLabel="name" placeholder="Select filter"
-        />
-      </div>
+      <p-select [(ngModel)]="selectedFilter" [options]="filters" class="w-44"
+                optionLabel="name" placeholder="Select filter"
+      />
     </div>
   </div>
 
@@ -59,8 +57,25 @@
         <td>{{ incident.reported }}</td>
         <td>
           <div class="flex items-center gap-2">
-            <p-button aria-label="view incident" icon="pi pi-eye" pTooltip="View incident" variant="text"/>
-            <p-button aria-label="update incident" icon="pi pi-pencil" pTooltip="Update incident" variant="text"/>
+            <p-button
+              (click)="incidentAction(incident.id, false)"
+              (keyup)="incidentAction(incident.id, false)"
+              aria-label="view incident"
+              icon="pi pi-eye"
+              pTooltip="View incident"
+              tooltipPosition="top"
+              type="button"
+              variant="text"
+            />
+            <p-button
+              (click)="incidentAction(incident.id, true)"
+              (keyup)="incidentAction(incident.id, true)"
+              aria-label="update incident"
+              icon="pi pi-pencil"
+              pTooltip="Update incident"
+              tooltipPosition="top"
+              variant="text"
+            />
           </div>
         </td>
 
@@ -74,3 +89,16 @@
     </ng-template>
   </p-table>
 </div>
+
+<!--Incident details modal-->
+@if (showIncidentDetailsModal) {
+  <p-dialog [(visible)]="showIncidentDetailsModal" [modal]="true" maskStyleClass="backdrop-blur-sm"
+            [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"
+            [style]="{ width: '50vw' }"
+            [draggable]="false"
+            [resizable]="false">
+    <cmrp-incident-details
+      [showEditOptions]="showEditDetailsOptions()"
+      [incident]="getIncidentDetails()"/>
+  </p-dialog>
+}

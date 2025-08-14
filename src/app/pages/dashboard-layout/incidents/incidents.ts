@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {incidentsSummary, incidentTable, incidentTableHeaders} from "@/constants/index";
 import {IncidentHighlight} from "@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight";
 import {IconField} from "primeng/iconfield";
@@ -6,13 +6,14 @@ import {InputIcon} from "primeng/inputicon";
 import {InputText} from "primeng/inputtext";
 import {Select} from "primeng/select";
 import {FormsModule} from "@angular/forms";
-import {cn} from "@/lib/utils";
+import {cn, getIncidentSeverity} from "@/lib/utils";
 import {TableModule} from "primeng/table";
 import {TitleCasePipe} from "@angular/common";
-import {IncidentType} from "@/types/index";
 import {Tag} from "primeng/tag";
 import {Button} from "primeng/button";
 import {Tooltip} from "primeng/tooltip";
+import {Dialog} from "primeng/dialog";
+import {IncidentDetails} from "@/pages/dashboard-layout/incidents/incident-details/incident-details";
 
 @Component({
     selector: 'cmrp-incidents',
@@ -27,13 +28,21 @@ import {Tooltip} from "primeng/tooltip";
         TitleCasePipe,
         Tag,
         Button,
-        Tooltip
+        Tooltip,
+        Dialog,
+        IncidentDetails
     ],
     templateUrl: './incidents.html',
     styleUrl: './incidents.css'
 })
 export class Incidents {
-
+    protected readonly cn = cn;
+    protected readonly getIncidentSeverity = getIncidentSeverity;
+    protected selectedIncident = signal("")
+    protected readonly incidentTable = incidentTable;
+    protected readonly incidentTableHeaders = incidentTableHeaders;
+    protected showIncidentDetailsModal = false
+    protected showEditDetailsOptions = signal(false)
     protected readonly incidentsSummary = incidentsSummary;
     protected selectedFilter = {
         name: "All Status",
@@ -48,21 +57,24 @@ export class Incidents {
         {name: 'Investigating', code: 'investigating'},
         {name: 'Resolved', code: 'resolved'}
     ];
-    protected readonly cn = cn;
-    protected readonly incidentTable = incidentTable;
-    protected readonly incidentTableHeaders = incidentTableHeaders;
 
-    protected getIncidentSeverity(incident: IncidentType) {
-        const dataMap: Record<IncidentType, string> = {
-            low: "secondary",
-            urgent: "danger",
-            high: "danger",
-            medium: "warn",
-            active: "danger",
-            investigating: "info",
-            resolved: "success",
+    protected getIncidentDetails() {
+        return this.incidentTable.find(incident => incident.id === this.selectedIncident()) ?? {
+            id: "",
+            assignedOfficer: "",
+            priority: "",
+            description: "",
+            status: "",
+            reported: "",
+            location: "",
+            title: ""
         };
+    }
 
-        return dataMap[incident];
+    protected incidentAction(incidentId: string, showEditOptions: boolean) {
+        this.selectedIncident.set(incidentId);
+        this.showIncidentDetailsModal = true;
+        this.showEditDetailsOptions.set(showEditOptions);
+        this.getIncidentDetails()
     }
 }

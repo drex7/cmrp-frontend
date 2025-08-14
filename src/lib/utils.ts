@@ -1,6 +1,7 @@
 import {type ClassValue, clsx} from "clsx"
 import {twMerge} from "tailwind-merge"
 import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {IncidentType} from '@/types/index';
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
@@ -60,4 +61,18 @@ export const matchPasswordValidator = (passwordKey: string, confirmPasswordKey: 
       return null;
     }
   };
+}
+
+export const getIncidentSeverity = (incident: IncidentType | string) => {
+  const dataMap: Record<IncidentType, string> = {
+    low: "secondary",
+    urgent: "danger",
+    high: "danger",
+    medium: "warn",
+    active: "danger",
+    investigating: "info",
+    resolved: "success",
+  };
+
+  return dataMap[incident as IncidentType];
 }
