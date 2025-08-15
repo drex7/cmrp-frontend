@@ -8,9 +8,23 @@ export interface AuthFormInterface {
 }
 
 export interface UserInterface {
-  user: AuthFormInterface & {
-    isSignedIn: boolean;
-    role: "admin" | "city_official" | "citizen";
+  user: Omit<AuthFormInterface, "password"> & {
+    role: "Admin" | "CityOfficial" | "Citizen" | "";
+    userId: string;
   };
+  isSignedIn: boolean;
+  auth: {
+    expiry: number
+  },
   isLoading: boolean;
+}
+
+export interface IUserData {
+  id: string
+  name: string
+  email: string
+  telephone: string
+  region: string
+  city: string
+  role: string
 }

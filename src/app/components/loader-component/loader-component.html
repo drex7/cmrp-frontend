@@ -1,5 +1,6 @@
 @if (loaderType() === 'spinner') {
-
+  <p-progress-spinner strokeWidth="8" fill="transparent"
+                      ariaLabel="loading"/>
 }
 
 @if (loaderType() === 'card') {
@@ -23,7 +24,7 @@
 }
 
 @if (loaderType() === 'table') {
-  <div>
+  <div class="h-auto w-[90vw]">
     <p-table [value]="products">
       <ng-template #header>
         <tr>

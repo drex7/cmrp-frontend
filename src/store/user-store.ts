@@ -1,21 +1,70 @@
 import {UserInterface} from '@/interfaces/user-interface';
-import {signalStore, withState} from '@ngrx/signals';
+import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
+import {computed, inject} from '@angular/core';
+import {AuthService} from '../app/services/auth-service/auth-service';
+
+const isSignedIn = localStorage.getItem('isSignedIn') !== null;
 
 const initialState: UserInterface = {
   user: {
-    city: "Accra",
-    region: "Greater Accra",
-    name: "Sample user",
-    password: "123456",
-    email: "sample@sample.com",
-    telephone: "0241234567",
-    role: "admin",
-    isSignedIn: true,
+    userId: "",
+    name: "",
+    email: "",
+    telephone: "",
+    city: "",
+    region: "",
+    role: "Citizen",
   },
+  isSignedIn,
   isLoading: false,
+  auth: {
+    expiry: 0
+  }
 }
 
 export const UserStore = signalStore(
   {providedIn: "root"},
   withState(initialState),
+  withComputed((store) => ({
+    isUserSignedIn: computed(() => store.isSignedIn),
+    loading: computed(() => store.isLoading),
+    userData: computed(() => store.user),
+    authData: computed(() => store.auth),
+  })),
+  withMethods((store, authService = inject(AuthService)) => ({
+    setIsSignedIn() {
+      patchState(store, {isSignedIn: true});
+    },
+
+    async fetchUserInfo() {
+      patchState(store, {isLoading: true});
+      const {auth, user} = await authService.fetchAuthAndCurrentUser();
+      patchState(store, {isLoading: false, user, auth, isSignedIn: true});
+    },
+
+    signOut() {
+      authService.signOut().then(() => {
+        const user = {
+          userId: "",
+          name: "",
+          email: "",
+          telephone: "",
+          city: "",
+          region: "",
+          role: "Citizen",
+        } as UserInterface["user"]
+        patchState(store, {isLoading: false, isSignedIn: false, user});
+      });
+    }
+  })),
+  withHooks({
+    onInit(store, authService = inject(AuthService)) {
+      if (store.isSignedIn()) {
+        authService.fetchAuthAndCurrentUser().then(({user}) => {
+          patchState(store, {user, isLoading: false})
+        });
+      }
+    }
+  })
 )
+

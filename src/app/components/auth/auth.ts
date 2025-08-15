@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, output, signal} from '@angular/core';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -10,6 +10,7 @@ import {InputMask} from 'primeng/inputmask';
 import {AuthService} from "../../services/auth-service/auth-service";
 import {ToastService} from "../../services/toast-service/toast-service";
 import {InputOtp} from "primeng/inputotp";
+import {UserStore} from '@/store/user-store';
 
 @Component({
   selector: 'cmrp-auth',
@@ -28,6 +29,8 @@ import {InputOtp} from "primeng/inputotp";
   styleUrl: './auth.css'
 })
 export class Auth {
+  public updateModal = output<void>()
+
   protected authForm: FormGroup;
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
@@ -36,8 +39,10 @@ export class Auth {
   protected minLengthValidator = Validators.minLength(5);
   protected readonly cn = cn;
 
+  protected userStore = inject(UserStore)
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
+
   private readonly formCreators: Record<string, () => FormGroup> = {
     login: () => this.createLoginForm(),
     signup: () => this.createSignUpForm(),
@@ -70,7 +75,6 @@ export class Auth {
 
   // Submit form data
   protected async onSubmit() {
-    this.isSubmitting.set(true);
     if (this.authForm.valid) {
       if (this.formType() !== 'otp') {
         this.userName.set(this.authForm.value.email);
@@ -80,7 +84,6 @@ export class Auth {
       } else if (this.formType() === 'login') {
         await this.signIn()
       } else {
-        console.log(this.authForm.value)
         await this.confirmOtp()
       }
     }
@@ -92,28 +95,30 @@ export class Auth {
     console.log(this.userName())
     const {isSignUpComplete} = await this.authService.confirmSignUp(this.userName(), formValue.otp)
     if (isSignUpComplete) {
-      await this.authService.fetchAuthAndCurrentUser()
+      this.formType.set("login");
     }
   }
 
   private async signIn(): Promise<void> {
     this.isSubmitting.set(true);
-
     try {
-      const {nextStep: {signInStep}, isSignedIn} = await this.authService.signIn(this.authForm.value);
-
-      console.log(isSignedIn, signInStep);
+      const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
       await this.handleSignInStep(signInStep);
     } catch (error) {
+      console.error(error);
       this.handleError(error as Error);
-    } finally {
-      this.isSubmitting.set(false);
     }
   }
 
   private async handleSignInStep(signInStep: string): Promise<void> {
+    this.isSubmitting.set(false);
+
+    console.log(signInStep)
+
     if (signInStep === "DONE") {
-      await this.authService.fetchAuthAndCurrentUser()
+      this.userStore.setIsSignedIn()
+      this.updateModal.emit()
+      await this.userStore.fetchUserInfo()
       return;
     }
 
@@ -128,8 +133,10 @@ export class Auth {
   }
 
   private async signUp() {
+    this.isSubmitting.set(true);
     try {
       const {nextStep: {signUpStep}} = await this.authService.signUp(this.authForm.value);
+      this.isSubmitting.set(false);
       if (signUpStep === "CONFIRM_SIGN_UP") {
         this.formType.set("otp");
       }
@@ -138,7 +145,6 @@ export class Auth {
       }
     } catch (error) {
       this.handleError(error as Error, "Sign Up");
-      this.isSubmitting.set(false);
 
     }
   }
@@ -163,7 +169,7 @@ export class Auth {
         password: new FormControl("", [Validators.required, strongPasswordValidator()]),
         confirm_password: new FormControl("", [Validators.required, strongPasswordValidator()]),
         region: new FormControl("", [Validators.required, this.minLengthValidator]),
-        city: new FormControl("", [Validators.required, this.minLengthValidator]),
+        city: new FormControl("", [Validators.required, Validators.minLength(2)]),
       },
       {
         validators: [matchPasswordValidator('password', 'confirm_password')]

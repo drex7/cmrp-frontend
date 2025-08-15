@@ -1,4 +1,4 @@
-<div class="flex h-dvh bg-background">
+<div class="flex h-dvh bg-background relative">
   <!--Sidebar component-->
   <cmrp-sidebar/>
 
@@ -22,7 +22,7 @@
 
     <!--Report issue message-->
     @if (!isSignedIn()) {
-      <p-message class="absolute top-4 left-[35%] z-50" closable icon="pi pi-exclamation-triangle"
+      <p-message class="absolute top-4 left-1/2 -translate-x-1/2 z-50" closable icon="pi pi-exclamation-triangle"
                  severity="info"
                  styleClass="h-max w-max">
         <div class="flex flex-col gap-1 text-neutral-500">
@@ -34,12 +34,25 @@
       </p-message>
     }
   </div>
+
+  <!--  Loader component-->
+  @if (isFetchingUser()) {
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-primary-light/50 z-50 backdrop-blur-sm flex items-center justify-center">
+      <cmrp-loader-component/>
+    </div>
+  }
 </div>
 
 
 <!--Authentication Dialog-->
 @if (showAuthDialog) {
-  <p-dialog [(visible)]="showAuthDialog" [modal]="true" maskStyleClass="backdrop-blur-sm">
-    <cmrp-auth/>
+  <p-dialog [(visible)]="showAuthDialog" [modal]="true" maskStyleClass="backdrop-blur-sm"
+            [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"
+            [style]="{ width: '50vw' }"
+            [draggable]="false"
+            [resizable]="false"
+  >
+    <cmrp-auth (updateModal)="setAuthModalAfterAuthentication()"/>
   </p-dialog>
 }

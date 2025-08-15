@@ -1,8 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {
   confirmSignUp as awsConfirmSignUp,
-  fetchAuthSession,
-  getCurrentUser,
   signIn as awsSignIn,
   signOut as awsSignOut,
   signUp as awsSignUp,
@@ -10,6 +8,7 @@ import {
 } from "aws-amplify/auth"
 import {AuthFormInterface} from '@/interfaces/user-interface';
 import {Router} from '@angular/router';
+import {getUserAndAuthData} from '@/lib/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -51,29 +50,19 @@ export class AuthService {
   }
 
   public async fetchAuthAndCurrentUser() {
-    const res = await Promise.all([
-      this.getAuthSession(),
-      this.getCurrentUser()
-    ]);
-
-    console.log(res)
-    console.log(res[0])
-    console.log(res[1])
+    const {user, auth} = await getUserAndAuthData()
+    return {
+      auth,
+      user
+    }
   }
 
   public async signOut() {
     localStorage.clear()
-    await awsSignOut()
-    return Promise.all([await awsSignOut(),
+    return Promise.all([
+      await awsSignOut(),
       await this.router.navigate([""])
     ])
   }
 
-  private async getAuthSession() {
-    return await fetchAuthSession()
-  }
-
-  private async getCurrentUser() {
-    return await getCurrentUser();
-  }
 }
