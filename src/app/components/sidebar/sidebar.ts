@@ -1,11 +1,10 @@
-import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, inject, signal} from '@angular/core';
 import {ButtonDirective} from 'primeng/button';
 import {sidebarData} from '@/constants/index';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {Avatar} from 'primeng/avatar';
 import {UserStore} from '@/store/user-store';
 import {SidebarInterface} from '@/interfaces/sidebar-interface';
-import {AuthService} from '../../services/auth-service/auth-service';
 
 @Component({
   selector: 'cmrp-sidebar',
@@ -19,34 +18,36 @@ import {AuthService} from '../../services/auth-service/auth-service';
   styleUrl: './sidebar.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Sidebar implements OnInit {
+export class Sidebar {
 
   protected userStore = inject(UserStore)
-  protected user = this.userStore.user;
+  protected user = computed(() => this.userStore.userData()());
   protected isSignedIn = computed(() => this.userStore.isSignedIn());
-  protected authService = inject(AuthService);
 
   protected navLinks = signal<SidebarInterface[]>([])
-  protected readonly sidebarData = sidebarData;
 
-  ngOnInit() {
-    const data = sidebarData.map(item => {
-      if (item.title === 'Dashboard') {
-        return {...item, isAccessible: true};
+  constructor() {
+    effect(() => {
+      if (this.user().userId.length) {
+        const data = sidebarData.map(item => {
+          if (item.title === 'Dashboard') {
+            return {...item, isAccessible: true};
+          }
+
+          if (item.title.toLowerCase() === 'my incidents') {
+            const isAccessible = this.userStore.isSignedIn() && this.user().role === 'Citizen'
+            return {...item, isAccessible};
+          }
+
+          const canAccess =
+            this.userStore.isSignedIn() && ['Admin', 'CityOfficial'].includes(this.user().role);
+          return {...item, isAccessible: canAccess};
+        }).filter(item => item.isAccessible);
+
+
+        this.navLinks.set(data)
       }
-
-      if (item.title.toLowerCase() === 'my incidents') {
-        const isAccessible = this.userStore.isSignedIn() && this.user.role() === 'Citizen'
-        return {...item, isAccessible};
-      }
-
-      const canAccess =
-        this.userStore.isSignedIn() && ['Admin', 'CityOfficial'].includes(this.user.role());
-      return {...item, isAccessible: canAccess};
-    }).filter(item => item.isAccessible);
-
-
-    this.navLinks.set(data)
+    });
   }
 
   protected signOut() {

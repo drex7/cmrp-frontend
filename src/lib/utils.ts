@@ -2,6 +2,8 @@ import {type ClassValue, clsx} from "clsx"
 import {twMerge} from "tailwind-merge"
 import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {IncidentType} from '@/types/index';
+import {UserInterface} from '@/interfaces/user-interface';
+import {fetchAuthSession, getCurrentUser} from "aws-amplify/auth";
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
@@ -83,3 +85,31 @@ export const checkTokenExpiry = (expiry: number) => {
   console.log(currentTime);
   return currentTime > expiry
 }
+
+export const getUserAndAuthData = async () => {
+  const [authSession, currentUser] = await Promise.all([
+    fetchAuthSession(),
+    getCurrentUser()
+  ]);
+
+
+  const userInfo = authSession?.tokens?.idToken?.payload ?? {};
+
+  const user: UserInterface["user"] = {
+    userId: currentUser?.userId ?? "",
+    name: userInfo["name"] ?? "",
+    email: userInfo["email"] ?? "",
+    telephone: userInfo["email"] ?? "",
+    region: userInfo["custom:region"] ?? "",
+    city: userInfo["custom:city"] ?? "",
+    role: Array.isArray(userInfo["cognito:groups"])
+      ? userInfo["cognito:groups"]?.[0] ?? "Citizen"
+      : "Citizen",
+  } as UserInterface["user"]
+
+  return {
+    user,
+    auth: authSession
+  };
+};
+

@@ -1,10 +1,10 @@
 import {UserInterface} from '@/interfaces/user-interface';
-import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
-import {inject} from '@angular/core';
+import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
+import {computed, inject} from '@angular/core';
 import {AuthService} from '../app/services/auth-service/auth-service';
+import {getUserAndAuthData} from '@/lib/utils';
 
 const isSignedIn = localStorage.getItem('isSignedIn') !== null;
-
 
 const initialState: UserInterface = {
   user: {
@@ -24,23 +24,17 @@ const initialState: UserInterface = {
 export const UserStore = signalStore(
   {providedIn: "root"},
   withState(initialState),
+  withComputed((store) => ({
+    isUserSignedIn: computed(() => store.isSignedIn),
+    loading: computed(() => store.isLoading),
+    userData: computed(() => store.user),
+    authData: computed(() => store.auth),
+  })),
   withMethods((store, authService = inject(AuthService)) => ({
     async fetchUserInfo() {
       patchState(store, {isLoading: true});
-      const {authSession, currentUser} = await authService.fetchAuthAndCurrentUser();
+      const {auth, user} = await authService.fetchAuthAndCurrentUser();
       localStorage.setItem('isSignedIn', JSON.stringify(true));
-      const userInfo = authSession?.tokens?.idToken?.payload;
-      const user = {
-        userId: currentUser.userId ?? "",
-        name: userInfo?.["name"] ?? "",
-        email: userInfo?.["email"] ?? "",
-        telephone: userInfo?.["email"] ?? "",
-        region: userInfo?.["custom:region"] ?? "",
-        city: userInfo?.["custom:city"] ?? "",
-        role: Array.isArray(userInfo?.["cognito:groups"])
-          ? userInfo["cognito:groups"][0] ?? "Citizen"
-          : "Citizen",
-      } as UserInterface["user"]
       patchState(store, {isLoading: false, user});
     },
 
@@ -58,6 +52,14 @@ export const UserStore = signalStore(
         patchState(store, {isLoading: false, isSignedIn: false, user});
       });
     }
-  }))
+  })),
+  withHooks({
+    onInit(store) {
+      getUserAndAuthData().then(({user}) => {
+          patchState(store, {user})
+        }
+      )
+    }
+  })
 )
 
