@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
 import {ButtonDirective} from 'primeng/button';
 import {sidebarData} from '@/constants/index';
 import {RouterLink, RouterLinkActive} from '@angular/router';
@@ -16,7 +16,8 @@ import {AuthService} from '../../services/auth-service/auth-service';
     Avatar
   ],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css'
+  styleUrl: './sidebar.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar implements OnInit {
 
@@ -49,7 +50,8 @@ export class Sidebar implements OnInit {
   }
 
   protected signOut() {
-    this.authService.signOut().then(() => {
+    this.authService.signOut().then((res) => {
+      console.log(res)
       console.log('Sign Out');
     })
   }

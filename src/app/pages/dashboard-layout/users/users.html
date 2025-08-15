@@ -56,13 +56,22 @@
         <td>{{ user.role }}</td>
 
         <td>
-          <p-button
-            aria-label="update User"
-            icon="pi pi-user-edit"
-            pTooltip="Update User"
-            tooltipPosition="top"
-            variant="text"
-          />
+          <div class="flex items-center">
+            <p-button
+              aria-label="update User"
+              icon="pi pi-user-edit"
+              pTooltip="Update User"
+              tooltipPosition="top"
+              variant="text"
+            />
+            <p-button
+              aria-label="remove User"
+              icon="pi pi-user-minus"
+              pTooltip="Remove User"
+              tooltipPosition="top"
+              variant="text"
+            />
+          </div>
         </td>
 
 

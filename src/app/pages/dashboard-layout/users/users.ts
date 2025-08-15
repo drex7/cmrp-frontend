@@ -59,4 +59,8 @@ export class Users {
     return users;
   }
 
+  protected removeUser(userId: string) {
+
+  }
+
 }

@@ -1,12 +1,14 @@
 import {Component, input} from '@angular/core';
 import {Skeleton} from 'primeng/skeleton';
 import {TableModule} from 'primeng/table';
+import {ProgressSpinner} from 'primeng/progressspinner';
 
 @Component({
   selector: 'cmrp-loader-component',
   imports: [
     Skeleton,
-    TableModule
+    TableModule,
+    ProgressSpinner
   ],
   templateUrl: './loader-component.html',
   styleUrl: './loader-component.css'

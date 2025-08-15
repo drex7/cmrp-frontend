@@ -10,6 +10,7 @@ import {InputMask} from 'primeng/inputmask';
 import {AuthService} from "../../services/auth-service/auth-service";
 import {ToastService} from "../../services/toast-service/toast-service";
 import {InputOtp} from "primeng/inputotp";
+import {UserStore} from '@/store/user-store';
 
 @Component({
   selector: 'cmrp-auth',
@@ -36,6 +37,7 @@ export class Auth {
   protected minLengthValidator = Validators.minLength(5);
   protected readonly cn = cn;
 
+  protected userStore = inject(UserStore)
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
   private readonly formCreators: Record<string, () => FormGroup> = {
@@ -91,8 +93,10 @@ export class Auth {
     const formValue = this.authForm.value
     console.log(this.userName())
     const {isSignUpComplete} = await this.authService.confirmSignUp(this.userName(), formValue.otp)
+    console.log(isSignUpComplete)
     if (isSignUpComplete) {
-      await this.authService.fetchAuthAndCurrentUser()
+      // this.formType.set("login");
+      await this.userStore.fetchUserInfo()
     }
   }
 
@@ -100,9 +104,7 @@ export class Auth {
     this.isSubmitting.set(true);
 
     try {
-      const {nextStep: {signInStep}, isSignedIn} = await this.authService.signIn(this.authForm.value);
-
-      console.log(isSignedIn, signInStep);
+      const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
       await this.handleSignInStep(signInStep);
     } catch (error) {
       this.handleError(error as Error);
@@ -113,7 +115,7 @@ export class Auth {
 
   private async handleSignInStep(signInStep: string): Promise<void> {
     if (signInStep === "DONE") {
-      await this.authService.fetchAuthAndCurrentUser()
+      await this.userStore.fetchUserInfo()
       return;
     }
 
@@ -128,6 +130,7 @@ export class Auth {
   }
 
   private async signUp() {
+    this.isSubmitting.set(false);
     try {
       const {nextStep: {signUpStep}} = await this.authService.signUp(this.authForm.value);
       if (signUpStep === "CONFIRM_SIGN_UP") {
@@ -138,7 +141,6 @@ export class Auth {
       }
     } catch (error) {
       this.handleError(error as Error, "Sign Up");
-      this.isSubmitting.set(false);
 
     }
   }

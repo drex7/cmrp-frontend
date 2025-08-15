@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
 import {RouterOutlet} from "@angular/router";
 import {Message} from 'primeng/message';
@@ -6,24 +6,33 @@ import {Dialog} from 'primeng/dialog';
 import {Auth} from '@/components/auth/auth';
 import {UserStore} from '@/store/user-store';
 import {Sidebar} from '@/components/sidebar/sidebar';
+import {LoaderComponent} from "@/components/loader-component/loader-component";
 
 @Component({
-  selector: 'cmrp-dashboard-layout',
-  imports: [
-    ButtonDirective,
-    RouterOutlet,
-    Message,
-    Dialog,
-    Auth,
-    Sidebar
-  ],
-  templateUrl: './dashboard-layout.html',
-  styleUrl: './dashboard-layout.css'
+    selector: 'cmrp-dashboard-layout',
+    imports: [
+        ButtonDirective,
+        RouterOutlet,
+        Message,
+        Dialog,
+        Auth,
+        Sidebar,
+        LoaderComponent
+    ],
+    templateUrl: './dashboard-layout.html',
+    styleUrl: './dashboard-layout.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardLayout {
+export class DashboardLayout implements OnInit {
+    protected userStore = inject(UserStore)
+    protected user = this.userStore.user;
+    protected isSignedIn = computed(() => this.user.isSignedIn());
+    protected showAuthDialog = false
 
-  protected userStore = inject(UserStore)
-  protected user = this.userStore.user;
-  protected isSignedIn = computed(() => this.user.isSignedIn());
-  protected showAuthDialog = false
+    protected isFetchingUser = computed(() => this.userStore.isLoading());
+
+    ngOnInit() {
+        this.userStore.fetchUserInfo()
+    }
+
 }

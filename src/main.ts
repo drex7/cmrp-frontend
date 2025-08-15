@@ -4,9 +4,6 @@ import {Cmrp} from './app/cmrp';
 import {Amplify} from 'aws-amplify';
 import {environment} from '@/environments/environment';
 
-// Amplify.configure(outputs);
-
-
 Amplify.configure({
   Auth: {
     Cognito: {

@@ -55,10 +55,10 @@ export class AuthService {
       this.getAuthSession(),
       this.getCurrentUser()
     ]);
-
-    console.log(res)
-    console.log(res[0])
-    console.log(res[1])
+    return {
+      authSession: res[0],
+      currentUser: res[1]
+    }
   }
 
   public async signOut() {

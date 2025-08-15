@@ -12,6 +12,7 @@ export interface UserInterface {
     isSignedIn: boolean;
     role: "admin" | "city_official" | "citizen";
   };
+  auth: {},
   isLoading: boolean;
 }
 
