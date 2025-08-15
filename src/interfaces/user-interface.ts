@@ -14,3 +14,13 @@ export interface UserInterface {
   };
   isLoading: boolean;
 }
+
+export interface IUserData {
+  id: string
+  name: string
+  email: string
+  telephone: string
+  region: string
+  city: string
+  role: string
+}

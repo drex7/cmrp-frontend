@@ -18,7 +18,7 @@
   @for (incident of incidentsData; track incident.title) {
     <p-card class="w-full rounded-lg border border-dark-gray/50 flex flex-col gap-2">
       <div class="flex items-center justify-between gap-4">
-        <span class="capitalize text-md font-semibold">{{ incident.title }}</span>
+        <span class="capitalize text-black text-md font-semibold">{{ incident.title }}</span>
         <div
           [class]="cn('text-white h-10 w-10 rounded-lg flex items-center justify-center', {
           'bg-linear-to-t from-sky-500 to-indigo-500': ['total incidents', 'in progress'].includes(incident.title.toLowerCase()),

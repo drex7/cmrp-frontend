@@ -9,8 +9,11 @@
     <i class="pi pi-users text-2xl"></i>
     </span>
   </div>
-  <span>
-  {{ userSummary().count }} {{ userSummary().title }}
+  <span class="text-neutral-500">
+    <span class="font-semibold text-neutral-900 text-2xl">
+  {{ userSummary().count }}
+    </span>
+    {{ userSummary().title }}
   </span>
   <p class="text-neutral-500 text-sm">Total number of {{ userSummary().title }} in the system</p>
 </div>

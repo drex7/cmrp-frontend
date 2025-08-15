@@ -1,5 +1,6 @@
 import {PrimeIcons} from 'primeng/api';
 import {IIncidentDetails, IIncidentSummary} from '@/interfaces/incident-interface';
+import {IUserData} from "@/interfaces/user-interface";
 
 export const sidebarData = [
     {
@@ -210,3 +211,191 @@ export const userSummaryCards = [
         count: 60
     }
 ]
+
+export const userTableHeaders = [
+    "User ID", "Name", "Email", "Phone", "Region", "City", "Role", "Action"
+]
+
+export const usersTableData: IUserData[] = [
+    {
+        id: "AD-3244",
+        name: "John Doe",
+        email: "john.doe@example.com",
+        telephone: "+233241234567",
+        region: "Greater Accra",
+        city: "Tema",
+        role: "admin"
+    },
+    {
+        id: "CO-1123",
+        name: "John Elikem",
+        email: "john.elikem@example.com",
+        telephone: "+233242345678",
+        region: "Central",
+        city: "Cape Coast",
+        role: "city official"
+    },
+    {
+        id: "CT-2301",
+        name: "Ama Mensah",
+        email: "ama.mensah@example.com",
+        telephone: "+233243456789",
+        region: "Ashanti",
+        city: "Kumasi",
+        role: "citizen"
+    },
+    {
+        id: "AD-4785",
+        name: "Michael Owusu",
+        email: "michael.owusu@example.com",
+        telephone: "+233244567890",
+        region: "Eastern",
+        city: "Koforidua",
+        role: "admin"
+    },
+    {
+        id: "CO-5321",
+        name: "Abena Serwaa",
+        email: "abena.serwaa@example.com",
+        telephone: "+233245678901",
+        region: "Volta",
+        city: "Ho",
+        role: "city official"
+    },
+    {
+        id: "CT-7623",
+        name: "Kwame Boateng",
+        email: "kwame.boateng@example.com",
+        telephone: "+233246789012",
+        region: "Northern",
+        city: "Tamale",
+        role: "citizen"
+    },
+    {
+        id: "AD-8821",
+        name: "Grace Adjei",
+        email: "grace.adjei@example.com",
+        telephone: "+233247890123",
+        region: "Western",
+        city: "Takoradi",
+        role: "admin"
+    },
+    {
+        id: "CO-9934",
+        name: "Yaw Kofi",
+        email: "yaw.kofi@example.com",
+        telephone: "+233248901234",
+        region: "Upper East",
+        city: "Bolgatanga",
+        role: "city official"
+    },
+    {
+        id: "CT-1045",
+        name: "Akosua Afriyie",
+        email: "akosua.afriyie@example.com",
+        telephone: "+233249012345",
+        region: "Upper West",
+        city: "Wa",
+        role: "citizen"
+    },
+    {
+        id: "AD-2190",
+        name: "Daniel Koomson",
+        email: "daniel.koomson@example.com",
+        telephone: "+233250123456",
+        region: "Greater Accra",
+        city: "Accra",
+        role: "admin"
+    },
+    {
+        id: "CO-3322",
+        name: "Efua Hammond",
+        email: "efua.hammond@example.com",
+        telephone: "+233251234567",
+        region: "Central",
+        city: "Elmina",
+        role: "city official"
+    },
+    {
+        id: "CT-4433",
+        name: "Joseph Owusu",
+        email: "joseph.owusu@example.com",
+        telephone: "+233252345678",
+        region: "Eastern",
+        city: "Nkawkaw",
+        role: "citizen"
+    },
+    {
+        id: "AD-5544",
+        name: "Linda Owusu",
+        email: "linda.owusu@example.com",
+        telephone: "+233253456789",
+        region: "Ashanti",
+        city: "Obuasi",
+        role: "admin"
+    },
+    {
+        id: "CO-6655",
+        name: "Nana Badu",
+        email: "nana.badu@example.com",
+        telephone: "+233254567890",
+        region: "Western North",
+        city: "Sefwi Wiawso",
+        role: "city official"
+    },
+    {
+        id: "CT-7766",
+        name: "Mabel Asante",
+        email: "mabel.asante@example.com",
+        telephone: "+233255678901",
+        region: "Oti",
+        city: "Dambai",
+        role: "citizen"
+    },
+    {
+        id: "AD-8877",
+        name: "Francis Mensah",
+        email: "francis.mensah@example.com",
+        telephone: "+233256789012",
+        region: "Bono",
+        city: "Sunyani",
+        role: "admin"
+    },
+    {
+        id: "CO-9988",
+        name: "Sandra Aboagye",
+        email: "sandra.aboagye@example.com",
+        telephone: "+233257890123",
+        region: "Bono East",
+        city: "Techiman",
+        role: "city official"
+    },
+    {
+        id: "CT-1099",
+        name: "Isaac Kumi",
+        email: "isaac.kumi@example.com",
+        telephone: "+233258901234",
+        region: "Savannah",
+        city: "Damongo",
+        role: "citizen"
+    },
+    {
+        id: "AD-2100",
+        name: "Rebecca Anane",
+        email: "rebecca.anane@example.com",
+        telephone: "+233259012345",
+        region: "North East",
+        city: "Nalerigu",
+        role: "admin"
+    },
+    {
+        id: "CT-3201",
+        name: "Kojo Amankwah",
+        email: "kojo.amankwah@example.com",
+        telephone: "+233260123456",
+        region: "Western",
+        city: "Sekondi",
+        role: "citizen"
+    }
+];
+

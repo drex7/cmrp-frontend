@@ -4,8 +4,74 @@
 </div>
 
 <!--User summary cards -->
-<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
   @for (user of userSummaryCards; track user.title) {
     <cmrp-user-card [userSummary]="user"/>
   }
+</div>
+
+<div class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
+  <div class="flex items-center gap-4 justify-between">
+    <div class="flex flex-col">
+      <span class="font-bold text-3xl">Current Users</span>
+      <p class="text-neutral-500">Active users in the system</p>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <p-icon-field>
+        <p-inputicon class="pi pi-search"/>
+        <input [(ngModel)]="searchValue" pInputText placeholder="Search by name" type="search"/>
+      </p-icon-field>
+
+      <p-select [(ngModel)]="selectedGroup" [options]="filters" class="w-44"
+                optionLabel="name" placeholder="Select filter"
+      />
+    </div>
+  </div>
+
+  <!--  Users table-->
+  <p-table
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '60rem' }"
+    [value]="getUsers()"
+    class="mt-5"
+  >
+    <ng-template #header>
+      <tr>
+        @for (header of userTableHeaders; track header) {
+
+          <th>{{ header }}</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template #body let-user>
+      <tr class="capitalize">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td class="lowercase">{{ user.email }}</td>
+        <td>{{ user.telephone }}</td>
+        <td>{{ user.region }}</td>
+        <td>{{ user.city }}</td>
+        <td>{{ user.role }}</td>
+
+        <td>
+          <p-button
+            aria-label="update User"
+            icon="pi pi-user-edit"
+            pTooltip="Update User"
+            tooltipPosition="top"
+            variant="text"
+          />
+        </td>
+
+
+      </tr>
+    </ng-template>
+    <ng-template #footer>
+      <tr>
+        <td colspan="8">In total there are {{ getUsers() ? getUsers().length : 0 }} users.</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

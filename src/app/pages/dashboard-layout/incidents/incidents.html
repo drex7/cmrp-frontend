@@ -31,7 +31,13 @@
 
 
     <!--Incidents table-->
-    <p-table [tableStyle]="{ 'min-width': '60rem' }" [value]="incidentTable" class="mt-5">
+    <p-table
+            [paginator]="true"
+            [rows]="10"
+            [tableStyle]="{ 'min-width': '60rem' }"
+            [value]="incidentTable"
+            class="mt-5"
+    >
         <ng-template #header>
             <tr>
                 @for (header of incidentTableHeaders; track header) {
