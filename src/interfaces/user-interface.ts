@@ -9,9 +9,10 @@ export interface AuthFormInterface {
 
 export interface UserInterface {
   user: Omit<AuthFormInterface, "password"> & {
-    isSignedIn: boolean;
-    role: "admin" | "city_official" | "citizen";
+    role: "Admin" | "CityOfficial" | "Citizen";
+    userId: string;
   };
+  isSignedIn: boolean;
   auth: {},
   isLoading: boolean;
 }

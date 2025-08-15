@@ -76,3 +76,10 @@ export const getIncidentSeverity = (incident: IncidentType | string) => {
 
   return dataMap[incident as IncidentType];
 }
+
+
+export const checkTokenExpiry = (expiry: number) => {
+  const currentTime = Math.floor(Date.now() / 1000);
+  console.log(currentTime);
+  return currentTime > expiry
+}

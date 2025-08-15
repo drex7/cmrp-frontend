@@ -7,6 +7,7 @@ import {Auth} from '@/components/auth/auth';
 import {UserStore} from '@/store/user-store';
 import {Sidebar} from '@/components/sidebar/sidebar';
 import {LoaderComponent} from "@/components/loader-component/loader-component";
+import {checkTokenExpiry} from "@/lib/utils";
 
 @Component({
     selector: 'cmrp-dashboard-layout',
@@ -26,13 +27,21 @@ import {LoaderComponent} from "@/components/loader-component/loader-component";
 export class DashboardLayout implements OnInit {
     protected userStore = inject(UserStore)
     protected user = this.userStore.user;
-    protected isSignedIn = computed(() => this.user.isSignedIn());
+    protected isSignedIn = computed(() => this.userStore.isSignedIn());
     protected showAuthDialog = false
 
     protected isFetchingUser = computed(() => this.userStore.isLoading());
 
     ngOnInit() {
-        this.userStore.fetchUserInfo()
+        const isTokenExpired = checkTokenExpiry(1755280162)
+        console.log(isTokenExpired)
+        if (this.isSignedIn() && !isTokenExpired) {
+            this.userStore.fetchUserInfo()
+        }
+    }
+
+    protected setAuthModalAfterAuthentication() {
+        this.showAuthDialog = false
     }
 
 }

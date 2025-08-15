@@ -23,7 +23,7 @@ export class Sidebar implements OnInit {
 
   protected userStore = inject(UserStore)
   protected user = this.userStore.user;
-  protected isSignedIn = computed(() => this.user.isSignedIn());
+  protected isSignedIn = computed(() => this.userStore.isSignedIn());
   protected authService = inject(AuthService);
 
   protected navLinks = signal<SidebarInterface[]>([])
@@ -36,12 +36,12 @@ export class Sidebar implements OnInit {
       }
 
       if (item.title.toLowerCase() === 'my incidents') {
-        const isAccessible = this.user.isSignedIn() && this.user.role() === 'citizen'
+        const isAccessible = this.userStore.isSignedIn() && this.user.role() === 'Citizen'
         return {...item, isAccessible};
       }
 
       const canAccess =
-        this.user.isSignedIn() && ['admin', 'city_official'].includes(this.user.role());
+        this.userStore.isSignedIn() && ['Admin', 'CityOfficial'].includes(this.user.role());
       return {...item, isAccessible: canAccess};
     }).filter(item => item.isAccessible);
 
@@ -50,9 +50,6 @@ export class Sidebar implements OnInit {
   }
 
   protected signOut() {
-    this.authService.signOut().then((res) => {
-      console.log(res)
-      console.log('Sign Out');
-    })
+    this.userStore.signOut()
   }
 }

@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, output, signal} from '@angular/core';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -29,6 +29,8 @@ import {UserStore} from '@/store/user-store';
   styleUrl: './auth.css'
 })
 export class Auth {
+  public updateModal = output<void>()
+
   protected authForm: FormGroup;
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
@@ -40,6 +42,7 @@ export class Auth {
   protected userStore = inject(UserStore)
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
+  
   private readonly formCreators: Record<string, () => FormGroup> = {
     login: () => this.createLoginForm(),
     signup: () => this.createSignUpForm(),
@@ -72,7 +75,6 @@ export class Auth {
 
   // Submit form data
   protected async onSubmit() {
-    this.isSubmitting.set(true);
     if (this.authForm.valid) {
       if (this.formType() !== 'otp') {
         this.userName.set(this.authForm.value.email);
@@ -82,7 +84,6 @@ export class Auth {
       } else if (this.formType() === 'login') {
         await this.signIn()
       } else {
-        console.log(this.authForm.value)
         await this.confirmOtp()
       }
     }
@@ -93,28 +94,27 @@ export class Auth {
     const formValue = this.authForm.value
     console.log(this.userName())
     const {isSignUpComplete} = await this.authService.confirmSignUp(this.userName(), formValue.otp)
-    console.log(isSignUpComplete)
     if (isSignUpComplete) {
-      // this.formType.set("login");
-      await this.userStore.fetchUserInfo()
+      this.formType.set("login");
     }
   }
 
   private async signIn(): Promise<void> {
     this.isSubmitting.set(true);
-
     try {
       const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
       await this.handleSignInStep(signInStep);
     } catch (error) {
+      console.error(error);
       this.handleError(error as Error);
-    } finally {
-      this.isSubmitting.set(false);
     }
   }
 
   private async handleSignInStep(signInStep: string): Promise<void> {
+    this.isSubmitting.set(false);
+
     if (signInStep === "DONE") {
+      this.updateModal.emit()
       await this.userStore.fetchUserInfo()
       return;
     }
@@ -130,9 +130,10 @@ export class Auth {
   }
 
   private async signUp() {
-    this.isSubmitting.set(false);
+    this.isSubmitting.set(true);
     try {
       const {nextStep: {signUpStep}} = await this.authService.signUp(this.authForm.value);
+      this.isSubmitting.set(false);
       if (signUpStep === "CONFIRM_SIGN_UP") {
         this.formType.set("otp");
       }
@@ -165,7 +166,7 @@ export class Auth {
         password: new FormControl("", [Validators.required, strongPasswordValidator()]),
         confirm_password: new FormControl("", [Validators.required, strongPasswordValidator()]),
         region: new FormControl("", [Validators.required, this.minLengthValidator]),
-        city: new FormControl("", [Validators.required, this.minLengthValidator]),
+        city: new FormControl("", [Validators.required, Validators.minLength(2)]),
       },
       {
         validators: [matchPasswordValidator('password', 'confirm_password')]
