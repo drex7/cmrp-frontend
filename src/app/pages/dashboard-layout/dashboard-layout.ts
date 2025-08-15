@@ -26,15 +26,15 @@ import {checkTokenExpiry} from "@/lib/utils";
 })
 export class DashboardLayout implements OnInit {
     protected userStore = inject(UserStore)
-    protected user = this.userStore.user;
-    protected isSignedIn = computed(() => this.userStore.isSignedIn());
+    protected user = this.userStore.userData()();
+    protected auth = this.userStore.authData()()
+    protected isSignedIn = computed(() => this.userStore.isUserSignedIn()());
     protected showAuthDialog = false
 
     protected isFetchingUser = computed(() => this.userStore.isLoading());
 
     ngOnInit() {
-        const isTokenExpired = checkTokenExpiry(1755280162)
-        console.log(isTokenExpired)
+        const isTokenExpired = checkTokenExpiry(this.auth.expiry)
         if (this.isSignedIn() && !isTokenExpired) {
             this.userStore.fetchUserInfo()
         }

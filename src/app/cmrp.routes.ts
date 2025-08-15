@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router';
+import {authGuard} from '@/guards/auth-guard/auth-guard';
 
 const DashboardLayout = () => import("@/pages/dashboard-layout/dashboard-layout").then(m => m.DashboardLayout);
 
@@ -12,6 +13,7 @@ export const routes: Routes = [
     title: "CMRP - Dashboard",
     path: "",
     loadComponent: DashboardLayout,
+    canActivateChild: [authGuard],
     children: [
       {
         path: "",

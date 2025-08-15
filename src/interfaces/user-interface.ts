@@ -9,11 +9,13 @@ export interface AuthFormInterface {
 
 export interface UserInterface {
   user: Omit<AuthFormInterface, "password"> & {
-    role: "Admin" | "CityOfficial" | "Citizen";
+    role: "Admin" | "CityOfficial" | "Citizen" | "";
     userId: string;
   };
   isSignedIn: boolean;
-  auth: {},
+  auth: {
+    expiry: number
+  },
   isLoading: boolean;
 }
 

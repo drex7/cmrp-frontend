@@ -42,7 +42,7 @@ export class Auth {
   protected userStore = inject(UserStore)
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
-  
+
   private readonly formCreators: Record<string, () => FormGroup> = {
     login: () => this.createLoginForm(),
     signup: () => this.createSignUpForm(),
@@ -113,7 +113,10 @@ export class Auth {
   private async handleSignInStep(signInStep: string): Promise<void> {
     this.isSubmitting.set(false);
 
+    console.log(signInStep)
+
     if (signInStep === "DONE") {
+      this.userStore.setIsSignedIn()
       this.updateModal.emit()
       await this.userStore.fetchUserInfo()
       return;

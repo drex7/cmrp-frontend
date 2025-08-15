@@ -2,7 +2,6 @@ import {UserInterface} from '@/interfaces/user-interface';
 import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
 import {computed, inject} from '@angular/core';
 import {AuthService} from '../app/services/auth-service/auth-service';
-import {getUserAndAuthData} from '@/lib/utils';
 
 const isSignedIn = localStorage.getItem('isSignedIn') !== null;
 
@@ -18,7 +17,9 @@ const initialState: UserInterface = {
   },
   isSignedIn,
   isLoading: false,
-  auth: {}
+  auth: {
+    expiry: 0
+  }
 }
 
 export const UserStore = signalStore(
@@ -31,11 +32,14 @@ export const UserStore = signalStore(
     authData: computed(() => store.auth),
   })),
   withMethods((store, authService = inject(AuthService)) => ({
+    setIsSignedIn() {
+      patchState(store, {isSignedIn: true});
+    },
+
     async fetchUserInfo() {
       patchState(store, {isLoading: true});
       const {auth, user} = await authService.fetchAuthAndCurrentUser();
-      localStorage.setItem('isSignedIn', JSON.stringify(true));
-      patchState(store, {isLoading: false, user});
+      patchState(store, {isLoading: false, user, auth, isSignedIn: true});
     },
 
     signOut() {
@@ -54,11 +58,12 @@ export const UserStore = signalStore(
     }
   })),
   withHooks({
-    onInit(store) {
-      getUserAndAuthData().then(({user}) => {
-          patchState(store, {user})
-        }
-      )
+    onInit(store, authService = inject(AuthService)) {
+      if (store.isSignedIn()) {
+        authService.fetchAuthAndCurrentUser().then(({user}) => {
+          patchState(store, {user, isLoading: false})
+        });
+      }
     }
   })
 )

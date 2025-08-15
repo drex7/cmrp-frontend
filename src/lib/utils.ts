@@ -82,7 +82,6 @@ export const getIncidentSeverity = (incident: IncidentType | string) => {
 
 export const checkTokenExpiry = (expiry: number) => {
   const currentTime = Math.floor(Date.now() / 1000);
-  console.log(currentTime);
   return currentTime > expiry
 }
 
@@ -107,9 +106,12 @@ export const getUserAndAuthData = async () => {
       : "Citizen",
   } as UserInterface["user"]
 
+
   return {
     user,
-    auth: authSession
+    auth: {
+      expiry: userInfo.exp ?? 0
+    }
   };
 };
 

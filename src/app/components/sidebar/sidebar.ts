@@ -21,32 +21,28 @@ import {SidebarInterface} from '@/interfaces/sidebar-interface';
 export class Sidebar {
 
   protected userStore = inject(UserStore)
-  protected user = computed(() => this.userStore.userData()());
-  protected isSignedIn = computed(() => this.userStore.isSignedIn());
+  protected user = this.userStore.userData();
+  protected isSignedIn = computed(() => this.userStore.isUserSignedIn()());
 
   protected navLinks = signal<SidebarInterface[]>([])
 
   constructor() {
     effect(() => {
-      if (this.user().userId.length) {
-        const data = sidebarData.map(item => {
-          if (item.title === 'Dashboard') {
-            return {...item, isAccessible: true};
-          }
+      const data = sidebarData.map(item => {
+        if (item.title === 'Dashboard') {
+          return {...item, isAccessible: true};
+        }
 
-          if (item.title.toLowerCase() === 'my incidents') {
-            const isAccessible = this.userStore.isSignedIn() && this.user().role === 'Citizen'
-            return {...item, isAccessible};
-          }
+        if (item.title.toLowerCase() === 'my incidents') {
+          const isAccessible = this.isSignedIn() && this.user().role === 'Citizen'
+          return {...item, isAccessible};
+        }
 
-          const canAccess =
-            this.userStore.isSignedIn() && ['Admin', 'CityOfficial'].includes(this.user().role);
-          return {...item, isAccessible: canAccess};
-        }).filter(item => item.isAccessible);
-
-
-        this.navLinks.set(data)
-      }
+        const canAccess =
+          this.isSignedIn() && ['Admin', 'CityOfficial'].includes(this.user().role);
+        return {...item, isAccessible: canAccess};
+      }).filter(item => item.isAccessible);
+      this.navLinks.set(data)
     });
   }
 
