@@ -1,23 +1,12 @@
-import {
-  ApplicationConfig,
-  inject,
-  provideAppInitializer,
-  provideBrowserGlobalErrorListeners,
-  provideZonelessChangeDetection
-} from '@angular/core';
+import {ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {providePrimeNG} from 'primeng/config';
 import {routes} from './cmrp.routes';
 import {Noir} from './prime-ng.config';
-import {MessageService} from 'primeng/api';
-import {UserStore} from '@/store/user-store';
-
-
-const preloadUser = () => {
-  const userStore = inject(UserStore);
-  return () => userStore.fetchUserInfo();
-}
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {authInterceptor} from './interceptors/auth/auth-interceptor';
 
 export const cmrpConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +14,9 @@ export const cmrpConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     MessageService,
+    ConfirmationService,
     providePrimeNG({
       ripple: true,
       theme: {
@@ -39,9 +30,6 @@ export const cmrpConfig: ApplicationConfig = {
         }
       }
     }),
-    provideAppInitializer(() => {
-      const userStore = inject(UserStore);
-      return userStore.fetchUserInfo()
-    })
+
   ]
 };

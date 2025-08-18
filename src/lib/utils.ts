@@ -93,12 +93,13 @@ export const getUserAndAuthData = async () => {
 
 
   const userInfo = authSession?.tokens?.idToken?.payload ?? {};
-
+  const accessToken = String(authSession?.tokens?.accessToken?.toString())
+  const idToken = String(authSession?.tokens?.idToken?.toString())
   const user: UserInterface["user"] = {
     userId: currentUser?.userId ?? "",
     name: userInfo["name"] ?? "",
     email: userInfo["email"] ?? "",
-    telephone: userInfo["email"] ?? "",
+    telephone: userInfo["phone_number"] ?? "",
     region: userInfo["custom:region"] ?? "",
     city: userInfo["custom:city"] ?? "",
     role: Array.isArray(userInfo["cognito:groups"])
@@ -110,6 +111,8 @@ export const getUserAndAuthData = async () => {
   return {
     user,
     auth: {
+      accessToken,
+      idToken,
       expiry: userInfo.exp ?? 0
     }
   };

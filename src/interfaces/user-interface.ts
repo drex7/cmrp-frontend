@@ -5,6 +5,7 @@ export interface AuthFormInterface {
   telephone: string;
   city: string;
   region: string;
+  role?: string
 }
 
 export interface UserInterface {
@@ -14,6 +15,8 @@ export interface UserInterface {
   };
   isSignedIn: boolean;
   auth: {
+    accessToken: string;
+    idToken: string;
     expiry: number
   },
   isLoading: boolean;
@@ -27,4 +30,16 @@ export interface IUserData {
   region: string
   city: string
   role: string
+}
+
+
+export interface RegionOrCityOption {
+  label: string;
+  value: string;
+}
+
+export interface RegionI {
+  label: string;
+  value: string;
+  cities: RegionOrCityOption[];
 }
