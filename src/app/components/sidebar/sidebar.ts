@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, Component, computed, effect, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal} from '@angular/core';
 import {ButtonDirective} from 'primeng/button';
 import {sidebarData} from '@/constants/index';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {Avatar} from 'primeng/avatar';
 import {UserStore} from '@/store/user-store';
 import {SidebarInterface} from '@/interfaces/sidebar-interface';
+import {cn} from '@/lib/utils';
 
 @Component({
   selector: 'cmrp-sidebar',
@@ -19,12 +20,15 @@ import {SidebarInterface} from '@/interfaces/sidebar-interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar {
+  public isSmallerScreen = input(false)
+  public setIsSidebarOpen = output()
 
   protected userStore = inject(UserStore)
   protected user = this.userStore.userData();
   protected isSignedIn = computed(() => this.userStore.isUserSignedIn()());
 
   protected navLinks = signal<SidebarInterface[]>([])
+  protected readonly cn = cn;
 
   constructor() {
     effect(() => {

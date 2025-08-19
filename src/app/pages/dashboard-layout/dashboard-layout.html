@@ -1,16 +1,33 @@
 <div class="flex h-dvh bg-background relative">
   <!--Sidebar component-->
-  <cmrp-sidebar/>
+  <p-drawer [(visible)]="isSidebarOpen" closable="false" styleClass="bg-primary border-none w-max">
+    <ng-template #header>
+
+    </ng-template>
+    <cmrp-sidebar (setIsSidebarOpen)="isSidebarOpen = false" [isSmallerScreen]="isSmallerScreen()" class="w-full mx-0"/>
+  </p-drawer>
+  @if (!isSmallerScreen()) {
+    <cmrp-sidebar/>
+  }
 
   <div class="flex-auto flex flex-col relative overflow-y-auto">
     <section
       class="h-[6rem] flex items-center sticky top-0 z-50 justify-between gap-6 px-4 py-5 backdrop-blur border-b border-b-dark-gray">
-      <div class="flex flex-col">
-        @if (isSignedIn() && userStore.userData()().name) {
-          @let userName = userStore.userData()().name;
-          <span class="text-primary font-semibold text-xl">Welcome Back,</span>
-          <span class="text-primary-light font-black text-2xl">{{ userName }}</span>
+      <div class="flex gap-6 items-center">
+        @if (isSmallerScreen()) {
+          <button
+            (click)="isSidebarOpen = true"
+            class="rounded-md h-max cursor-pointer text-primary-light hover:text-primary">
+            <i class="pi pi-bars text-2xl p-2"></i>
+          </button>
         }
+        <div class="flex flex-col">
+          @if (isSignedIn() && userStore.userData()().name) {
+            @let userName = userStore.userData()().name;
+            <span class="text-primary font-semibold text-xl">Welcome Back,</span>
+            <span class="text-primary-light font-black text-2xl">{{ userName }}</span>
+          }
+        </div>
       </div>
       @if (!isSignedIn()) {
         <button (click)="showAuthDialog = true" class="button-container text-white !bg-primary-light"

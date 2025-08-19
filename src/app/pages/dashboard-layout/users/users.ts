@@ -86,11 +86,11 @@ export class Users implements OnInit {
 
     // update cities when region changes
     this.userForm.get('region')?.valueChanges.subscribe(regionValue => {
-      if (!regionValue?.value) {
+      if (!regionValue) {
         this.cities = [];
         return;
       }
-      const region = ghanaRegions.find(r => r.value === regionValue.value);
+      const region = ghanaRegions.find(r => r.value === regionValue);
       this.cities = region ? region.cities : [];
       this.userForm.get('city')?.reset();
     });

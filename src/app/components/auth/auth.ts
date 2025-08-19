@@ -67,7 +67,8 @@ export class Auth {
 
       // update cities when region changes
       this.authForm.get('region')?.valueChanges.subscribe(regionValue => {
-        const region = ghanaRegions.find(r => r.value === regionValue.value);
+        const region = ghanaRegions.find(r => r.value === regionValue);
+        console.log(region)
         this.cities = region ? region.cities : [];
         this.authForm.get('city')?.reset();
       });

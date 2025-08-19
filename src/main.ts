@@ -10,8 +10,8 @@ Amplify.configure({
       userPoolId: environment.userPoolId,
       userPoolClientId: environment.userClientPoolId,
       identityPoolId: environment.identityPoolId
-    }
-  }
+    },
+  },
 });
 
 bootstrapApplication(Cmrp, cmrpConfig)
