@@ -160,7 +160,7 @@ export class Users implements OnInit {
     if (this.userForm.valid) {
       this.authService.onboardUser(this.userForm.value)
         .subscribe({
-          next: value => {
+          next: (value) => {
             console.log(value);
             this.isSubmitting.set(false);
             this.showAddUserModal = false;
@@ -168,7 +168,7 @@ export class Users implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'User onboarded successfully'
+              detail: value.message || 'User onboarded successfully'
             });
           },
           error: error => {

@@ -1,6 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {
+  confirmResetPassword as awsConfirmResetPassword,
   confirmSignUp as awsConfirmSignUp,
+  resetPassword as awsResetPassword,
   signIn as awsSignIn,
   signOut as awsSignOut,
   signUp as awsSignUp,
@@ -50,7 +52,7 @@ export class AuthService {
       telephone,
 
     }
-    return this.http.post(`${environment.baseUrl}/invite`, user)
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
   }
 
   public async signIn(data: AuthFormInterface) {
@@ -65,6 +67,21 @@ export class AuthService {
     return await awsConfirmSignUp({
       username,
       confirmationCode
+    })
+  }
+
+  public async resetPassword(username: string) {
+    console.log(username)
+    return await awsResetPassword({
+      username,
+    })
+  }
+
+  public async confirmResetPassword(username: string, confirmationCode: string, newPassword: string) {
+    return await awsConfirmResetPassword({
+      username,
+      confirmationCode,
+      newPassword
     })
   }
 

@@ -40,7 +40,7 @@ export class Auth {
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
   protected userName = signal('');
-  protected formType = signal<"login" | "signup" | "otp">("login")
+  protected formType = signal<"login" | "signup" | "otp" | "reset_password">("login")
   protected minLengthValidator = Validators.minLength(5);
   protected readonly cn = cn;
   protected regions: RegionOrCityOption[] = []
@@ -48,11 +48,13 @@ export class Auth {
   protected userStore = inject(UserStore)
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
+  protected resetEmail = signal("");
 
   private readonly formCreators: Record<string, () => FormGroup> = {
     login: () => this.createLoginForm(),
     signup: () => this.createSignUpForm(),
     otp: () => this.createOtpForm(),
+    reset_password: () => this.createResetPasswordForm(),
   };
 
   constructor() {
@@ -81,6 +83,7 @@ export class Auth {
       email: 'email',
       password: 'password',
       confirm_password: 'password',
+      confirmation_code: 'text',
       telephone: 'tel',
       name: 'text',
       region: 'text',
@@ -92,13 +95,14 @@ export class Auth {
   // Submit form data
   protected async onSubmit() {
     if (this.authForm.valid) {
-      if (this.formType() !== 'otp') {
-        this.userName.set(this.authForm.value.email);
-      }
+      this.userName.set(this.authForm.value.email);
+
       if (this.formType() === 'signup') {
         await this.signUp()
       } else if (this.formType() === 'login') {
         await this.signIn()
+      } else if (this.formType() === 'reset_password') {
+        await this.confirmResetPassword()
       } else {
         await this.confirmOtp()
       }
@@ -106,9 +110,25 @@ export class Auth {
 
   }
 
+  private async confirmResetPassword() {
+    const formValue = this.authForm.value;
+    // const {} = await this.authService.confirmResetPassword(
+
+  }
+
+  private async resetPassword() {
+    const {nextStep: {resetPasswordStep, codeDeliveryDetails}} = await this.authService.resetPassword(this.userName())
+    this.resetEmail.set(codeDeliveryDetails.destination ?? "")
+    if (resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
+      this.formType.set("reset_password")
+    }
+    if (resetPasswordStep === "DONE") {
+      this.formType.set("login")
+    }
+  }
+
   private async confirmOtp() {
     const formValue = this.authForm.value
-    console.log(this.userName())
     const {isSignUpComplete} = await this.authService.confirmSignUp(this.userName(), formValue.otp)
     if (isSignUpComplete) {
       this.formType.set("login");
@@ -139,8 +159,7 @@ export class Auth {
     }
 
     if (signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
-      // TODO: implement update password feature
-      console.log(signInStep);
+      await this.resetPassword()
     }
 
     if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
@@ -191,6 +210,16 @@ export class Auth {
         validators: [matchPasswordValidator('password', 'confirm_password')]
       }
     )
+  }
+
+  private createResetPasswordForm() {
+    return new FormGroup({
+      confirmation_code: new FormControl("", [Validators.required]),
+      new_password: new FormControl("", [Validators.required, strongPasswordValidator()]),
+      confirm_new_password: new FormControl("", [Validators.required, strongPasswordValidator()]),
+    }, {
+      validators: [matchPasswordValidator('new_password', 'confirm_new_password')]
+    })
   }
 
   private createOtpForm() {

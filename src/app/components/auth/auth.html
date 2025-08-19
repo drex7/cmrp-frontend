@@ -18,6 +18,12 @@
         <h3 class="capitalize font-semibold text-2xl">Authenticate you Account</h3>
         <p>Please enter the code sent to your email</p>
       </div>
+    } @else if (formType() === 'reset_password') {
+      <div class="flex flex-col  text-center">
+        <h3 class="capitalize font-semibold text-2xl">Reset Password</h3>
+        <p>Please enter your new password <br/> and the code sent to <b>{{ resetEmail() }}</b></p>
+      </div>
+
     } @else {
       <ng-container
         [ngTemplateOutlet]="formType() === 'login' ? loginDescription : signupDescription"></ng-container>
@@ -36,14 +42,19 @@
         <div [class]="cn('', {
           'md:col-span-2': control === 'name' && formType() === 'signup'
           })">
-          @if (formType() === 'otp') {
+          @if (formType() === 'otp' || control === 'confirmation_code') {
+            @if (control === 'confirmation_code') {
+              <label for="confirmation_code">Confirmation code</label>
+            }
             <p-inputOtp
               [invalid]="inputError"
               [id]="control"
               [length]="6"
               [formControlName]="control"
               autofocus
-              class="mx-auto flex justify-center -mt-4"/>
+              [class]="cn('mx-auto flex justify-center -mt-4', {
+              'mt-0 mx-0 justify-start': control === 'confirmation_code',
+              })"/>
           } @else {
             <p-float-label variant="on">
               @if (control === 'password' || control === 'confirm_password') {
@@ -116,7 +127,13 @@
               @if (authForm.get(control)?.errors?.['invalidGhanaPhone']) {
                 <div>Enter a valid 10-digit Ghanaian phone number (e.g., 0241234567).</div>
               }
+              @if (authForm.get('new_password')?.errors?.['passwordMismatch']) {
+                <div>Passwords do not match.</div>
+              }
               @if (authForm.get('confirm_password')?.errors?.['passwordMismatch']) {
+                <div>Passwords do not match.</div>
+              }
+              @if (authForm.get('confirm_new_password')?.errors?.['passwordMismatch']) {
                 <div>Passwords do not match.</div>
               }
             </div>
@@ -126,13 +143,13 @@
     </div>
     <p-button
       [disabled]="authForm.invalid"
-      [label]="formType() === 'otp' ? 'Confirm' : (formType() === 'signup' ? 'Sign Up' : 'Sign In')"
+      [label]="['otp', 'reset_password'].includes(formType()) ? 'Confirm' : (formType() === 'signup' ? 'Sign Up' : 'Sign In')"
       [loading]="isSubmitting()"
       styleClass="w-full bg-primary-light"
       type="submit"
 
     />
-    @if (formType() !== 'otp') {
+    @if (!['otp', 'reset_password'].includes(formType())) {
       <div class="text-sm **:text-sm flex items-center -mt-4">
         <span>{{ formType() === 'signup' ? 'Already have an account?' : "Don't have an account?" }}</span>
         <p-button
