@@ -143,7 +143,10 @@
                   [invalid]="inputError"
                   [autofocus]="false"
                   appendTo="body"
-                  optionLabel="label" class="w-full"/>
+                  optionValue="value"
+                  optionLabel="label"
+                  class="w-full"
+                />
               } @else {
                 <input autocomplete="on" [type]="getInputType(control)"
                        [id]="control"
@@ -187,7 +190,7 @@
           label="Cancel"
           variant="outlined"
         />
-        
+
         <p-button
           (keyup)="onSubmit()"
           (click)="onSubmit()"

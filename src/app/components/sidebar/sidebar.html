@@ -30,7 +30,9 @@
                 <p-avatar icon="pi pi-user" shape="circle" size="large"/>
                 <div class="flex flex-col text-white">
                     <span class="font-semibold text-sm">{{ user().name }}</span>
-                    <span class="hidden xl:inline-block text-dark-gray text-sm">{{ user().email }}</span>
+                    @let email = user().email;
+                    <span class="hidden xl:inline-block text-dark-gray text-sm">{{ email.length > 20 ? `${user().email.slice(0, 20)}...` : email }}
+                        </span>
                 </div>
             </div>
             <button (click)="signOut()" class="button-container" pButton>

@@ -1,4 +1,4 @@
-import {Component, effect, inject, output, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, effect, inject, output, signal} from '@angular/core';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -17,6 +17,7 @@ import {Select} from 'primeng/select';
 
 @Component({
   selector: 'cmrp-auth',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FloatLabel,
     InputText,

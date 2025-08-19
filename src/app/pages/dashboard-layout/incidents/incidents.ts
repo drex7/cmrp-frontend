@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {incidentsSummary, incidentTable, incidentTableHeaders} from "@/constants/index";
 import {IncidentHighlight} from "@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight";
 import {IconField} from "primeng/iconfield";
@@ -16,66 +16,67 @@ import {Dialog} from "primeng/dialog";
 import {IncidentDetails} from "@/pages/dashboard-layout/incidents/incident-details/incident-details";
 
 @Component({
-    selector: 'cmrp-incidents',
-    imports: [
-        IncidentHighlight,
-        IconField,
-        InputIcon,
-        InputText,
-        Select,
-        FormsModule,
-        TableModule,
-        TitleCasePipe,
-        Tag,
-        Button,
-        Tooltip,
-        Dialog,
-        IncidentDetails,
-        ButtonDirective
-    ],
-    templateUrl: './incidents.html',
-    styleUrl: './incidents.css'
+  selector: 'cmrp-incidents',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    IncidentHighlight,
+    IconField,
+    InputIcon,
+    InputText,
+    Select,
+    FormsModule,
+    TableModule,
+    TitleCasePipe,
+    Tag,
+    Button,
+    Tooltip,
+    Dialog,
+    IncidentDetails,
+    ButtonDirective
+  ],
+  templateUrl: './incidents.html',
+  styleUrl: './incidents.css'
 })
 export class Incidents {
-    protected readonly cn = cn;
-    protected readonly getIncidentSeverity = getIncidentSeverity;
-    protected selectedIncident = signal("")
-    protected readonly incidentTable = incidentTable;
-    protected readonly incidentTableHeaders = incidentTableHeaders;
-    protected showIncidentDetailsModal = false
-    protected showEditDetailsOptions = signal(false)
-    protected readonly incidentsSummary = incidentsSummary;
-    protected selectedFilter = {
-        name: "All Status",
-        code: "all"
-    }
+  protected readonly cn = cn;
+  protected readonly getIncidentSeverity = getIncidentSeverity;
+  protected readonly incidentTable = incidentTable;
+  protected readonly incidentTableHeaders = incidentTableHeaders;
+  protected showIncidentDetailsModal = false
+  protected selectedIncident = signal("")
+  protected showEditDetailsOptions = signal(false)
+  protected readonly incidentsSummary = incidentsSummary;
+  protected selectedFilter = {
+    name: "All Status",
+    code: "all"
+  }
 
 
-    protected filters = [
-        {name: 'All Status', code: 'all'},
-        {name: 'Active', code: 'active'},
-        {name: 'Pending', code: 'pending'},
-        {name: 'Investigating', code: 'investigating'},
-        {name: 'Resolved', code: 'resolved'}
-    ];
+  protected filters = [
+    {name: 'All Status', code: 'all'},
+    {name: 'Active', code: 'active'},
+    {name: 'Pending', code: 'pending'},
+    {name: 'Investigating', code: 'investigating'},
+    {name: 'Resolved', code: 'resolved'}
+  ];
 
-    protected getIncidentDetails() {
-        return this.incidentTable.find(incident => incident.id === this.selectedIncident()) ?? {
-            id: "",
-            assignedOfficer: "",
-            priority: "",
-            description: "",
-            status: "",
-            reported: "",
-            location: "",
-            title: ""
-        };
-    }
+  protected getIncidentDetails() {
+    return this.incidentTable.find(incident => incident.id === this.selectedIncident()) ?? {
+      id: "",
+      assignedOfficer: "",
+      priority: "",
+      description: "",
+      status: "",
+      reported: "",
+      location: "",
+      title: ""
+    };
+  }
 
-    protected incidentAction(incidentId: string, showEditOptions: boolean) {
-        this.selectedIncident.set(incidentId);
-        this.showIncidentDetailsModal = true;
-        this.showEditDetailsOptions.set(showEditOptions);
-        this.getIncidentDetails()
-    }
+  protected incidentAction(incidentId: string, showEditOptions: boolean) {
+    this.selectedIncident.set(incidentId);
+    this.showIncidentDetailsModal = true;
+    this.showEditDetailsOptions.set(showEditOptions);
+    this.getIncidentDetails()
+  }
 }

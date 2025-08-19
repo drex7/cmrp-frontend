@@ -33,6 +33,33 @@ export const sidebarData = [
   // }
 ]
 
+export const incidentFilters = [
+  {name: 'All Status', code: 'all'},
+  {name: 'Active', code: 'active'},
+  {name: 'Pending', code: 'pending'},
+  {name: 'Investigating', code: 'investigating'},
+  {name: 'Resolved', code: 'resolved'}
+];
+
+export const incidentSeverities = [
+  {
+    label: "Low",
+    value: "low"
+  },
+  {
+    label: "Medium",
+    value: "medium"
+  },
+  {
+    label: "High",
+    value: "high"
+  },
+  {
+    label: "Critical",
+    value: "critical"
+  }
+]
+
 export const userFilters = [
   {name: 'All Users', code: 'all'},
   {name: 'Administrators', code: 'administrator'},
