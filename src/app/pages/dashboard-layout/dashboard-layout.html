@@ -1,10 +1,20 @@
 <div class="flex h-dvh bg-background relative">
   <!--Sidebar component-->
-  <p-drawer [(visible)]="isSidebarOpen" closable="false" styleClass="bg-primary border-none w-max">
-    <ng-template #header>
+  <p-drawer [(visible)]="isSidebarOpen" closable="false" styleClass="border-none">
+    <ng-template #headless>
+      <aside class="h-full py-4 bg-primary relative w-max rounded-r-lg">
 
+        <button
+          (click)="isSidebarOpen = false"
+          class="rounded-full absolute top-2 right-2 z-20 p-2 h-max w-max cursor-pointer flex self-end items-center justify-center bg-white text-primary hover:rotate-90 hover:scale-110 transition-all duration-200 ease-linear">
+          <i class="pi pi-times font-bold"></i>
+        </button>
+        <cmrp-sidebar
+          (setIsSidebarOpen)="isSidebarOpen = false"
+          [isSmallerScreen]="isSmallerScreen()"
+        />
+      </aside>
     </ng-template>
-    <cmrp-sidebar (setIsSidebarOpen)="isSidebarOpen = false" [isSmallerScreen]="isSmallerScreen()" class="w-full mx-0"/>
   </p-drawer>
   @if (!isSmallerScreen()) {
     <cmrp-sidebar/>
