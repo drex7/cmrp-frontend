@@ -1,12 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {
+  confirmResetPassword as awsConfirmResetPassword,
   confirmSignUp as awsConfirmSignUp,
+  resetPassword as awsResetPassword,
   signIn as awsSignIn,
   signOut as awsSignOut,
   signUp as awsSignUp,
   SignUpInput,
 } from "aws-amplify/auth"
-import {AuthFormInterface, RegionOrCityOption} from '@/interfaces/user-interface';
+import {AuthFormInterface} from '@/interfaces/user-interface';
 import {Router} from '@angular/router';
 import {getUserAndAuthData} from '@/lib/utils';
 import {HttpClient} from '@angular/common/http';
@@ -20,8 +22,7 @@ export class AuthService {
   protected http = inject(HttpClient)
 
   public async signUp(data: AuthFormInterface) {
-    const region = (data.region as unknown as RegionOrCityOption).value
-    const city = (data.city as unknown as RegionOrCityOption).value
+
     const telephone = `+233${data.telephone.slice(1)}`
     const user: SignUpInput = {
       username: data.email,
@@ -31,8 +32,8 @@ export class AuthService {
           email: data.email,
           name: data.name,
           phone_number: telephone,
-          'custom:region': region,
-          'custom:city': city,
+          'custom:region': data.region,
+          'custom:city': data.city,
         }
       }
     }
@@ -40,20 +41,18 @@ export class AuthService {
   }
 
   public onboardUser(data: AuthFormInterface) {
-    const role = (data.role as unknown as RegionOrCityOption).value
-    const region = (data.region as unknown as RegionOrCityOption).value
-    const city = (data.city as unknown as RegionOrCityOption).value
+
     const telephone = `+233${data.telephone.slice(1)}`
     const user = {
       name: data.name,
       email: data.email,
-      role,
-      region,
-      city,
+      role: data.role,
+      region: data.region,
+      city: data.city,
       telephone,
 
     }
-    return this.http.post(`${environment.baseUrl}/invite`, user)
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
   }
 
   public async signIn(data: AuthFormInterface) {
@@ -68,6 +67,21 @@ export class AuthService {
     return await awsConfirmSignUp({
       username,
       confirmationCode
+    })
+  }
+
+  public async resetPassword(username: string) {
+    console.log(username)
+    return await awsResetPassword({
+      username,
+    })
+  }
+
+  public async confirmResetPassword(username: string, confirmationCode: string, newPassword: string) {
+    return await awsConfirmResetPassword({
+      username,
+      confirmationCode,
+      newPassword
     })
   }
 

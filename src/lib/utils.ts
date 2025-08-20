@@ -74,6 +74,7 @@ export const getIncidentSeverity = (incident: IncidentType | string) => {
     active: "danger",
     investigating: "info",
     resolved: "success",
+    pending: "warn",
   };
 
   return dataMap[incident as IncidentType];
@@ -107,6 +108,7 @@ export const getUserAndAuthData = async () => {
       : "Citizen",
   } as UserInterface["user"]
 
+  localStorage.setItem("expiry", String(userInfo.exp ?? 0));
 
   return {
     user,

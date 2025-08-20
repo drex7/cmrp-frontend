@@ -4,7 +4,7 @@ import {inject} from '@angular/core';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const userStore = inject(UserStore)
-  const authToken = userStore.authData().accessToken();
+  const authToken = userStore.authData().idToken();
   const newReq = req.clone({
     headers: req.headers
       .append("Authorization", authToken)

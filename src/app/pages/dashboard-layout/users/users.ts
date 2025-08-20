@@ -25,6 +25,7 @@ import {RegionOrCityOption} from '@/interfaces/user-interface';
 import {AuthService} from '../../../services/auth-service/auth-service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
+import {UsersService} from '../../../services/users/users-service';
 
 @Component({
   selector: 'cmrp-users',
@@ -58,6 +59,7 @@ export class Users implements OnInit {
     code: "all"
   }
 
+  protected usersService = inject(UsersService)
   protected authService = inject(AuthService)
   protected confirmationService = inject(ConfirmationService);
   protected messageService = inject(MessageService);
@@ -82,15 +84,21 @@ export class Users implements OnInit {
   protected userFormControls = signal<string[]>(Object.keys(this.userForm.controls));
 
   ngOnInit() {
+    this.usersService.fetchUsers().subscribe({
+      next: users => {
+        console.log(users);
+      }
+    })
+
     this.regions = ghanaRegions.map(r => ({label: r.label, value: r.value}));
 
     // update cities when region changes
     this.userForm.get('region')?.valueChanges.subscribe(regionValue => {
-      if (!regionValue?.value) {
+      if (!regionValue) {
         this.cities = [];
         return;
       }
-      const region = ghanaRegions.find(r => r.value === regionValue.value);
+      const region = ghanaRegions.find(r => r.value === regionValue);
       this.cities = region ? region.cities : [];
       this.userForm.get('city')?.reset();
     });
@@ -160,7 +168,7 @@ export class Users implements OnInit {
     if (this.userForm.valid) {
       this.authService.onboardUser(this.userForm.value)
         .subscribe({
-          next: value => {
+          next: (value) => {
             console.log(value);
             this.isSubmitting.set(false);
             this.showAddUserModal = false;
@@ -168,7 +176,7 @@ export class Users implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Success',
-              detail: 'User onboarded successfully'
+              detail: value.message || 'User onboarded successfully'
             });
           },
           error: error => {

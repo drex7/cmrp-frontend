@@ -7,7 +7,7 @@
   <button (click)="showAddUserModal = true"
           class="bg-primary h-max flex items-center gap-2 active:bg-primary-light hover:bg-primary-light" pButton>
     <i class="pi pi-user-plus text-white"></i>
-    <span>Add User</span>
+    <span class="hidden sm:inline-block">Add User</span>
   </button>
 </section>
 
@@ -143,7 +143,10 @@
                   [invalid]="inputError"
                   [autofocus]="false"
                   appendTo="body"
-                  optionLabel="label" class="w-full"/>
+                  optionValue="value"
+                  optionLabel="label"
+                  class="w-full"
+                />
               } @else {
                 <input autocomplete="on" [type]="getInputType(control)"
                        [id]="control"
@@ -187,7 +190,7 @@
           label="Cancel"
           variant="outlined"
         />
-        
+
         <p-button
           (keyup)="onSubmit()"
           (click)="onSubmit()"
