@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {UserCard} from '@/pages/dashboard-layout/users/user-card/user-card';
 import {ghanaRegions, userFilters, userRoles, userTableHeaders} from '@/constants/index';
 import {IconField} from 'primeng/iconfield';
@@ -19,6 +19,7 @@ import {MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {UsersService} from '../../../services/users/users-service';
 import {Skeleton} from 'primeng/skeleton';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'cmrp-users',
@@ -44,7 +45,7 @@ import {Skeleton} from 'primeng/skeleton';
   templateUrl: './users.html',
   styleUrl: './users.css'
 })
-export class Users implements OnInit {
+export class Users implements OnInit, OnDestroy {
 
   protected showAddUserModal = false;
   protected selectedGroup = {
@@ -82,10 +83,33 @@ export class Users implements OnInit {
   protected userFormControls = signal<string[]>(Object.keys(this.userForm.controls));
   protected readonly Array = Array;
   protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
+  protected destroy$ = new Subject<void>();
 
   ngOnInit() {
+    this.fetchUsers()
+
+    this.regions = ghanaRegions.map(r => ({label: r.label, value: r.value}));
+
+    // update cities when region changes
+    this.userForm.get('region')?.valueChanges.subscribe(regionValue => {
+      if (!regionValue) {
+        this.cities = [];
+        return;
+      }
+      const region = ghanaRegions.find(r => r.value === regionValue);
+      this.cities = region ? region.cities : [];
+      this.userForm.get('city')?.reset();
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  protected fetchUsers() {
     this.isFetchingUsers.set(true)
-    this.usersService.fetchUsers().subscribe({
+    this.usersService.fetchUsers().pipe(takeUntil(this.destroy$)).subscribe({
       next: value => {
         this.isFetchingUsers.set(false)
         this.userSummaryCards.set([
@@ -103,21 +127,7 @@ export class Users implements OnInit {
         }))
       }
     })
-
-    this.regions = ghanaRegions.map(r => ({label: r.label, value: r.value}));
-
-    // update cities when region changes
-    this.userForm.get('region')?.valueChanges.subscribe(regionValue => {
-      if (!regionValue) {
-        this.cities = [];
-        return;
-      }
-      const region = ghanaRegions.find(r => r.value === regionValue);
-      this.cities = region ? region.cities : [];
-      this.userForm.get('city')?.reset();
-    });
   }
-
 
   protected getUsers() {
     let users = this.selectedGroup.value === 'all'
@@ -156,7 +166,7 @@ export class Users implements OnInit {
       this.authService.onboardUser(this.userForm.value)
         .subscribe({
           next: (value) => {
-            console.log(value);
+            this.fetchUsers();
             this.isSubmitting.set(false);
             this.showAddUserModal = false;
             this.userForm.reset();
@@ -177,6 +187,5 @@ export class Users implements OnInit {
           }
         })
     }
-
   }
 }

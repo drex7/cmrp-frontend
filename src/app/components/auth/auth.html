@@ -127,9 +127,6 @@
               @if (authForm.get(control)?.errors?.['invalidGhanaPhone']) {
                 <div>Enter a valid 10-digit Ghanaian phone number (e.g., 0241234567).</div>
               }
-              @if (authForm.get('new_password')?.errors?.['passwordMismatch']) {
-                <div>Passwords do not match.</div>
-              }
               @if (authForm.get('confirm_password')?.errors?.['passwordMismatch']) {
                 <div>Passwords do not match.</div>
               }

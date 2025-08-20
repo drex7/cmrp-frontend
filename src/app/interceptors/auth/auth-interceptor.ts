@@ -7,7 +7,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authToken = userStore.authData().idToken();
   const newReq = req.clone({
     headers: req.headers
-      .append("Authorization", authToken)
+      .append("Authorization", `Bearer ${authToken}`)
       .append("Content-Type", "application/json"),
   })
 
