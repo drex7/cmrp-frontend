@@ -294,22 +294,6 @@ export const incidentTable: IIncidentDetails[] = [
   },
 ]
 
-
-export const userSummaryCards = [
-  {
-    title: "administrators",
-    count: 4,
-  },
-  {
-    title: "city officials",
-    count: 10
-  },
-  {
-    title: "citizens",
-    count: 60
-  }
-]
-
 export const userTableHeaders = [
   "User ID", "Name", "Email", "Phone", "Region", "City", "Role", "Action"
 ]

@@ -1,13 +1,6 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {UserCard} from '@/pages/dashboard-layout/users/user-card/user-card';
-import {
-  ghanaRegions,
-  userFilters,
-  userRoles,
-  usersTableData,
-  userSummaryCards,
-  userTableHeaders
-} from '@/constants/index';
+import {ghanaRegions, userFilters, userRoles, usersTableData, userTableHeaders} from '@/constants/index';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputText} from 'primeng/inputtext';
@@ -26,6 +19,7 @@ import {AuthService} from '../../../services/auth-service/auth-service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {UsersService} from '../../../services/users/users-service';
+import {Skeleton} from 'primeng/skeleton';
 
 @Component({
   selector: 'cmrp-users',
@@ -46,13 +40,14 @@ import {UsersService} from '../../../services/users/users-service';
     InputMask,
     ReactiveFormsModule,
     TitleCasePipe,
-    ConfirmDialog
+    ConfirmDialog,
+    Skeleton
   ],
   templateUrl: './users.html',
   styleUrl: './users.css'
 })
 export class Users implements OnInit {
-  protected readonly userSummaryCards = userSummaryCards;
+
   protected showAddUserModal = false;
   protected selectedGroup = {
     name: "All Users",
@@ -73,6 +68,12 @@ export class Users implements OnInit {
   protected readonly usersTableData = usersTableData
   protected minLengthValidator = Validators.minLength(5);
   protected isSubmitting = signal(false);
+  protected isFetchingUsers = signal(false);
+  protected readonly userSummaryCards = signal<{
+    title: string;
+    count: number;
+  }[]>([])
+
   protected userForm: FormGroup = new FormGroup({
     name: new FormControl("", [Validators.required, this.minLengthValidator]),
     email: new FormControl("", [Validators.required, Validators.email]),
@@ -82,11 +83,20 @@ export class Users implements OnInit {
     city: new FormControl("", [Validators.required]),
   });
   protected userFormControls = signal<string[]>(Object.keys(this.userForm.controls));
+  protected readonly Array = Array;
 
   ngOnInit() {
+    this.isFetchingUsers.set(true)
     this.usersService.fetchUsers().subscribe({
-      next: users => {
-        console.log(users);
+      next: value => {
+        this.isFetchingUsers.set(false)
+        console.log(value);
+        this.userSummaryCards.set([
+          {title: 'administrators', count: value.counts.admin},
+          {title: 'city officials', count: value.counts.city_official},
+          {title: 'citizens', count: value.counts.citizens},
+        ])
+        const users = value
       }
     })
 
