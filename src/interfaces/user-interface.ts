@@ -5,7 +5,8 @@ export interface AuthFormInterface {
   telephone: string;
   city: string;
   region: string;
-  role?: string
+  role?: string;
+  user_id?: string;
 }
 
 export interface UserInterface {

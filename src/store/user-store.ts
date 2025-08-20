@@ -47,7 +47,7 @@ export const UserStore = signalStore(
 
     signOut() {
       authService.signOut().then(() => {
-        localStorage.setItem('isSignedIn', 'false');
+        localStorage.clear();
         const user = {
           userId: "",
           name: "",

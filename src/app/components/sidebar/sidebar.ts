@@ -51,6 +51,7 @@ export class Sidebar {
   }
 
   protected signOut() {
+    this.setIsSidebarOpen.emit()
     this.userStore.signOut()
   }
 }

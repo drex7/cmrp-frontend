@@ -1,6 +1,5 @@
 import {Component, input} from '@angular/core';
 import {cn} from '@/lib/utils';
-import {userSummaryCards} from '@/constants/index';
 
 @Component({
   selector: 'cmrp-user-card',
@@ -17,5 +16,4 @@ export class UserCard {
     count: 0
   })
   protected readonly cn = cn;
-  protected readonly userSummaryCards = userSummaryCards;
 }

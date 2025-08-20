@@ -21,7 +21,7 @@
     } @else if (formType() === 'reset_password') {
       <div class="flex flex-col  text-center">
         <h3 class="capitalize font-semibold text-2xl">Reset Password</h3>
-        <p>Please enter your new password <br/> and the code sent to <b>{{ resetEmail() }}</b></p>
+        <p>Please enter your new password</p>
       </div>
 
     } @else {
@@ -35,7 +35,7 @@
       }
       )">
       <!--      Map through dynamic form elements-->
-      @for (control of authFormControls(); track control) {
+      @for (control of authFormControls(); track `${control}${$index}`) {
         @let
         inputError = authForm.get(control)?.invalid && (authForm.get(control)?.dirty || authForm.get(control)?.touched);
         @let label = control.split('_').join(' ');
@@ -57,19 +57,19 @@
               })"/>
           } @else {
             <p-float-label variant="on">
-              @if (control === 'password' || control === 'confirm_password') {
+              @if (['confirm_password', 'password', 'new_password', 'confirm_new_password'].includes(control)) {
                 <label class="text-sm" [for]="control">{{ control | titlecase }}</label>
                 <p-password [toggleMask]="true" autocomplete="on" [id]="control"
                             [formControlName]="control"
                             [invalid]="inputError"
-                            [feedback]="formType() === 'signup' && control === 'password'"
+                            [feedback]="['signup', 'reset_password'].includes(formType()) && ['password', 'new_password'].includes(control)"
                             [class]="cn('w-full invalid:text-red-600', {
                             '!text-red-600': inputError
                             })"
                             inputStyleClass="w-full"
                 >
 
-                  @if (formType() === 'signup') {
+                  @if (['signup', 'reset_password'].includes(formType())) {
                     <ng-template #footer>
                       <ul class="pl-2 mt-2 text-xs">
                         <li>At least one lowercase</li>
@@ -126,9 +126,6 @@
               }
               @if (authForm.get(control)?.errors?.['invalidGhanaPhone']) {
                 <div>Enter a valid 10-digit Ghanaian phone number (e.g., 0241234567).</div>
-              }
-              @if (authForm.get('new_password')?.errors?.['passwordMismatch']) {
-                <div>Passwords do not match.</div>
               }
               @if (authForm.get('confirm_password')?.errors?.['passwordMismatch']) {
                 <div>Passwords do not match.</div>
