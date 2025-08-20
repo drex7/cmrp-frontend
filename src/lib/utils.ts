@@ -107,6 +107,7 @@ export const getUserAndAuthData = async () => {
       : "Citizen",
   } as UserInterface["user"]
 
+  localStorage.setItem("expiry", String(userInfo.exp ?? 0));
 
   return {
     user,

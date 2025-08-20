@@ -4,7 +4,7 @@ import {computed, inject} from '@angular/core';
 import {AuthService} from '../app/services/auth-service/auth-service';
 
 const isSignedIn = JSON.parse(localStorage.getItem('isSignedIn') as string ?? "false")
-console.log(isSignedIn);
+const expiry = JSON.parse(localStorage.getItem('expiry') as string ?? "0");
 const initialState: UserInterface = {
   user: {
     userId: "",
@@ -20,7 +20,7 @@ const initialState: UserInterface = {
   auth: {
     accessToken: "",
     idToken: "",
-    expiry: 0
+    expiry
   }
 }
 
