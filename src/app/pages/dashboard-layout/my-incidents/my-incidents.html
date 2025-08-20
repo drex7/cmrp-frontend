@@ -19,19 +19,19 @@
 </div>
 
 <div class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
-  <div class="flex items-center gap-4 justify-between">
+  <div class="flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
     <div class="flex flex-col">
       <span class="font-bold text-3xl">Current Incidents</span>
       <p class="text-neutral-500">Active and ongoing incidents requiring attention</p>
     </div>
 
-    <div class="flex items-center gap-4">
-      <p-icon-field>
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+      <p-icon-field class="w-full">
         <p-inputicon class="pi pi-search"/>
-        <input pInputText placeholder="Search" type="search"/>
+        <input class="w-full" pInputText placeholder="Search" type="search"/>
       </p-icon-field>
 
-      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-44"
+      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-full"
                 optionLabel="name" placeholder="Select filter"
       />
     </div>
@@ -229,6 +229,7 @@
   <p-dialog [(visible)]="showIncidentDetailsModal" [modal]="true"
             [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"
             [style]="{ width: '50vw' }"
+            maskStyleClass="backdrop-blur-sm"
             [draggable]="false"
             [resizable]="false">
     <ng-template #header>

@@ -38,7 +38,6 @@ export class IncidentDetails implements OnInit {
     code: ""
   }
   protected statuses = [
-    {name: 'Active', code: 'active'},
     {name: 'Pending', code: 'pending'},
     {name: 'Investigating', code: 'investigating'},
     {name: 'Resolved', code: 'resolved'}

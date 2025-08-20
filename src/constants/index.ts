@@ -231,7 +231,7 @@ export const incidentsSummary: IIncidentSummary[] = [
 ]
 
 export const incidentTableHeaders = [
-  "incident id", "title", "location", "priority", "status", "assigned officer", "reported", "actions"
+  "incident id", "title", "location", "severity", "status", "assigned officer", "reported", "actions"
 ]
 
 export const incidentTable: IIncidentDetails[] = [
@@ -240,7 +240,7 @@ export const incidentTable: IIncidentDetails[] = [
     title: "Water on road",
     location: "Town",
     priority: "urgent",
-    status: "active",
+    status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
@@ -256,7 +256,7 @@ export const incidentTable: IIncidentDetails[] = [
     title: "Water on road",
     location: "Town",
     priority: "urgent",
-    status: "active",
+    status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
@@ -264,7 +264,7 @@ export const incidentTable: IIncidentDetails[] = [
     title: "Water on road",
     location: "Town",
     priority: "urgent",
-    status: "active",
+    status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
@@ -280,7 +280,7 @@ export const incidentTable: IIncidentDetails[] = [
     title: "Water on road",
     location: "Town",
     priority: "high",
-    status: "active",
+    status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {

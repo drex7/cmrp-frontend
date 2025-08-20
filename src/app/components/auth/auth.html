@@ -153,6 +153,7 @@
       <div class="text-sm **:text-sm flex items-center -mt-4">
         <span>{{ formType() === 'signup' ? 'Already have an account?' : "Don't have an account?" }}</span>
         <p-button
+          type="submit"
           (onClick)="formType.set(formType() === 'signup' ? 'login' : 'signup')"
           [label]="formType() === 'signup' ? 'Sign In' : 'Sign Up'"
           link

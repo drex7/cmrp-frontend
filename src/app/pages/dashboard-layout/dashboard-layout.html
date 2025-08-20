@@ -53,9 +53,10 @@
 
     <!--Report issue message-->
     @if (!isSignedIn()) {
-      <p-message class="absolute top-4 left-1/2 -translate-x-1/2 z-50" closable icon="pi pi-exclamation-triangle"
+      <p-message class="fixed w-11/12 max-w-2xl top-20 md:top-4 left-1/2 -translate-x-1/2 z-50" closable
+                 icon="pi pi-exclamation-triangle"
                  severity="info"
-                 styleClass="h-max w-max">
+      >
         <div class="flex flex-col gap-1 text-neutral-500">
           <span class="font-black text-black">Want to Report and Issue?</span>
           <p>Citizens can sign in to report incidents and track their resolution status.

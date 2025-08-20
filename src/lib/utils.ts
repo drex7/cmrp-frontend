@@ -74,6 +74,7 @@ export const getIncidentSeverity = (incident: IncidentType | string) => {
     active: "danger",
     investigating: "info",
     resolved: "success",
+    pending: "warn",
   };
 
   return dataMap[incident as IncidentType];
