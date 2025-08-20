@@ -1,13 +1,12 @@
 import {inject, Injectable} from '@angular/core';
 import {
-  confirmResetPassword as awsConfirmResetPassword,
+  confirmSignIn,
   confirmSignUp as awsConfirmSignUp,
-  resetPassword as awsResetPassword,
   signIn as awsSignIn,
   signOut as awsSignOut,
   signUp as awsSignUp,
   SignUpInput,
-} from "aws-amplify/auth"
+} from "@aws-amplify/auth"
 import {AuthFormInterface} from '@/interfaces/user-interface';
 import {Router} from '@angular/router';
 import {getUserAndAuthData} from '@/lib/utils';
@@ -70,20 +69,14 @@ export class AuthService {
     })
   }
 
-  public async resetPassword(username: string) {
-    console.log(username)
-    return await awsResetPassword({
-      username,
+  public async resetPassword(newPassword: string) {
+    console.log(newPassword)
+    return await confirmSignIn({
+      challengeResponse: newPassword,
     })
+
   }
 
-  public async confirmResetPassword(username: string, confirmationCode: string, newPassword: string) {
-    return await awsConfirmResetPassword({
-      username,
-      confirmationCode,
-      newPassword
-    })
-  }
 
   public async fetchAuthAndCurrentUser() {
     const {user, auth} = await getUserAndAuthData()

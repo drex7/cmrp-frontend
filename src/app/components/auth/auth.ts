@@ -14,6 +14,7 @@ import {UserStore} from '@/store/user-store';
 import {ghanaRegions} from '@/constants/index';
 import {RegionOrCityOption} from '@/interfaces/user-interface';
 import {Select} from 'primeng/select';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'cmrp-auth',
@@ -48,8 +49,7 @@ export class Auth {
   protected userStore = inject(UserStore)
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
-  protected resetEmail = signal("");
-
+  protected messageService = inject(MessageService);
   private readonly formCreators: Record<string, () => FormGroup> = {
     login: () => this.createLoginForm(),
     signup: () => this.createSignUpForm(),
@@ -82,7 +82,9 @@ export class Auth {
     const types: { [key: string]: string } = {
       email: 'email',
       password: 'password',
+      new_password: 'password',
       confirm_password: 'password',
+      confirm_new_password: 'password',
       confirmation_code: 'text',
       telephone: 'tel',
       name: 'text',
@@ -95,35 +97,37 @@ export class Auth {
   // Submit form data
   protected async onSubmit() {
     if (this.authForm.valid) {
-      this.userName.set(this.authForm.value.email);
-
       if (this.formType() === 'signup') {
         await this.signUp()
       } else if (this.formType() === 'login') {
+        this.userName.set(this.authForm.value.email);
         await this.signIn()
       } else if (this.formType() === 'reset_password') {
-        await this.confirmResetPassword()
+        await this.resetPassword()
       } else {
         await this.confirmOtp()
       }
     }
-
-  }
-
-  private async confirmResetPassword() {
-    const formValue = this.authForm.value;
-    // const {} = await this.authService.confirmResetPassword(
-
   }
 
   private async resetPassword() {
-    const {nextStep: {resetPasswordStep, codeDeliveryDetails}} = await this.authService.resetPassword(this.userName())
-    this.resetEmail.set(codeDeliveryDetails.destination ?? "")
-    if (resetPasswordStep === "CONFIRM_RESET_PASSWORD_WITH_CODE") {
-      this.formType.set("reset_password")
-    }
-    if (resetPasswordStep === "DONE") {
-      this.formType.set("login")
+    this.isSubmitting.set(true);
+    const formValue = this.authForm.value;
+    const {nextStep: {signInStep}} = await this.authService.resetPassword(formValue.new_password)
+
+    if (signInStep === "DONE") {
+      this.isSubmitting.set(false);
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Password reset successfully',
+        life: 3000
+      })
+
+      this.userStore.setIsSignedIn()
+      this.updateModal.emit()
+      await this.userStore.fetchUserInfo()
     }
   }
 
@@ -148,7 +152,6 @@ export class Auth {
 
   private async handleSignInStep(signInStep: string): Promise<void> {
     this.isSubmitting.set(false);
-
     console.log(signInStep)
 
     if (signInStep === "DONE") {
@@ -159,7 +162,7 @@ export class Auth {
     }
 
     if (signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
-      await this.resetPassword()
+      this.formType.set("reset_password")
     }
 
     if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
@@ -214,7 +217,6 @@ export class Auth {
 
   private createResetPasswordForm() {
     return new FormGroup({
-      confirmation_code: new FormControl("", [Validators.required]),
       new_password: new FormControl("", [Validators.required, strongPasswordValidator()]),
       confirm_new_password: new FormControl("", [Validators.required, strongPasswordValidator()]),
     }, {

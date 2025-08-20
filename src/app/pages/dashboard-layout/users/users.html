@@ -80,7 +80,6 @@
 
     <ng-template #body let-user>
       @if (isFetchingUsers()) {
-
         <tr>
           @for (el of tableSkeletonArray; track $index) {
             <td>

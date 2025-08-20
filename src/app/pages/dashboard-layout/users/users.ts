@@ -14,10 +14,10 @@ import {FloatLabel} from 'primeng/floatlabel';
 import {InputMask} from 'primeng/inputmask';
 import {TitleCasePipe} from '@angular/common';
 import {AuthFormInterface, RegionOrCityOption} from '@/interfaces/user-interface';
-import {AuthService} from '../../../services/auth-service/auth-service';
+import {AuthService} from '@/services/auth-service/auth-service';
 import {MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
-import {UsersService} from '../../../services/users/users-service';
+import {UsersService} from '@/services/users/users-service';
 import {Skeleton} from 'primeng/skeleton';
 import {Subject, takeUntil} from 'rxjs';
 
@@ -125,6 +125,16 @@ export class Users implements OnInit, OnDestroy {
             telephone: user.telephone ? user.telephone.replace(/^\+233/, '0') : '-',
           }
         }))
+      },
+      error: error => {
+        this.isFetchingUsers.set(false)
+        const errorMessage = error.error?.message || 'Failed to fetch users';
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: errorMessage,
+          life: 3000
+        });
       }
     })
   }

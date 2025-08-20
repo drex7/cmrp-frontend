@@ -19,6 +19,9 @@
       "@/guards/*": [
         "./app/guards/*"
       ],
+      "@/services/*": [
+        "./app/services/*"
+      ],
       "@/lib/*": [
         "./lib/*"
       ],

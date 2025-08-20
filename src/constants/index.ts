@@ -35,7 +35,6 @@ export const sidebarData = [
 
 export const incidentFilters = [
   {name: 'All Status', code: 'all'},
-  {name: 'Active', code: 'active'},
   {name: 'Pending', code: 'pending'},
   {name: 'Investigating', code: 'investigating'},
   {name: 'Resolved', code: 'resolved'}
