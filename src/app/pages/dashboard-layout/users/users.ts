@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {UserCard} from '@/pages/dashboard-layout/users/user-card/user-card';
-import {ghanaRegions, userFilters, userRoles, usersTableData, userTableHeaders} from '@/constants/index';
+import {ghanaRegions, userFilters, userRoles, userTableHeaders} from '@/constants/index';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputText} from 'primeng/inputtext';
@@ -8,15 +8,14 @@ import {Select} from 'primeng/select';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Button, ButtonDirective} from 'primeng/button';
 import {TableModule} from 'primeng/table';
-import {Tooltip} from 'primeng/tooltip';
 import {Dialog} from 'primeng/dialog';
 import {cn, ghPhoneValidator} from '@/lib/utils';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputMask} from 'primeng/inputmask';
 import {TitleCasePipe} from '@angular/common';
-import {RegionOrCityOption} from '@/interfaces/user-interface';
+import {AuthFormInterface, RegionOrCityOption} from '@/interfaces/user-interface';
 import {AuthService} from '../../../services/auth-service/auth-service';
-import {ConfirmationService, MessageService} from 'primeng/api';
+import {MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {UsersService} from '../../../services/users/users-service';
 import {Skeleton} from 'primeng/skeleton';
@@ -33,7 +32,6 @@ import {Skeleton} from 'primeng/skeleton';
     FormsModule,
     Button,
     TableModule,
-    Tooltip,
     ButtonDirective,
     Dialog,
     FloatLabel,
@@ -50,13 +48,12 @@ export class Users implements OnInit {
 
   protected showAddUserModal = false;
   protected selectedGroup = {
-    name: "All Users",
-    code: "all"
+    label: "All Users",
+    value: "all"
   }
 
   protected usersService = inject(UsersService)
   protected authService = inject(AuthService)
-  protected confirmationService = inject(ConfirmationService);
   protected messageService = inject(MessageService);
   protected regions: RegionOrCityOption[] = []
   protected cities: RegionOrCityOption[] = []
@@ -65,10 +62,10 @@ export class Users implements OnInit {
   protected readonly userTableHeaders = userTableHeaders;
   protected readonly userRoles = userRoles;
   protected readonly userFilters = userFilters;
-  protected readonly usersTableData = usersTableData
   protected minLengthValidator = Validators.minLength(5);
   protected isSubmitting = signal(false);
   protected isFetchingUsers = signal(false);
+  protected users = signal<Partial<AuthFormInterface>[]>([]);
   protected readonly userSummaryCards = signal<{
     title: string;
     count: number;
@@ -84,19 +81,26 @@ export class Users implements OnInit {
   });
   protected userFormControls = signal<string[]>(Object.keys(this.userForm.controls));
   protected readonly Array = Array;
+  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
 
   ngOnInit() {
     this.isFetchingUsers.set(true)
     this.usersService.fetchUsers().subscribe({
       next: value => {
         this.isFetchingUsers.set(false)
-        console.log(value);
         this.userSummaryCards.set([
           {title: 'administrators', count: value.counts.admin},
           {title: 'city officials', count: value.counts.city_official},
           {title: 'citizens', count: value.counts.citizens},
         ])
-        const users = value
+        this.users.set(value.users.map(user => {
+          return {
+            ...user,
+            user_id: user.user_id?.slice(0, 8),
+            role: user.role === "CityOfficial" ? "City Official" : user.role,
+            telephone: user.telephone ? user.telephone.replace(/^\+233/, '0') : '-',
+          }
+        }))
       }
     })
 
@@ -114,43 +118,16 @@ export class Users implements OnInit {
     });
   }
 
-  protected removeUser(event: Event) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Do you want to remove this user?',
-      header: 'Danger Zone',
-      icon: 'pi pi-info-circle',
-      rejectLabel: 'Cancel',
-      rejectButtonProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: 'Delete',
-        severity: 'danger',
-      },
-
-      accept: () => {
-        this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'User removed'});
-      },
-      reject: () => {
-        console.log("rejected")
-        // this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
-      },
-    });
-  }
 
   protected getUsers() {
-    let users = this.selectedGroup.code === 'all'
-      ? this.usersTableData
-      : this.usersTableData.filter(user => user.role === this.selectedGroup.code);
+    let users = this.selectedGroup.value === 'all'
+      ? this.users()
+      : this.users().filter(user => user.role === this.selectedGroup.value);
 
     if (this.searchValue.trim() !== "") {
       const search = this.searchValue.toLowerCase();
-      users = users.filter(user => user.name.toLowerCase().includes(search));
+      users = users.filter(user => String(user.name).toLowerCase().includes(search));
     }
-
     return users;
   }
 

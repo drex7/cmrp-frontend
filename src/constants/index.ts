@@ -61,10 +61,10 @@ export const incidentSeverities = [
 ]
 
 export const userFilters = [
-  {name: 'All Users', code: 'all'},
-  {name: 'Administrators', code: 'administrator'},
-  {name: 'City Officials', code: 'city official'},
-  {name: 'Citizens', code: 'citizen'},
+  {label: 'All Users', value: 'all'},
+  {label: 'Administrators', value: 'Admin'},
+  {label: 'City Officials', value: 'City Official'},
+  {label: 'Citizens', value: "Citizen"},
 ];
 
 export const userRoles = [
@@ -295,7 +295,8 @@ export const incidentTable: IIncidentDetails[] = [
 ]
 
 export const userTableHeaders = [
-  "User ID", "Name", "Email", "Phone", "Region", "City", "Role", "Action"
+  "User ID", "Name", "Email", "Phone", "Region", "City", "Role",
+  // "Action"
 ]
 
 export const usersTableData: IUserData[] = [

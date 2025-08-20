@@ -23,7 +23,7 @@
           <div>
             <p-skeleton width="12rem"/>
           </div>
-          <p-skeleton shape="square" size="3rem"/>
+          <p-skeleton shape="square" size="2.5rem"/>
         </div>
         <div class="flex flex-col gap-2 mt-6">
           <div class="flex gap-2">
@@ -43,30 +43,32 @@
 </div>
 
 <section class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
-  <div class="flex items-center gap-4 justify-between">
+  <div class="flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
     <div class="flex flex-col">
       <span class="font-bold text-3xl">Current Users</span>
       <p class="text-neutral-500">Active users in the system</p>
     </div>
 
-    <div class="flex items-center gap-4">
-      <p-icon-field>
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+      <p-icon-field class="w-full">
         <p-inputicon class="pi pi-search"/>
-        <input [(ngModel)]="searchValue" pInputText placeholder="Search by name" type="search"/>
+        <input [(ngModel)]="searchValue" class="w-full" pInputText placeholder="Search user by name" type="search"/>
       </p-icon-field>
 
-      <p-select [(ngModel)]="selectedGroup" [options]="userFilters" class="w-44"
-                optionLabel="name" placeholder="Select filter"
+      <p-select [(ngModel)]="selectedGroup" [options]="userFilters" class="w-full"
+                optionLabel="label" placeholder="Select filter"
       />
     </div>
   </div>
 
   <!--  Users table-->
+
   <p-table
+    [alwaysShowPaginator]="false"
     [paginator]="true"
     [rows]="10"
     [tableStyle]="{ 'min-width': '60rem' }"
-    [value]="getUsers()"
+    [value]="isFetchingUsers() ? tableSkeletonArray : getUsers()"
     class="mt-5"
   >
     <ng-template #header>
@@ -77,42 +79,34 @@
         }
       </tr>
     </ng-template>
+
     <ng-template #body let-user>
-      <tr class="capitalize">
-        <td>{{ user.id }}</td>
-        <td>{{ user.name }}</td>
-        <td class="lowercase">{{ user.email }}</td>
-        <td>{{ user.telephone }}</td>
-        <td>{{ user.region }}</td>
-        <td>{{ user.city }}</td>
-        <td>{{ user.role }}</td>
+      @if (isFetchingUsers()) {
 
-        <td>
-          <div class="flex items-center">
-            <!--            <p-button-->
-            <!--              aria-label="update User"-->
-            <!--              icon="pi pi-user-edit"-->
-            <!--              pTooltip="Update User"-->
-            <!--              tooltipPosition="top"-->
-            <!--              variant="text"-->
-            <!--            />-->
-            <p-button
-              (click)="removeUser($event)"
-              aria-label="remove User"
-              icon="pi pi-user-minus"
-              pTooltip="Remove User"
-              tooltipPosition="top"
-              variant="text"
-            />
-          </div>
-        </td>
-
-
-      </tr>
+        <tr>
+          @for (el of tableSkeletonArray; track $index) {
+            <td>
+              <p-skeleton/>
+            </td>
+          }
+        </tr>
+      } @else {
+        <tr class="capitalize">
+          <td class="uppercase">{{ user.user_id }}</td>
+          <td>{{ user.name }}</td>
+          <td class="lowercase">{{ user.email }}</td>
+          <td>{{ user.telephone }}</td>
+          <td>{{ user.region }}</td>
+          <td>{{ user.city }}</td>
+          <td>{{ user.role }}</td>
+        </tr>
+      }
     </ng-template>
     <ng-template #footer>
       <tr>
-        <td colspan="8">In total there are {{ getUsers() ? getUsers().length : 0 }} users.</td>
+        @let label = selectedGroup.label;
+        <td colspan="8">In total there
+          are {{ getUsers() ? getUsers().length : 0 }} {{ label.toLowerCase() == 'all users' ? 'Users' : label }}
       </tr>
     </ng-template>
   </p-table>
