@@ -142,10 +142,17 @@ export class Auth {
     this.isSubmitting.set(true);
     try {
       const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
+      console.log(signInStep);
       await this.handleSignInStep(signInStep);
     } catch (error) {
-      console.error(error);
-      this.handleError(error as Error);
+
+      const err = (error as Error).name;
+      if (err === "UserAlreadyAuthenticatedException") {
+        this.isSubmitting.set(false);
+        this.userStore.signOut();
+      } else {
+        this.handleError(error as Error);
+      }
     }
   }
 
