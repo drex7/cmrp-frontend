@@ -127,10 +127,10 @@
         })">
 
           <p-float-label variant="on">
-            @if (["severity", "location"].includes(control)) {
+            @if (control === 'severity') {
               <p-select
                 [formControlName]="control"
-                [options]="control === 'location' ? incidentLocations : incidentSeverities"
+                [options]="incidentSeverities"
                 [invalid]="inputError"
                 [autofocus]="false"
                 appendTo="body"
@@ -214,7 +214,7 @@
       <p-button
         (click)="onSubmit()"
         (keyup)="onSubmit()"
-        [disabled]="incidentForm.invalid || !images().length"
+        [disabled]="incidentForm.invalid"
         [loading]="isSubmitting()"
         label="Report incident"
         styleClass="w-full bg-primary-light"

@@ -48,7 +48,7 @@ export class AuthService {
       city: data.city,
       telephone,
     }
-    return this.http.post<{ message: string }>(`${environment.baseUrl}/invitee`, user)
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
   }
 
   public async signIn(data: AuthFormInterface) {

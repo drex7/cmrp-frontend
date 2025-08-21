@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core'
 import {Button, ButtonDirective} from "primeng/button";
 import {IncidentHighlight} from '@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight';
 import {
-  ghanaRegions,
   incidentFilters,
   incidentSeverities,
   incidentsSummary,
@@ -68,12 +67,11 @@ export class MyIncidents {
     code: "all"
   }
 
-  protected incidentLocations = ghanaRegions.find(region => region.value === this.userRegion())?.cities ?? []
 
   protected incidentForm: FormGroup = new FormGroup({
     title: new FormControl("", [Validators.required]),
-    severity: new FormControl("", [Validators.required]),
     location: new FormControl("", [Validators.required]),
+    severity: new FormControl("", [Validators.required]),
     description: new FormControl("", [Validators.required]),
   });
 

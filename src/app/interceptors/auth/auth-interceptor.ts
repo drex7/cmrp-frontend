@@ -8,7 +8,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const newReq = req.clone({
     headers: req.headers
       .append("Authorization", `Bearer ${authToken}`)
-      .append("Content-Type", "application/json"),
+      .append("Content-Type", "application/json")
   })
 
   return next(newReq);
