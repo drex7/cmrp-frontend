@@ -125,9 +125,8 @@ export class Auth {
         life: 3000
       })
 
-      this.userStore.setIsSignedIn()
-      this.updateModal.emit()
-      await this.userStore.fetchUserInfo()
+      this.userStore.signOut()
+      this.formType.set("login");
     }
   }
 
@@ -139,7 +138,7 @@ export class Auth {
     }
   }
 
-  private async signIn(): Promise<void> {
+  private async signIn() {
     this.isSubmitting.set(true);
     try {
       const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
@@ -150,7 +149,7 @@ export class Auth {
     }
   }
 
-  private async handleSignInStep(signInStep: string): Promise<void> {
+  private async handleSignInStep(signInStep: string) {
     this.isSubmitting.set(false);
     console.log(signInStep)
 
@@ -187,7 +186,7 @@ export class Auth {
     }
   }
 
-  private handleError(error: Error, type = "Login"): void {
+  private handleError(error: Error, type = "Login") {
     this.toastService.showToast("error", `${type} failed`, error.message);
     this.isSubmitting.set(false);
   }
