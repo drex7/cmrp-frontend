@@ -21,7 +21,6 @@ export class AuthService {
   protected http = inject(HttpClient)
 
   public async signUp(data: AuthFormInterface) {
-
     const telephone = `+233${data.telephone.slice(1)}`
     const user: SignUpInput = {
       username: data.email,
@@ -40,7 +39,6 @@ export class AuthService {
   }
 
   public onboardUser(data: AuthFormInterface) {
-
     const telephone = `+233${data.telephone.slice(1)}`
     const user = {
       name: data.name,
@@ -49,9 +47,8 @@ export class AuthService {
       region: data.region,
       city: data.city,
       telephone,
-
     }
-    return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/invitee`, user)
   }
 
   public async signIn(data: AuthFormInterface) {
@@ -70,7 +67,6 @@ export class AuthService {
   }
 
   public async resetPassword(newPassword: string) {
-    console.log(newPassword)
     return await confirmSignIn({
       challengeResponse: newPassword,
     })

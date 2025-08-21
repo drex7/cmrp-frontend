@@ -70,7 +70,6 @@ export class Auth {
       // update cities when region changes
       this.authForm.get('region')?.valueChanges.subscribe(regionValue => {
         const region = ghanaRegions.find(r => r.value === regionValue);
-        console.log(region)
         this.cities = region ? region.cities : [];
         this.authForm.get('city')?.reset();
       });
@@ -98,6 +97,7 @@ export class Auth {
   protected async onSubmit() {
     if (this.authForm.valid) {
       if (this.formType() === 'signup') {
+        this.userName.set(this.authForm.value.email);
         await this.signUp()
       } else if (this.formType() === 'login') {
         this.userName.set(this.authForm.value.email);
@@ -142,7 +142,6 @@ export class Auth {
     this.isSubmitting.set(true);
     try {
       const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
-      console.log(signInStep);
       await this.handleSignInStep(signInStep);
     } catch (error) {
 
