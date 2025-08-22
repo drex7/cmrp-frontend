@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {Component, inject, OnInit} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router';
 import {Toast} from 'primeng/toast';
 
 @Component({
@@ -8,6 +8,11 @@ import {Toast} from 'primeng/toast';
   templateUrl: './cmrp.html',
   styleUrl: './cmrp.css'
 })
-export class Cmrp {
+export class Cmrp implements OnInit {
+  protected router = inject(Router)
 
+
+  ngOnInit() {
+    this.router.navigate(["dashboard"]).then(() => null);
+  }
 }

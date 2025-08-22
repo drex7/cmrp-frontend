@@ -7,11 +7,11 @@ const DashboardPage = () => import("@/pages/dashboard-layout/dashboard/dashboard
 const IncidentsPage = () => import("@/pages/dashboard-layout/incidents/incidents").then(m => m.Incidents);
 const UsersPage = () => import("@/pages/dashboard-layout/users/users").then(m => m.Users);
 const MyIncidentsPage = () => import("@/pages/dashboard-layout/my-incidents/my-incidents").then(m => m.MyIncidents);
-
+const AuthPage = () => import("@/pages/auth/auth").then(m => m.Auth);
 export const routes: Routes = [
   {
     title: "CMRP - Dashboard",
-    path: "",
+    path: "dashboard",
     loadComponent: DashboardLayout,
     canActivateChild: [authGuard],
     children: [
@@ -32,7 +32,13 @@ export const routes: Routes = [
         loadComponent: MyIncidentsPage
       }
     ]
-  }, {
+  },
+  {
+    path: ":authType",
+    loadComponent: AuthPage,
+  },
+
+  {
     path: "**",
     redirectTo: ""
   }

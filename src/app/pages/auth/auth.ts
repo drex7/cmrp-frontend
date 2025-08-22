@@ -7,8 +7,8 @@ import {NgTemplateOutlet, TitleCasePipe} from '@angular/common';
 import {Button} from 'primeng/button';
 import {Password} from 'primeng/password';
 import {InputMask} from 'primeng/inputmask';
-import {AuthService} from "../../services/auth-service/auth-service";
-import {ToastService} from "../../services/toast-service/toast-service";
+import {AuthService} from "@/services/auth-service/auth-service";
+import {ToastService} from "@/services/toast-service/toast-service";
 import {InputOtp} from "primeng/inputotp";
 import {UserStore} from '@/store/user-store';
 import {ghanaRegions} from '@/constants/index';
@@ -50,6 +50,8 @@ export class Auth {
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
   protected messageService = inject(MessageService);
+
+
   private readonly formCreators: Record<string, () => FormGroup> = {
     login: () => this.createLoginForm(),
     signup: () => this.createSignUpForm(),

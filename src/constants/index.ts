@@ -5,12 +5,12 @@ import {IUserData, RegionI} from "@/interfaces/user-interface";
 export const sidebarData = [
   {
     title: "Dashboard",
-    route: "",
+    route: "/dashboard",
     icon: PrimeIcons.HOME,
     isAccessible: true,
   }, {
     title: "Incidents",
-    route: "/incidents",
+    route: "incidents",
     icon: PrimeIcons.EXCLAMATION_TRIANGLE,
     isAccessible: false,
   },
@@ -26,11 +26,6 @@ export const sidebarData = [
     icon: PrimeIcons.EXCLAMATION_CIRCLE,
     isAccessible: false
   },
-  // {
-  //   title: "Roles and Permissions",
-  //   route: "/dashboard/roles",
-  //   icon: PrimeIcons.SHIELD
-  // }
 ]
 
 export const incidentFilters = [
