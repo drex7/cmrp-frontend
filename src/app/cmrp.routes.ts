@@ -8,6 +8,8 @@ const IncidentsPage = () => import("@/pages/dashboard-layout/incidents/incidents
 const UsersPage = () => import("@/pages/dashboard-layout/users/users").then(m => m.Users);
 const MyIncidentsPage = () => import("@/pages/dashboard-layout/my-incidents/my-incidents").then(m => m.MyIncidents);
 const AuthPage = () => import("@/pages/auth/auth").then(m => m.Auth);
+
+
 export const routes: Routes = [
   {
     title: "CMRP - Dashboard",
@@ -33,14 +35,32 @@ export const routes: Routes = [
       }
     ]
   },
+  // Auth routes includes: login, signup, otp, and reset_password
   {
-    path: ":authType",
+    title: "CMRP - Login",
+    path: "login",
+    loadComponent: AuthPage,
+  },
+  {
+    title: "CMRP - Sign Up",
+    path: "signup",
+    loadComponent: AuthPage,
+  },
+  {
+    title: "CMRP - Verify OTP",
+    path: "verify-otp",
+    loadComponent: AuthPage,
+  },
+  {
+    title: "CMRP - Reset Password",
+    path: "reset-password",
     loadComponent: AuthPage,
   },
 
+
   {
     path: "**",
-    redirectTo: ""
+    redirectTo: "dashboard"
   }
 ];
 

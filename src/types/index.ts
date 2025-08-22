@@ -7,3 +7,6 @@ export type IncidentType =
   | "investigating"
   | "pending"
   | "resolved";
+
+
+export type AuthType = "login" | "signup" | "otp" | "reset_password";
