@@ -16,13 +16,13 @@ export const sidebarData = [
   },
   {
     title: "Users",
-    route: "/users",
+    route: "users",
     icon: PrimeIcons.USERS,
     isAccessible: false
   },
   {
     title: "My Incidents",
-    route: "/my-incidents",
+    route: "my-incidents",
     icon: PrimeIcons.EXCLAMATION_CIRCLE,
     isAccessible: false
   },

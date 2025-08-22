@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, effect, inject, OnDestroy, output, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, effect, inject, OnDestroy, signal} from '@angular/core';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -39,8 +39,6 @@ import {AuthType} from '@/types/index';
   styleUrl: './auth.css'
 })
 export class Auth implements OnDestroy {
-  public updateModal = output<void>()
-
   protected authForm: FormGroup;
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
@@ -159,9 +157,8 @@ export class Auth implements OnDestroy {
         life: 3000
       })
 
-      this.userStore.setIsSignedIn()
-      this.updateModal.emit()
-      await this.userStore.fetchUserInfo()
+      this.userStore.signOut()
+      await this.router.navigate(["login"])
     }
   }
 
@@ -190,8 +187,8 @@ export class Auth implements OnDestroy {
 
     if (signInStep === "DONE") {
       this.userStore.setIsSignedIn()
-      this.updateModal.emit()
       await this.userStore.fetchUserInfo()
+      await this.router.navigate(["dashboard"])
       return;
     }
 
