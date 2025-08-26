@@ -42,7 +42,6 @@ export class Auth implements OnDestroy {
   protected authForm: FormGroup;
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
-  protected userName = signal('');
   protected formType = signal<AuthType>("login")
   protected minLengthValidator = Validators.minLength(5);
   protected readonly cn = cn;
@@ -98,7 +97,6 @@ export class Auth implements OnDestroy {
         this.authForm.get('city')?.reset();
       });
     });
-
   }
 
   ngOnDestroy() {
@@ -128,7 +126,7 @@ export class Auth implements OnDestroy {
       if (this.formType() === 'signup') {
         await this.signUp()
       } else if (this.formType() === 'login') {
-        this.userName.set(this.authForm.value.email);
+        localStorage.setItem("email", this.authForm.value.email)
         await this.signIn()
       } else if (this.formType() === 'reset_password') {
         await this.resetPassword()
@@ -164,7 +162,8 @@ export class Auth implements OnDestroy {
 
   private async confirmOtp() {
     const formValue = this.authForm.value
-    const {isSignUpComplete} = await this.authService.confirmSignUp(this.userName(), formValue.otp)
+    const username = localStorage.getItem("email") ?? "";
+    const {isSignUpComplete} = await this.authService.confirmSignUp(username, formValue.otp)
     if (isSignUpComplete) {
       this.formType.set("login");
     }
