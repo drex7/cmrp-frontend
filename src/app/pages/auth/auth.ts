@@ -1,20 +1,23 @@
-import {ChangeDetectionStrategy, Component, effect, inject, output, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, effect, inject, OnDestroy, signal} from '@angular/core';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {cn, ghPhoneValidator, matchPasswordValidator, strongPasswordValidator} from '@/lib/utils';
-import {NgTemplateOutlet, TitleCasePipe} from '@angular/common';
+import {NgOptimizedImage, NgTemplateOutlet, TitleCasePipe} from '@angular/common';
 import {Button} from 'primeng/button';
 import {Password} from 'primeng/password';
 import {InputMask} from 'primeng/inputmask';
-import {AuthService} from "../../services/auth-service/auth-service";
-import {ToastService} from "../../services/toast-service/toast-service";
+import {AuthService} from "@/services/auth-service/auth-service";
+import {ToastService} from "@/services/toast-service/toast-service";
 import {InputOtp} from "primeng/inputotp";
 import {UserStore} from '@/store/user-store';
 import {ghanaRegions} from '@/constants/index';
 import {RegionOrCityOption} from '@/interfaces/user-interface';
 import {Select} from 'primeng/select';
 import {MessageService} from 'primeng/api';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subject, takeUntil} from 'rxjs';
+import {AuthType} from '@/types/index';
 
 @Component({
   selector: 'cmrp-auth',
@@ -30,18 +33,16 @@ import {MessageService} from 'primeng/api';
     Button,
     InputOtp,
     Select,
+    NgOptimizedImage,
   ],
   templateUrl: './auth.html',
   styleUrl: './auth.css'
 })
-export class Auth {
-  public updateModal = output<void>()
-
+export class Auth implements OnDestroy {
   protected authForm: FormGroup;
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
-  protected userName = signal('');
-  protected formType = signal<"login" | "signup" | "otp" | "reset_password">("login")
+  protected formType = signal<AuthType>("login")
   protected minLengthValidator = Validators.minLength(5);
   protected readonly cn = cn;
   protected regions: RegionOrCityOption[] = []
@@ -50,6 +51,9 @@ export class Auth {
   protected authService = inject(AuthService);
   protected toastService = inject(ToastService);
   protected messageService = inject(MessageService);
+  protected route = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected destroy$ = new Subject<void>();
   private readonly formCreators: Record<string, () => FormGroup> = {
     login: () => this.createLoginForm(),
     signup: () => this.createSignUpForm(),
@@ -58,6 +62,24 @@ export class Auth {
   };
 
   constructor() {
+    const titleMap: Record<string, AuthType> = {
+      "Login": "login",
+      "Reset Password": "reset_password",
+      "Sign Up": "signup",
+      "Verify OTP": "otp",
+    };
+
+    this.route.title
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(title => {
+        if (!title) return;
+        const key = Object.keys(titleMap).find(k => title.endsWith(k));
+        if (key) {
+          this.formType.set(titleMap[key]);
+        }
+      });
+
+
     this.authForm = this.createLoginForm()
     this.regions = ghanaRegions.map(r => ({label: r.label, value: r.value}));
     effect(() => {
@@ -75,7 +97,11 @@ export class Auth {
         this.authForm.get('city')?.reset();
       });
     });
+  }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   protected getInputType(key: string): string {
@@ -100,7 +126,7 @@ export class Auth {
       if (this.formType() === 'signup') {
         await this.signUp()
       } else if (this.formType() === 'login') {
-        this.userName.set(this.authForm.value.email);
+        localStorage.setItem("email", this.authForm.value.email)
         await this.signIn()
       } else if (this.formType() === 'reset_password') {
         await this.resetPassword()
@@ -108,6 +134,10 @@ export class Auth {
         await this.confirmOtp()
       }
     }
+  }
+
+  protected async loginSignUp() {
+    await this.router.navigate(this.formType() === 'signup' ? ['login'] : ['signup'])
   }
 
   private async resetPassword() {
@@ -125,15 +155,15 @@ export class Auth {
         life: 3000
       })
 
-      this.userStore.setIsSignedIn()
-      this.updateModal.emit()
-      await this.userStore.fetchUserInfo()
+      this.userStore.signOut()
+      await this.router.navigate(["login"])
     }
   }
 
   private async confirmOtp() {
     const formValue = this.authForm.value
-    const {isSignUpComplete} = await this.authService.confirmSignUp(this.userName(), formValue.otp)
+    const username = localStorage.getItem("email") ?? "";
+    const {isSignUpComplete} = await this.authService.confirmSignUp(username, formValue.otp)
     if (isSignUpComplete) {
       this.formType.set("login");
     }
@@ -156,17 +186,19 @@ export class Auth {
 
     if (signInStep === "DONE") {
       this.userStore.setIsSignedIn()
-      this.updateModal.emit()
       await this.userStore.fetchUserInfo()
+      await this.router.navigate(["dashboard"])
       return;
     }
 
     if (signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
-      this.formType.set("reset_password")
+      await this.router.navigate(['reset-password']);
+      // this.formType.set("reset_password")
     }
 
     if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
-      this.formType.set("otp");
+      await this.router.navigate(['verify-otp']);
+      // this.formType.set("otp");
     }
   }
 
@@ -176,7 +208,8 @@ export class Auth {
       const {nextStep: {signUpStep}} = await this.authService.signUp(this.authForm.value);
       this.isSubmitting.set(false);
       if (signUpStep === "CONFIRM_SIGN_UP") {
-        this.formType.set("otp");
+        await this.router.navigate(['verify-otp']);
+        // this.formType.set("otp");
       }
       if (signUpStep === "DONE") {
         await this.signIn()

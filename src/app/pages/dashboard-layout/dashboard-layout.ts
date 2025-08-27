@@ -1,9 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, inject, OnInit} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
-import {RouterOutlet} from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
 import {Message} from 'primeng/message';
-import {Dialog} from 'primeng/dialog';
-import {Auth} from '@/components/auth/auth';
 import {UserStore} from '@/store/user-store';
 import {Sidebar} from '@/components/sidebar/sidebar';
 import {LoaderComponent} from "@/components/loader-component/loader-component";
@@ -17,8 +15,6 @@ import {Drawer} from 'primeng/drawer';
     ButtonDirective,
     RouterOutlet,
     Message,
-    Dialog,
-    Auth,
     Sidebar,
     LoaderComponent,
     Drawer
@@ -30,10 +26,10 @@ import {Drawer} from 'primeng/drawer';
 export class DashboardLayout implements OnInit {
   protected breakpointService = inject(BreakpointService);
   protected userStore = inject(UserStore)
+  protected router = inject(Router)
   protected user = this.userStore.userData()();
   protected auth = this.userStore.authData()()
   protected isSignedIn = computed(() => this.userStore.isUserSignedIn()());
-  protected showAuthDialog = false
 
   protected isSidebarOpen = false;
   protected isFetchingUser = computed(() => this.userStore.isLoading());
@@ -42,7 +38,7 @@ export class DashboardLayout implements OnInit {
 
   ngOnInit() {
     const isTokenExpired = checkTokenExpiry(this.auth.expiry)
-    
+
     if (isTokenExpired) {
       this.userStore.signOut()
     }
@@ -52,8 +48,7 @@ export class DashboardLayout implements OnInit {
     }
   }
 
-  protected setAuthModalAfterAuthentication() {
-    this.showAuthDialog = false
+  protected async login() {
+    await this.router.navigate(['login'])
   }
-
 }

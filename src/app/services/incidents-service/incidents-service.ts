@@ -8,6 +8,7 @@ import {environment} from '@/environments/environment';
 export class IncidentsService {
   private readonly http = inject(HttpClient);
 
+
   public createIncident(data: any) {
     return this.http.post(`${environment.incidentsUrl}/incidents`, data);
   }
@@ -15,4 +16,5 @@ export class IncidentsService {
   public fetchIncidents() {
     return this.http.get(`${environment.incidentsUrl}/incidents`)
   }
+
 }

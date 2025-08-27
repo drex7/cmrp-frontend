@@ -51,7 +51,7 @@ export class AuthService {
       telephone,
 
     }
-    return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
+    return this.http.post<{ message: string }>(`${environment.authUrl}/invite`, user)
   }
 
   public async signIn(data: AuthFormInterface) {
