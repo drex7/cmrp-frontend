@@ -10,26 +10,4 @@ import {Toast} from 'primeng/toast';
 })
 export class Cmrp {
 
-
-  // protected destroy$ = new Subject<void>();
-  // protected breakpointObserver = inject(BreakpointObserver);
-  // protected isSmallerScreen = signal(false)
-  //
-  // // isSmallScreen = this.breakpointObserver.isMatched('(max-width: 599px)');
-  //
-  // constructor() {
-  //     this.breakpointObserver
-  //         .observe([Breakpoints.Handset, Breakpoints.Tablet])
-  //         .pipe(
-  //             takeUntil(this.destroy$),
-  //             map(res => res.matches),
-  //         ).subscribe(res => {
-  //         this.isSmallerScreen.set(res);
-  //     })
-  // }
-  //
-  // ngOnDestroy() {
-  //     this.destroy$.next()
-  //     this.destroy$.complete()
-  // }
 }

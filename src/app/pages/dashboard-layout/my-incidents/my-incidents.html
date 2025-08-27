@@ -1,0 +1,254 @@
+<section class="flex gap-6 justify-between">
+  <div class="flex flex-col mb-6">
+    <h4 class="font-bold text-3xl">My Incidents</h4>
+    <p class="text-neutral-500">Overview of all incidents created</p>
+  </div>
+
+  <button (click)="showAddIncidentModal = true"
+          class="bg-primary h-max flex items-center gap-2 active:bg-primary-light hover:bg-primary-light" pButton>
+    <i class="pi pi-exclamation-circle text-white"></i>
+    <span>Add Incident</span>
+  </button>
+</section>
+
+<!--Incident highlights -->
+<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+  @for (incident of incidentsSummary; track incident.title) {
+    <cmrp-incident-highlight [incident]="incident"/>
+  }
+</div>
+
+<div class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
+  <div class="flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
+    <div class="flex flex-col">
+      <span class="font-bold text-3xl">Current Incidents</span>
+      <p class="text-neutral-500">Active and ongoing incidents requiring attention</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+      <p-icon-field class="w-full">
+        <p-inputicon class="pi pi-search"/>
+        <input class="w-full" pInputText placeholder="Search" type="search"/>
+      </p-icon-field>
+
+      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-full"
+                optionLabel="name" placeholder="Select filter"
+      />
+    </div>
+  </div>
+
+
+  <!--Incidents table-->
+  <p-table
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '60rem' }"
+    [value]="incidentTable"
+    class="mt-5"
+  >
+    <ng-template #header>
+      <tr>
+        @for (header of incidentTableHeaders; track header) {
+
+          <th>{{ header | titlecase }}</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template #body let-incident>
+      <tr>
+        <td>{{ incident.id }}</td>
+        <td>{{ incident.title }}</td>
+        <td>{{ incident.location }}</td>
+        <td>
+          <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.priority.toLowerCase())"
+                 [value]="incident.priority"/>
+        </td>
+        <td>
+          <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
+                 [value]="incident.status"/>
+        </td>
+        <td>{{ incident.assignedOfficer }}</td>
+        <td>{{ incident.reported }}</td>
+        <td>
+          <div class="flex items-center gap-2">
+            <p-button
+              (click)="incidentAction(incident.id, false)"
+              (keyup)="incidentAction(incident.id, false)"
+              aria-label="view incident"
+              icon="pi pi-eye"
+              pTooltip="View incident"
+              tooltipPosition="top"
+              type="button"
+              variant="text"
+            />
+            <p-button
+              (click)="incidentAction(incident.id, true)"
+              (keyup)="incidentAction(incident.id, true)"
+              aria-label="update incident"
+              icon="pi pi-pencil"
+              pTooltip="Update incident"
+              tooltipPosition="top"
+              variant="text"
+            />
+          </div>
+        </td>
+
+
+      </tr>
+    </ng-template>
+    <ng-template #footer>
+      <tr>
+        <td colspan="8">In total there are {{ incidentTable ? incidentTable.length : 0 }} incidents.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
+<!--Add Incident modal form-->
+<p-dialog [(visible)]="showAddIncidentModal"
+          [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"
+          [draggable]="false"
+          [modal]="true"
+          [resizable]="false"
+          [style]="{ width: '50vw' }">
+
+  <h5 class="text-3xl capitalize font-semibold text-center mb-4">Incident reporting form</h5>
+
+  <form [formGroup]="incidentForm" class="flex flex-col">
+    <div class="grid grid-cols-2 gap-4">
+      @for (control of incidentFormControls(); track control) {
+        @let
+        inputError = incidentForm.get(control)?.invalid && (incidentForm.get(control)?.dirty || incidentForm.get(control)?.touched);
+        @let label = control.split('_').join(' ');
+        <div [class]="cn('', {
+        'col-span-2': ['description', 'title'].includes(control),
+        'col-span-2 md:col-span-1': ['severity', 'location'].includes(control),
+        })">
+
+          <p-float-label variant="on">
+            @if (["severity", "location"].includes(control)) {
+              <p-select
+                [formControlName]="control"
+                [options]="control === 'location' ? incidentLocations : incidentSeverities"
+                [invalid]="inputError"
+                [autofocus]="false"
+                appendTo="body"
+                optionValue="value"
+                optionLabel="label"
+                class="w-full"
+              />
+            } @else if (control === 'description') {
+              <textarea [id]="control"
+                        [formControlName]="control"
+                        pTextarea
+                        class="w-full resize-none"
+                        rows="5"
+                        cols="30"
+                        [invalid]="inputError"
+              ></textarea>
+
+            } @else {
+              <input autocomplete="on" [type]="getInputType(control)"
+                     [id]="control"
+                     [formControlName]="control"
+                     pInputText
+                     class="w-full"
+                     [invalid]="inputError"
+              />
+            }
+            <label class="text-sm" [for]="control">{{ label | titlecase }}</label>
+          </p-float-label>
+          @if (inputError) {
+            <div class="text-sm text-red-600">
+              @if (incidentForm.get(control)?.errors?.['required']) {
+                <div>{{ label | titlecase }} is required</div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </form>
+
+  <!--  Image selection-->
+  <div class="flex flex-col mt-4">
+    <div (dragleave)="onDragLeave($event)"
+         (dragover)="onDragOver($event)"
+         (drop)="onDrop($event)"
+         class="border-2 border-dashed border-[#ccc] rounded-lg bg-[#f9f9f9] transition-all duration-300 ease-in-out p-8 flex flex-col gap-4 items-center">
+      <p>Drag & drop your images here or</p>
+      <label class="upload-btn" for="file-input">
+        <input
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class="file-input"
+          id="file-input"
+          multiple
+          type="file"
+        />
+        Browse Images
+      </label>
+
+    </div>
+    <div class="preview-container">
+      @for (image of images(); track $index) {
+        <div class="image-wrapper">
+          <img [src]="image.url" class="preview-image" alt="Preview">
+          <button class="remove-btn" (click)="removeImage($index)" title="Remove Image">×</button>
+        </div>
+      }
+    </div>
+  </div>
+
+
+  <ng-template #footer>
+    <div class="flex items-center gap-4">
+      <p-button
+        (click)="cancelIncidentOperation()"
+        (keyup)="cancelIncidentOperation()"
+        label="Cancel"
+        variant="outlined"
+      />
+
+      <p-button
+        (click)="onSubmit()"
+        (keyup)="onSubmit()"
+        [disabled]="incidentForm.invalid || !images().length"
+        [loading]="isSubmitting()"
+        label="Report incident"
+        styleClass="w-full bg-primary-light"
+        type="submit"
+      />
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!--Incident details modal-->
+@if (showIncidentDetailsModal) {
+  <p-dialog [(visible)]="showIncidentDetailsModal" [modal]="true"
+            [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"
+            [style]="{ width: '50vw' }"
+            maskStyleClass="backdrop-blur-sm"
+            [draggable]="false"
+            [resizable]="false">
+    <ng-template #header>
+      <div class="flex flex-col">
+        <span class="font-bold text-xl">{{ getIncidentDetails().title }}</span>
+        <span class="text-neutral-500">incident details - {{ getIncidentDetails().id }}</span>
+      </div>
+    </ng-template>
+    <cmrp-incident-details
+      [showEditOptions]="showEditDetailsOptions()"
+      [incident]="getIncidentDetails()"/>
+
+    @if (showEditDetailsOptions()) {
+      <ng-template #footer>
+        <div class="flex items-center gap-4 justify-between">
+          <p-button (click)="showIncidentDetailsModal=false" label="Cancel" variant="outlined"/>
+          <button aria-label="Submit" pButton class="bg-primary!">Submit</button>
+        </div>
+      </ng-template>
+    }
+  </p-dialog>
+}

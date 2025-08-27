@@ -19,6 +19,9 @@
       "@/guards/*": [
         "./app/guards/*"
       ],
+      "@/services/*": [
+        "./app/services/*"
+      ],
       "@/lib/*": [
         "./lib/*"
       ],
@@ -34,9 +37,15 @@
       "@/assets/*": [
         "./assets/*"
       ],
-      "@/amplify/*": [
-        ".././amplify/*"
-      ]
+      "@/environments/*": [
+        "./environments/*"
+      ],
+      "@/constants/*": [
+        "./constants/*"
+      ],   "@/interceptors/*": [
+        "./interceptors/*"
+      ],
+
     }
   },
   "include": [
