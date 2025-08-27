@@ -18,6 +18,6 @@ export class UsersService {
         admin: number;
       },
       users: Partial<AuthFormInterface>[]
-    }>(`${environment.baseUrl}/users`)
+    }>(`${environment.authUrl}/users`)
   }
 }
