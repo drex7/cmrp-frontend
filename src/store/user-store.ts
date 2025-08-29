@@ -45,9 +45,8 @@ export const UserStore = signalStore(
       patchState(store, {isLoading: false, user, auth, isSignedIn: true});
     },
 
-    signOut() {
-      authService.signOut().then(() => {
-        localStorage.clear();
+    signOut(returnHome = true) {
+      authService.signOut(returnHome).then(() => {
         const user = {
           userId: "",
           name: "",

@@ -168,6 +168,7 @@ export class Auth implements AfterViewInit, OnDestroy {
     this.isSubmitting.set(true);
     const formValue = this.authForm.value;
     const {nextStep: {signInStep}} = await this.authService.resetPassword(formValue.new_password)
+    console.log(signInStep)
 
     if (signInStep === "DONE") {
       this.isSubmitting.set(false);
@@ -179,7 +180,7 @@ export class Auth implements AfterViewInit, OnDestroy {
         life: 3000
       })
 
-      this.userStore.signOut()
+      this.userStore.signOut(false)
       await this.router.navigate(["login"])
     }
   }
@@ -204,30 +205,25 @@ export class Auth implements AfterViewInit, OnDestroy {
       const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
       await this.handleSignInStep(signInStep);
     } catch (error) {
-      console.error(error);
       this.handleError(error as Error);
     }
   }
 
   private async handleSignInStep(signInStep: string): Promise<void> {
     this.isSubmitting.set(false);
-    console.log(signInStep)
-
     if (signInStep === "DONE") {
       this.userStore.setIsSignedIn()
-      await this.userStore.fetchUserInfo()
       await this.router.navigate(["dashboard"])
+      await this.userStore.fetchUserInfo()
       return;
     }
 
     if (signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
       await this.router.navigate(['reset-password']);
-      // this.formType.set("reset_password")
     }
 
     if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
       await this.router.navigate(['verify-otp']);
-      // this.formType.set("otp");
     }
   }
 
@@ -235,6 +231,7 @@ export class Auth implements AfterViewInit, OnDestroy {
     this.isSubmitting.set(true);
     try {
       const {nextStep: {signUpStep}} = await this.authService.signUp(this.authForm.value);
+      console.log(signUpStep)
       this.isSubmitting.set(false);
       if (signUpStep === "CONFIRM_SIGN_UP") {
         await this.router.navigate(['verify-otp']);

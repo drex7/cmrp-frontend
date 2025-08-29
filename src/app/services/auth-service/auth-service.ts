@@ -85,14 +85,16 @@ export class AuthService {
     }
   }
 
-  public async signOut() {
-    localStorage.clear()
-    return Promise.all([
-      await awsSignOut(),
-      await this.router.navigate([""])
-    ])
+  public async signOut(returnHome: boolean) {
+    console.log(returnHome)
+    localStorage.clear();
+    const tasks: Promise<void>[] = [awsSignOut()];
+    if (returnHome) {
+      tasks.push(this.router.navigate([""]).then(() => {
+      }));
+    }
+    return Promise.all(tasks);
   }
-
 }
 
 
