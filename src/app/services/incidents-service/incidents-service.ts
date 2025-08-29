@@ -10,11 +10,11 @@ export class IncidentsService {
 
 
   public createIncident(data: any) {
-    return this.http.post(`${environment.incidentsUrl}/incidents`, data);
+    return this.http.post(`${environment.baseUrl}/incidents`, data);
   }
 
   public fetchIncidents() {
-    return this.http.get(`${environment.incidentsUrl}/incidents`)
+    return this.http.get(`${environment.baseUrl}/incidents`)
   }
 
 }

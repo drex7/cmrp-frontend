@@ -51,7 +51,7 @@ export class AuthService {
       telephone,
 
     }
-    return this.http.post<{ message: string }>(`${environment.authUrl}/invite`, user)
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
   }
 
   public async signIn(data: AuthFormInterface) {
@@ -70,7 +70,6 @@ export class AuthService {
   }
 
   public async resetPassword(newPassword: string) {
-    console.log(newPassword)
     return await confirmSignIn({
       challengeResponse: newPassword,
     })
@@ -95,3 +94,5 @@ export class AuthService {
   }
 
 }
+
+
