@@ -13,8 +13,13 @@ export class IncidentsService {
     return this.http.post(`${environment.baseUrl}/incidents`, data);
   }
 
+  public fetchUserIncidents() {
+    return this.http.get(`${environment.baseUrl}/incidents/mine`)
+  }
+
   public fetchIncidents() {
     return this.http.get(`${environment.baseUrl}/incidents`)
   }
+
 
 }

@@ -210,11 +210,11 @@ export class Auth implements AfterViewInit, OnDestroy {
   }
 
   private async handleSignInStep(signInStep: string): Promise<void> {
-    this.isSubmitting.set(false);
     if (signInStep === "DONE") {
       this.userStore.setIsSignedIn()
-      await this.router.navigate(["dashboard"])
       await this.userStore.fetchUserInfo()
+      this.isSubmitting.set(false);
+      await this.router.navigate(["dashboard"])
       return;
     }
 

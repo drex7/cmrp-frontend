@@ -53,6 +53,27 @@ export const incidentSeverities = [
     value: "critical"
   }
 ]
+export const incidentCategories = [
+  {
+    label: "Public Safety",
+    value: "public-safety"
+  },
+  {
+    label: "Traffic & Transportation",
+    value: "traffic-transportation"
+  },
+  {
+    label: "Infrastructure & Utilities",
+    value: "infrastructure-utilities"
+  },
+  {
+    label: "Natural Disasters & Weather",
+    value: "natural-disasters"
+  }, {
+    label: "Health & Public Services",
+    value: "health"
+  },
+]
 
 export const userFilters = [
   {label: 'All Users', value: 'all'},

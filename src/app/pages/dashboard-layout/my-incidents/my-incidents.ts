@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core'
 import {Button, ButtonDirective} from "primeng/button";
 import {IncidentHighlight} from '@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight';
 import {
-  ghanaRegions,
+  incidentCategories,
   incidentFilters,
   incidentSeverities,
   incidentsSummary,
@@ -24,6 +24,9 @@ import {IncidentDetails} from '@/pages/dashboard-layout/incidents/incident-detai
 import {UserStore} from '@/store/user-store';
 import {FloatLabel} from 'primeng/floatlabel';
 import {Textarea} from 'primeng/textarea';
+import {IncidentsService} from '@/services/incidents-service/incidents-service';
+import {ToastService} from '@/services/toast-service/toast-service';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'cmrp-my-incidents',
@@ -51,6 +54,8 @@ import {Textarea} from 'primeng/textarea';
   styleUrl: './my-incidents.css'
 })
 export class MyIncidents {
+  protected toastService = inject(ToastService);
+  protected incidentsService = inject(IncidentsService)
   protected userStore = inject(UserStore);
   protected userRegion = this.userStore.userData().region
   protected readonly incidentsSummary = incidentsSummary.slice(0, 3);
@@ -68,10 +73,9 @@ export class MyIncidents {
     code: "all"
   }
 
-  protected incidentLocations = ghanaRegions.find(region => region.value === this.userRegion())?.cities ?? []
-
   protected incidentForm: FormGroup = new FormGroup({
     title: new FormControl("", [Validators.required]),
+    category: new FormControl("", [Validators.required]),
     severity: new FormControl("", [Validators.required]),
     location: new FormControl("", [Validators.required]),
     description: new FormControl("", [Validators.required]),
@@ -79,6 +83,7 @@ export class MyIncidents {
 
   protected incidentFormControls = signal<string[]>(Object.keys(this.incidentForm.controls));
   protected readonly incidentSeverities = incidentSeverities;
+  protected readonly incidentCategories = incidentCategories;
   protected readonly cn = cn;
   protected isSubmitting = signal(false)
 
@@ -154,24 +159,26 @@ export class MyIncidents {
     this.incidentForm.reset();
   }
 
-  protected onSubmit() {
+  protected async onSubmit() {
     this.isSubmitting.set(true);
     if (this.incidentForm.valid) {
       const formData = this.incidentForm.value;
       const incidentData = {
         ...formData,
         images: this.images(),
-        reportedBy: this.userStore.userData().userId,
+        reportedBy: this.userStore.userData()().userId,
         status: 'Pending',
-        reported: new Date().toISOString()
       };
-      // Here you would typically send the incidentData to your backend API
-      console.log("Incident submitted:", incidentData);
+
+      this.incidentsService.createIncident(incidentData).pipe(take(1)).subscribe({
+        next: data => {
+          console.log(data)
+        }, error: err => {
+          this.handleError(err as Error)
+        }
+      })
       this.isSubmitting.set(false);
       this.cancelIncidentOperation();
-    } else {
-      alert("Please fill in all required fields.");
-      this.isSubmitting.set(false);
     }
   }
 
@@ -194,5 +201,10 @@ export class MyIncidents {
         alert("Only image files are allowed.");
       }
     });
+  }
+
+  private handleError(error: Error, type = "Login"): void {
+    this.toastService.showToast("error", `${type} failed`, error.message);
+    this.isSubmitting.set(false);
   }
 }
