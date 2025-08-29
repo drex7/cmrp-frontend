@@ -90,7 +90,7 @@ export class AuthService {
     localStorage.clear();
     const tasks: Promise<void>[] = [awsSignOut()];
     if (returnHome) {
-      tasks.push(this.router.navigate([""]).then(() => {
+      tasks.push(this.router.navigate(["/dashboard"]).then(() => {
       }));
     }
     return Promise.all(tasks);
