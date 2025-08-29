@@ -6,8 +6,8 @@ export const authGuard: CanActivateChildFn = async (childRoute, state) => {
   const router = inject(Router);
   const route = childRoute.routeConfig?.path ?? ""
   const userStore = inject(UserStore)
-
-  if (route === "") return true
+  console.log(route)
+  if (["", "login", "verify-otp", "reset-password", "signup"].includes(route)) return true
   if (userStore.isUserSignedIn()()) {
     await userStore.fetchUserInfo();
     const user = userStore.userData()
@@ -19,5 +19,5 @@ export const authGuard: CanActivateChildFn = async (childRoute, state) => {
   }
 
   await router.navigate(['/dashboard']);
-  return false;
+  return true;
 };

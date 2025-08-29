@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
 import {Router, RouterOutlet} from "@angular/router";
 import {Message} from 'primeng/message';
@@ -7,6 +7,7 @@ import {Sidebar} from '@/components/sidebar/sidebar';
 import {LoaderComponent} from "@/components/loader-component/loader-component";
 import {BreakpointService} from '@/services/breakpoint-service/breakpoint-service';
 import {Drawer} from 'primeng/drawer';
+import {checkTokenExpiry} from '@/lib/utils';
 
 @Component({
   selector: 'cmrp-dashboard-layout',
@@ -22,7 +23,7 @@ import {Drawer} from 'primeng/drawer';
   styleUrl: './dashboard-layout.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardLayout {
+export class DashboardLayout implements OnInit {
   protected breakpointService = inject(BreakpointService);
   protected userStore = inject(UserStore)
   protected router = inject(Router)
@@ -34,6 +35,14 @@ export class DashboardLayout {
   protected isFetchingUser = computed(() => this.userStore.isLoading());
   protected isSmallerScreen = computed(() => this.breakpointService.isSmallerScreen());
 
+  ngOnInit() {
+    const isTokenExpired = checkTokenExpiry(this.auth.expiry);
+    if (!this.isSignedIn() || isTokenExpired) {
+      this.userStore.signOut();
+      return;
+    }
+    this.userStore.fetchUserInfo();
+  }
 
   protected async login() {
     await this.router.navigate(['login'])
