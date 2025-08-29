@@ -34,7 +34,7 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   protected fetchIncidentsOverview() {
-    this.http.get(`${environment.baseUrl}/dashboard/public`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.http.get(`https://n3an2lfckg.execute-api.eu-central-1.amazonaws.com/dashboard`).pipe(takeUntil(this.destroy$)).subscribe({
       next: data => {
         console.log(data)
       },

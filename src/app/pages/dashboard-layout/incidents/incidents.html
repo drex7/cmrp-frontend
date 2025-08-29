@@ -11,19 +11,19 @@
 </div>
 
 <div class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
-  <div class="flex items-center gap-4 justify-between">
+  <div class="flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
     <div class="flex flex-col">
       <span class="font-bold text-3xl">Current Incidents</span>
       <p class="text-neutral-500">Active and ongoing incidents requiring attention</p>
     </div>
 
-    <div class="flex items-center gap-4">
-      <p-icon-field>
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+      <p-icon-field class="w-full">
         <p-inputicon class="pi pi-search"/>
-        <input pInputText placeholder="Search" type="search"/>
+        <input class="w-full" pInputText placeholder="Search" type="search"/>
       </p-icon-field>
 
-      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-44"
+      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-full"
                 optionLabel="name" placeholder="Select filter"
       />
     </div>
@@ -36,18 +36,19 @@
     [paginator]="true"
     [rows]="10"
     [tableStyle]="{ 'min-width': '60rem' }"
-    [value]="isFetchingIncidents() ? tableSkeletonArray : incidentTable"
+    [value]="isFetchingIncidents() ? tableSkeletonArray : incidentTable()"
     class="mt-5"
   >
     <ng-template #header>
       <tr>
         @for (header of incidentTableHeaders; track header) {
 
-          <th>{{ header | titlecase }}</th>
+          <th [id]="header">{{ header | titlecase }}</th>
         }
       </tr>
     </ng-template>
     <ng-template #body let-incident>
+
       @if (isFetchingIncidents()) {
         <tr>
           @for (el of tableSkeletonArray; track $index) {
@@ -98,9 +99,21 @@
       }
     </ng-template>
     <ng-template #footer>
-      <tr>
-        <td colspan="8">In total there are {{ incidentTable ? incidentTable.length : 0 }} incidents.</td>
-      </tr>
+      @if (!isFetchingIncidents() && incidentTable().length === 0) {
+        <tr>
+          <td colspan="8">
+            <div class="flex flex-col gap-2 items-center justify-center h-58">
+              <img ngSrc="/assets/empty.svg" priority alt="empty" height="130" width="160">
+              <span class="text-sm text-slate-500">No incidents created :(</span>
+            </div>
+
+          </td>
+        </tr>
+      } @else {
+        <tr>
+          <td colspan="8">In total there are {{ incidentTable() ? incidentTable().length : 0 }} incidents.</td>
+        </tr>
+      }
     </ng-template>
   </p-table>
 </div>
@@ -125,7 +138,9 @@
     @if (showEditDetailsOptions()) {
       <ng-template #footer>
         <div class="flex items-center gap-4 justify-between">
-          <p-button (click)="showIncidentDetailsModal=false" label="Cancel" variant="outlined"/>
+          <p-button
+            (keyup)="showIncidentDetailsModal=false"
+            (click)="showIncidentDetailsModal=false" label="Cancel" variant="outlined"/>
           <button aria-label="Submit" pButton class="bg-primary!">Submit</button>
         </div>
       </ng-template>
