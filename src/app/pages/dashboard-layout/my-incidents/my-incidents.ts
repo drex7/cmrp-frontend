@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {IncidentHighlight} from '@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight';
 import {
@@ -26,7 +26,7 @@ import {FloatLabel} from 'primeng/floatlabel';
 import {Textarea} from 'primeng/textarea';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {ToastService} from '@/services/toast-service/toast-service';
-import {take} from 'rxjs';
+import {Subject, take, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'cmrp-my-incidents',
@@ -53,11 +53,10 @@ import {take} from 'rxjs';
   templateUrl: './my-incidents.html',
   styleUrl: './my-incidents.css'
 })
-export class MyIncidents {
+export class MyIncidents implements OnInit, OnDestroy {
   protected toastService = inject(ToastService);
   protected incidentsService = inject(IncidentsService)
   protected userStore = inject(UserStore);
-  protected userRegion = this.userStore.userData().region
   protected readonly incidentsSummary = incidentsSummary.slice(0, 3);
   protected readonly getIncidentSeverity = getIncidentSeverity;
   protected readonly incidentTable = incidentTable;
@@ -86,6 +85,22 @@ export class MyIncidents {
   protected readonly incidentCategories = incidentCategories;
   protected readonly cn = cn;
   protected isSubmitting = signal(false)
+  protected destroy$ = new Subject<void>();
+
+  ngOnInit() {
+    this.incidentsService.fetchUserIncidents().pipe(takeUntil(this.destroy$)).subscribe({
+      next: data => {
+        console.log(data)
+      }, error: err => {
+        this.handleError(err as Error)
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next()
+    this.destroy$.complete()
+  }
 
   protected getInputType(key: string): string {
     const types: { [key: string]: string } = {
