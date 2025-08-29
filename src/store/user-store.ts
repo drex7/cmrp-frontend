@@ -1,7 +1,7 @@
 import {UserInterface} from '@/interfaces/user-interface';
 import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
 import {computed, inject} from '@angular/core';
-import {AuthService} from '../app/services/auth-service/auth-service';
+import {AuthService} from '@/services/auth-service/auth-service';
 
 const isSignedIn = JSON.parse(localStorage.getItem('isSignedIn') as string ?? "false")
 const expiry = JSON.parse(localStorage.getItem('expiry') as string ?? "0");
