@@ -1,4 +1,13 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, OnDestroy, signal} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal
+} from '@angular/core';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -38,7 +47,7 @@ import {AuthType} from '@/types/index';
   templateUrl: './auth.html',
   styleUrl: './auth.css'
 })
-export class Auth implements AfterViewInit, OnDestroy {
+export class Auth implements OnInit, AfterViewInit, OnDestroy {
   protected authForm: FormGroup;
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
@@ -104,6 +113,12 @@ export class Auth implements AfterViewInit, OnDestroy {
 
   }
 
+  async ngOnInit() {
+    if (this.formType() === "login") {
+      await this.authService.signOut(false)
+    }
+  }
+
   ngAfterViewInit() {
     // Update form values from query param
     this.route.queryParams
@@ -111,9 +126,11 @@ export class Auth implements AfterViewInit, OnDestroy {
       .subscribe(params => {
         console.log(params)
         const otp = params['otp'];
+        const email = params['email'];
         if (this.formType() === "otp" && otp) {
           this.authForm.patchValue({
-            otp
+            otp,
+            email
           })
 
           console.log(this.authForm.value);

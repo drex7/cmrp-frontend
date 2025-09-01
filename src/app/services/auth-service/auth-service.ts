@@ -86,7 +86,6 @@ export class AuthService {
   }
 
   public async signOut(returnHome: boolean) {
-    console.log(returnHome)
     localStorage.clear();
     const tasks: Promise<void>[] = [awsSignOut()];
     if (returnHome) {
