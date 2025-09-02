@@ -118,6 +118,7 @@ export class Users implements OnInit, OnDestroy {
           {title: 'citizens', count: value.counts.citizens},
         ])
         this.users.set(value.users.map(user => {
+          console.log(user);
           return {
             ...user,
             user_id: user.user_id?.slice(0, 8),
