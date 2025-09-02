@@ -9,5 +9,4 @@ import {Toast} from 'primeng/toast';
   styleUrl: './cmrp.css'
 })
 export class Cmrp {
-
 }

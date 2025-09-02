@@ -51,7 +51,7 @@ export class AuthService {
       telephone,
 
     }
-    return this.http.post<{ message: string }>(`${environment.authUrl}/invite`, user)
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
   }
 
   public async signIn(data: AuthFormInterface) {
@@ -70,7 +70,6 @@ export class AuthService {
   }
 
   public async resetPassword(newPassword: string) {
-    console.log(newPassword)
     return await confirmSignIn({
       challengeResponse: newPassword,
     })
@@ -86,12 +85,15 @@ export class AuthService {
     }
   }
 
-  public async signOut() {
-    localStorage.clear()
-    return Promise.all([
-      await awsSignOut(),
-      await this.router.navigate([""])
-    ])
+  public async signOut(returnHome: boolean) {
+    localStorage.clear();
+    const tasks: Promise<void>[] = [awsSignOut()];
+    if (returnHome) {
+      tasks.push(this.router.navigate(["/dashboard"]).then(() => {
+      }));
+    }
+    return Promise.all(tasks);
   }
-
 }
+
+

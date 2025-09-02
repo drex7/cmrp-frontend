@@ -122,15 +122,15 @@
         inputError = incidentForm.get(control)?.invalid && (incidentForm.get(control)?.dirty || incidentForm.get(control)?.touched);
         @let label = control.split('_').join(' ');
         <div [class]="cn('', {
-        'col-span-2': ['description', 'title'].includes(control),
-        'col-span-2 md:col-span-1': ['severity', 'location'].includes(control),
+        'col-span-2': ['description', 'title', 'location'].includes(control),
+        'col-span-2 md:col-span-1': ['severity', 'category'].includes(control),
         })">
 
           <p-float-label variant="on">
-            @if (["severity", "location"].includes(control)) {
+            @if (['severity', 'category'].includes(control)) {
               <p-select
                 [formControlName]="control"
-                [options]="control === 'location' ? incidentLocations : incidentSeverities"
+                [options]=" control === 'severity' ? incidentSeverities : incidentCategories"
                 [invalid]="inputError"
                 [autofocus]="false"
                 appendTo="body"
@@ -214,7 +214,7 @@
       <p-button
         (click)="onSubmit()"
         (keyup)="onSubmit()"
-        [disabled]="incidentForm.invalid || !images().length"
+        [disabled]="incidentForm.invalid"
         [loading]="isSubmitting()"
         label="Report incident"
         styleClass="w-full bg-primary-light"
