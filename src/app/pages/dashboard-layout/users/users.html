@@ -96,6 +96,13 @@
           <td>{{ user.region }}</td>
           <td>{{ user.city }}</td>
           <td>{{ user.role }}</td>
+          <td>
+            <button pTooltip="Delete user" class="cursor-pointer text-red-600" (click)="deleteUser($event)"
+                    aria-label="Delete User">
+              <i class="pi pi-user-minus"></i>
+            </button>
+
+          </td>
         </tr>
       }
     </ng-template>

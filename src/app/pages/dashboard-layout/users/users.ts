@@ -15,11 +15,12 @@ import {InputMask} from 'primeng/inputmask';
 import {TitleCasePipe} from '@angular/common';
 import {AuthFormInterface, RegionOrCityOption} from '@/interfaces/user-interface';
 import {AuthService} from '@/services/auth-service/auth-service';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {UsersService} from '@/services/users/users-service';
 import {Skeleton} from 'primeng/skeleton';
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, take, takeUntil} from 'rxjs';
+import {Tooltip} from 'primeng/tooltip';
 
 @Component({
   selector: 'cmrp-users',
@@ -40,7 +41,8 @@ import {Subject, takeUntil} from 'rxjs';
     ReactiveFormsModule,
     TitleCasePipe,
     ConfirmDialog,
-    Skeleton
+    Skeleton,
+    Tooltip
   ],
   templateUrl: './users.html',
   styleUrl: './users.css'
@@ -84,6 +86,7 @@ export class Users implements OnInit, OnDestroy {
   protected readonly Array = Array;
   protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
   protected destroy$ = new Subject<void>();
+  protected confirmationService = inject(ConfirmationService)
 
   ngOnInit() {
     this.fetchUsers()
@@ -118,7 +121,6 @@ export class Users implements OnInit, OnDestroy {
           {title: 'citizens', count: value.counts.citizens},
         ])
         this.users.set(value.users.map(user => {
-          console.log(user);
           return {
             ...user,
             user_id: user.user_id?.slice(0, 8),
@@ -138,6 +140,45 @@ export class Users implements OnInit, OnDestroy {
         });
       }
     })
+  }
+
+  protected deleteUser(event: Event) {
+
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this user?',
+      header: 'Delete User',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.usersService.deleteUser(this.userForm.value).pipe(take(1)).subscribe({
+          next: value => {
+            console.log(value);
+          },
+          error: error => {
+            const errorMessage = error.error?.message || 'unable to delete user';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: errorMessage,
+              life: 3000
+            });
+          }
+        })
+      },
+
+    });
+
   }
 
   protected getUsers() {

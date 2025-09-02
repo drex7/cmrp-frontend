@@ -20,4 +20,12 @@ export class UsersService {
       users: Partial<AuthFormInterface>[]
     }>(`${environment.baseUrl}/users`)
   }
+
+  public deleteUser(username: string) {
+    return this.http.delete(`${environment.baseUrl}/delete/`, {
+      body: {
+        username
+      }
+    });
+  }
 }

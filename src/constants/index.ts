@@ -311,6 +311,6 @@ export const incidentTable: IIncidentDetails[] = [
 
 export const userTableHeaders = [
   "User ID", "Name", "Email", "Phone", "Region", "City", "Role",
-  // "Action"
+  "Action"
 ]
 
