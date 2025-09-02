@@ -18,8 +18,7 @@ export class IncidentsService {
   }
 
   public fetchIncidents() {
-    // return this.http.get(`${environment.baseUrl}/incidents`)
-    return this.http.get(`https://17c6af714f00.ngrok-free.app/incidents`)
+    return this.http.get(`${environment.baseUrl}/incidents`)
   }
 
 
