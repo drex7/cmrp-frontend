@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {incidentFilters, incidentsSummary, incidentTable, incidentTableHeaders} from "@/constants/index";
+import {incidentFilters, incidentsSummary, incidentTableHeaders} from "@/constants/index";
 import {IncidentHighlight} from "@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
@@ -8,7 +8,7 @@ import {Select} from "primeng/select";
 import {FormsModule} from "@angular/forms";
 import {cn, getIncidentSeverity} from "@/lib/utils";
 import {TableModule} from "primeng/table";
-import {TitleCasePipe} from "@angular/common";
+import {NgOptimizedImage, TitleCasePipe} from "@angular/common";
 import {Tag} from "primeng/tag";
 import {Button, ButtonDirective} from "primeng/button";
 import {Tooltip} from "primeng/tooltip";
@@ -22,6 +22,8 @@ import {IIncidentDetails} from '@/interfaces/incident-interface';
 
 @Component({
   selector: 'cmrp-incidents',
+  templateUrl: './incidents.html',
+  styleUrl: './incidents.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IncidentHighlight,
@@ -38,15 +40,15 @@ import {IIncidentDetails} from '@/interfaces/incident-interface';
     Dialog,
     IncidentDetails,
     ButtonDirective,
-    Skeleton
+    Skeleton,
+    NgOptimizedImage
   ],
-  templateUrl: './incidents.html',
-  styleUrl: './incidents.css'
+
 })
 export class Incidents implements OnInit, OnDestroy {
   protected readonly cn = cn;
   protected readonly getIncidentSeverity = getIncidentSeverity;
-  protected readonly incidentTable = incidentTable;
+  protected readonly incidentTable = signal<IIncidentDetails[]>([]);
   protected readonly incidentTableHeaders = incidentTableHeaders;
   protected showIncidentDetailsModal = false
   protected selectedIncident = signal("")
@@ -94,7 +96,7 @@ export class Incidents implements OnInit, OnDestroy {
   }
 
   protected getIncidentDetails() {
-    return this.incidentTable.find(incident => incident.id === this.selectedIncident()) ?? {
+    return this.incidentTable().find(incident => incident.id === this.selectedIncident()) ?? {
       id: "",
       assignedOfficer: "",
       priority: "",

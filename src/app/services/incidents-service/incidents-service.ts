@@ -10,11 +10,17 @@ export class IncidentsService {
 
 
   public createIncident(data: any) {
-    return this.http.post(`${environment.incidentsUrl}/incidents`, data);
+    return this.http.post(`${environment.baseUrl}/incidents`, data);
+  }
+
+  public fetchUserIncidents() {
+    return this.http.get(`${environment.baseUrl}/incidents/mine`)
   }
 
   public fetchIncidents() {
-    return this.http.get(`${environment.incidentsUrl}/incidents`)
+    // return this.http.get(`${environment.baseUrl}/incidents`)
+    return this.http.get(`https://17c6af714f00.ngrok-free.app/incidents`)
   }
+
 
 }

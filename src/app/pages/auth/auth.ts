@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, effect, inject, OnDestroy, signal} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal
+} from '@angular/core';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputText} from 'primeng/inputtext';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -38,7 +47,7 @@ import {AuthType} from '@/types/index';
   templateUrl: './auth.html',
   styleUrl: './auth.css'
 })
-export class Auth implements OnDestroy {
+export class Auth implements OnInit, AfterViewInit, OnDestroy {
   protected authForm: FormGroup;
   protected authFormControls = signal<string[]>([]);
   protected isSubmitting = signal(false);
@@ -62,6 +71,10 @@ export class Auth implements OnDestroy {
   };
 
   constructor() {
+    // this.authForm = this.createLoginForm()
+    this.authForm = this.formCreators[this.formType()]?.()
+
+
     const titleMap: Record<string, AuthType> = {
       "Login": "login",
       "Reset Password": "reset_password",
@@ -80,7 +93,6 @@ export class Auth implements OnDestroy {
       });
 
 
-    this.authForm = this.createLoginForm()
     this.regions = ghanaRegions.map(r => ({label: r.label, value: r.value}));
     effect(() => {
       if (this.formType()) {
@@ -97,6 +109,34 @@ export class Auth implements OnDestroy {
         this.authForm.get('city')?.reset();
       });
     });
+
+
+  }
+
+  async ngOnInit() {
+    if (this.formType() === "login") {
+      await this.authService.signOut(false)
+    }
+  }
+
+  ngAfterViewInit() {
+    // Update form values from query param
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        console.log(params)
+        const otp = params['otp'];
+        const email = params['email'];
+        if (this.formType() === "otp" && otp) {
+          this.authForm.patchValue({
+            otp,
+            email
+          })
+
+          console.log(this.authForm.value);
+        }
+
+      })
   }
 
   ngOnDestroy() {
@@ -124,6 +164,7 @@ export class Auth implements OnDestroy {
   protected async onSubmit() {
     if (this.authForm.valid) {
       if (this.formType() === 'signup') {
+        localStorage.setItem("email", this.authForm.value.email)
         await this.signUp()
       } else if (this.formType() === 'login') {
         localStorage.setItem("email", this.authForm.value.email)
@@ -144,6 +185,7 @@ export class Auth implements OnDestroy {
     this.isSubmitting.set(true);
     const formValue = this.authForm.value;
     const {nextStep: {signInStep}} = await this.authService.resetPassword(formValue.new_password)
+    console.log(signInStep)
 
     if (signInStep === "DONE") {
       this.isSubmitting.set(false);
@@ -155,7 +197,7 @@ export class Auth implements OnDestroy {
         life: 3000
       })
 
-      this.userStore.signOut()
+      this.userStore.signOut(false)
       await this.router.navigate(["login"])
     }
   }
@@ -163,9 +205,14 @@ export class Auth implements OnDestroy {
   private async confirmOtp() {
     const formValue = this.authForm.value
     const username = localStorage.getItem("email") ?? "";
-    const {isSignUpComplete} = await this.authService.confirmSignUp(username, formValue.otp)
-    if (isSignUpComplete) {
-      this.formType.set("login");
+    try {
+      const {isSignUpComplete, nextStep: {signUpStep}} = await this.authService.confirmSignUp(username, formValue.otp)
+      console.log(signUpStep)
+      if (isSignUpComplete) {
+        this.formType.set("login");
+      }
+    } catch (error) {
+      this.handleError(error as Error);
     }
   }
 
@@ -175,30 +222,25 @@ export class Auth implements OnDestroy {
       const {nextStep: {signInStep}} = await this.authService.signIn(this.authForm.value);
       await this.handleSignInStep(signInStep);
     } catch (error) {
-      console.error(error);
       this.handleError(error as Error);
     }
   }
 
   private async handleSignInStep(signInStep: string): Promise<void> {
-    this.isSubmitting.set(false);
-    console.log(signInStep)
-
     if (signInStep === "DONE") {
       this.userStore.setIsSignedIn()
       await this.userStore.fetchUserInfo()
+      this.isSubmitting.set(false);
       await this.router.navigate(["dashboard"])
       return;
     }
 
     if (signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
       await this.router.navigate(['reset-password']);
-      // this.formType.set("reset_password")
     }
 
     if (["CONFIRM_SIGN_UP", "CONFIRM_SIGN_IN"].includes(signInStep)) {
       await this.router.navigate(['verify-otp']);
-      // this.formType.set("otp");
     }
   }
 
@@ -206,6 +248,7 @@ export class Auth implements OnDestroy {
     this.isSubmitting.set(true);
     try {
       const {nextStep: {signUpStep}} = await this.authService.signUp(this.authForm.value);
+      console.log(signUpStep)
       this.isSubmitting.set(false);
       if (signUpStep === "CONFIRM_SIGN_UP") {
         await this.router.navigate(['verify-otp']);

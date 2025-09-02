@@ -42,6 +42,11 @@ export class Sidebar {
           return {...item, isAccessible};
         }
 
+        if (item.title.toLowerCase() === 'users') {
+          const isAccessible = this.isSignedIn() && !!this.user().name.length && this.user().role === 'Admin'
+          return {...item, isAccessible};
+        }
+
         const canAccess =
           this.isSignedIn() && ['Admin', 'CityOfficial'].includes(this.user().role);
         return {...item, isAccessible: canAccess};
