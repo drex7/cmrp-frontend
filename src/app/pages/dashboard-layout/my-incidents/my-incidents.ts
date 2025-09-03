@@ -31,6 +31,9 @@ import {Subject, take, takeUntil} from 'rxjs';
 @Component({
   selector: 'cmrp-my-incidents',
   changeDetection: ChangeDetectionStrategy.OnPush,
+
+  templateUrl: './my-incidents.html',
+  styleUrl: './my-incidents.css',
   imports: [
     ButtonDirective,
     IncidentHighlight,
@@ -50,8 +53,6 @@ import {Subject, take, takeUntil} from 'rxjs';
     ReactiveFormsModule,
     Textarea
   ],
-  templateUrl: './my-incidents.html',
-  styleUrl: './my-incidents.css'
 })
 export class MyIncidents implements OnInit, OnDestroy {
   protected toastService = inject(ToastService);
@@ -150,10 +151,10 @@ export class MyIncidents implements OnInit, OnDestroy {
   }
 
   protected getIncidentDetails() {
-    return this.incidentTable.find(incident => incident.id === this.selectedIncident()) ?? {
-      id: "",
+    return this.incidentTable.find(incident => incident.incidentId === this.selectedIncident()) ?? {
+      incidentId: "",
       assignedOfficer: "",
-      priority: "",
+      severity: "",
       description: "",
       status: "",
       reported: "",

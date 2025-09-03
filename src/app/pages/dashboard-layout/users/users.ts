@@ -12,7 +12,7 @@ import {Dialog} from 'primeng/dialog';
 import {cn, ghPhoneValidator} from '@/lib/utils';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputMask} from 'primeng/inputmask';
-import {TitleCasePipe} from '@angular/common';
+import {NgOptimizedImage, TitleCasePipe} from '@angular/common';
 import {AuthFormInterface, RegionOrCityOption} from '@/interfaces/user-interface';
 import {AuthService} from '@/services/auth-service/auth-service';
 import {ConfirmationService, MessageService} from 'primeng/api';
@@ -42,7 +42,8 @@ import {Tooltip} from 'primeng/tooltip';
     TitleCasePipe,
     ConfirmDialog,
     Skeleton,
-    Tooltip
+    Tooltip,
+    NgOptimizedImage
   ],
   templateUrl: './users.html',
   styleUrl: './users.css'
@@ -125,7 +126,7 @@ export class Users implements OnInit, OnDestroy {
             ...user,
             user_id: user.user_id?.slice(0, 8),
             role: user.role === "CityOfficial" ? "City Official" : user.role,
-            telephone: user.telephone ? user.telephone.replace(/^\+233/, '0') : '-',
+            telephone: user.phone_number ? user.phone_number.replace(/^\+233/, '0') : '-',
           }
         }))
       },
@@ -142,11 +143,11 @@ export class Users implements OnInit, OnDestroy {
     })
   }
 
-  protected deleteUser(event: Event) {
+  protected deleteUser(event: Event, user: string, username: string) {
 
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Do you want to delete this user?',
+      message: `Do you want to delete ${user} ?`,
       header: 'Delete User',
       icon: 'pi pi-info-circle',
       rejectLabel: 'Cancel',
@@ -161,7 +162,7 @@ export class Users implements OnInit, OnDestroy {
       },
 
       accept: () => {
-        this.usersService.deleteUser(this.userForm.value).pipe(take(1)).subscribe({
+        this.usersService.deleteUser(username).pipe(take(1)).subscribe({
           next: value => {
             console.log(value);
           },

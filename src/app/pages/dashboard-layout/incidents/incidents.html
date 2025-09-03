@@ -59,15 +59,15 @@
         </tr>
       } @else {
         <tr>
-          <td>{{ incident.id }}</td>
+          <td class="uppercase">{{ incident.incidentId.slice(0, 7) }}</td>
           <td>{{ incident.title }}</td>
           <td>{{ incident.location }}</td>
           <td>
-            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.priority.toLowerCase())"
-                   [value]="incident.priority"/>
+            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.severity)"
+                   [value]="incident.severity"/>
           </td>
           <td>
-            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
+            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.status)"
                    [value]="incident.status"/>
           </td>
           <td>{{ incident.assignedOfficer }}</td>
@@ -128,7 +128,7 @@
     <ng-template #header>
       <div class="flex flex-col">
         <span class="font-bold text-xl">{{ getIncidentDetails().title }}</span>
-        <span class="text-neutral-500">incident details - {{ getIncidentDetails().id }}</span>
+        <span class="text-neutral-500">incident details - {{ getIncidentDetails().incidentId }}</span>
       </div>
     </ng-template>
     <cmrp-incident-details

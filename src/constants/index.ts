@@ -251,58 +251,58 @@ export const incidentTableHeaders = [
 
 export const incidentTable: IIncidentDetails[] = [
   {
-    id: "INC-001",
+    incidentId: "INC-001",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-002",
+    incidentId: "INC-002",
     title: "Water on road",
     location: "Town",
-    priority: "low",
+    severity: "low",
     status: "resolved",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-003",
+    incidentId: "INC-003",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-004",
+    incidentId: "INC-004",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-005",
+    incidentId: "INC-005",
     title: "Water on road",
     location: "Town",
-    priority: "medium",
+    severity: "medium",
     status: "investigating",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-006",
+    incidentId: "INC-006",
     title: "Water on road",
     location: "Town",
-    priority: "high",
+    severity: "high",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-007",
+    incidentId: "INC-007",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "resolved",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"

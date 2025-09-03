@@ -8,8 +8,8 @@
     </span>
     <span class="flex flex-col gap-1">
       <span class="font-semibold">Priority</span>
-      @let incidentPriority = incident().priority.toLowerCase();
-      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incidentPriority)" [value]="incident().priority"
+      @let incidentPriority = incident().severity.toLowerCase();
+      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incidentPriority)" [value]="incident().severity"
              class="w-max px-4!"/>
     </span>
   </div>

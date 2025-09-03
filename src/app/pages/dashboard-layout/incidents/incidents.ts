@@ -79,7 +79,9 @@ export class Incidents implements OnInit, OnDestroy {
     this.incidentsService.fetchIncidents().pipe(takeUntil(this.destroy$)).subscribe({
       next: data => {
         this.isFetchingIncidents.set(false)
-        console.log(data)
+        console.log(data.incidents)
+
+        this.incidentTable.set(data.incidents);
       },
       error: err => {
         this.isFetchingIncidents.set(false)
@@ -96,10 +98,10 @@ export class Incidents implements OnInit, OnDestroy {
   }
 
   protected getIncidentDetails() {
-    return this.incidentTable().find(incident => incident.id === this.selectedIncident()) ?? {
-      id: "",
+    return this.incidentTable().find(incident => incident.incidentId === this.selectedIncident()) ?? {
+      incidentId: "",
       assignedOfficer: "",
-      priority: "",
+      severity: "",
       description: "",
       status: "",
       reported: "",

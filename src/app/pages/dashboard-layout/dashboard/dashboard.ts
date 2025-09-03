@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {incidentsData, recentIncidentsData} from "@/constants/index";
 import {Card} from 'primeng/card';
 import {cn} from '@/lib/utils';
@@ -15,7 +15,8 @@ import {environment} from '@/environments/environment';
     IncidentCard
   ],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  styleUrl: './dashboard.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Dashboard implements OnInit, OnDestroy {
   protected readonly incidentsData = incidentsData;
@@ -34,7 +35,7 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   protected fetchIncidentsOverview() {
-    this.http.get(`https://n3an2lfckg.execute-api.eu-central-1.amazonaws.com/dashboard`).pipe(takeUntil(this.destroy$)).subscribe({
+    this.http.get(`${environment.baseUrl}/dashboard`).pipe(takeUntil(this.destroy$)).subscribe({
       next: data => {
         console.log(data)
       },

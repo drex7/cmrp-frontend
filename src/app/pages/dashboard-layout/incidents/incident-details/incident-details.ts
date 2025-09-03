@@ -9,23 +9,23 @@ import {Textarea} from 'primeng/textarea';
 @Component({
   selector: 'cmrp-incident-details',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './incident-details.html',
+  styleUrl: './incident-details.css',
   imports: [
     Tag,
     Select,
     FormsModule,
     Textarea,
   ],
-  templateUrl: './incident-details.html',
-  styleUrl: './incident-details.css'
 })
 export class IncidentDetails implements OnInit {
   public showEditOptions = input(false)
   public incident = input<IIncidentDetails>({
     title: "",
     assignedOfficer: "",
-    id: "",
+    incidentId: "",
     location: "",
-    priority: "",
+    severity: "",
     reported: "",
     status: " "
   })

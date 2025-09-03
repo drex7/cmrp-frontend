@@ -22,10 +22,12 @@ export class UsersService {
   }
 
   public deleteUser(username: string) {
-    return this.http.delete(`${environment.baseUrl}/delete/`, {
-      body: {
-        username
-      }
+    // return this.http.delete(`${environment.baseUrl}/users`, {
+    return this.http.delete(`https://c1badb070a98.ngrok-free.app/users`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true'
+      },
+      body: {username}
     });
   }
 }
