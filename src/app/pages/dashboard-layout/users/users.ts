@@ -163,8 +163,14 @@ export class Users implements OnInit, OnDestroy {
 
       accept: () => {
         this.usersService.deleteUser(username).pipe(take(1)).subscribe({
-          next: value => {
-            console.log(value);
+          next: ({message}) => {
+            this.fetchUsers()
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: message,
+              life: 3000
+            })
           },
           error: error => {
             const errorMessage = error.error?.message || 'unable to delete user';

@@ -25,3 +25,15 @@ export interface IIncidentDetails extends Pick<IIncident, "title" | "location" |
   incidentId: string
   description?: string
 }
+
+export interface IncidentsI {
+  location: string
+  status: "pending" | "investigating" | "resolved"
+  incidentId: string
+  category: string
+  createdAt: string
+  imageUrls: string[]
+  description: string
+  assignedOfficer: string
+  reporter: string
+}

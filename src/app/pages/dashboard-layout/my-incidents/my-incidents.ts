@@ -15,7 +15,7 @@ import {InputText} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
 import {TableModule} from 'primeng/table';
 import {Tag} from 'primeng/tag';
-import {TitleCasePipe} from '@angular/common';
+import {NgOptimizedImage, TitleCasePipe} from '@angular/common';
 import {Tooltip} from 'primeng/tooltip';
 import {cn, getIncidentSeverity} from '@/lib/utils';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -27,6 +27,8 @@ import {Textarea} from 'primeng/textarea';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {ToastService} from '@/services/toast-service/toast-service';
 import {Subject, take, takeUntil} from 'rxjs';
+import {IncidentsI} from '@/interfaces/incident-interface';
+import {Skeleton} from 'primeng/skeleton';
 
 @Component({
   selector: 'cmrp-my-incidents',
@@ -51,7 +53,9 @@ import {Subject, take, takeUntil} from 'rxjs';
     IncidentDetails,
     FloatLabel,
     ReactiveFormsModule,
-    Textarea
+    Textarea,
+    NgOptimizedImage,
+    Skeleton
   ],
 })
 export class MyIncidents implements OnInit, OnDestroy {
@@ -68,11 +72,18 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected selectedIncident = signal("")
   protected showEditDetailsOptions = signal(false)
   protected images = signal<{ file: File, url: string }[]>([]);
+  protected isFetchingIncidents = signal(false)
+  protected readonly incidentSeverities = incidentSeverities;
+  protected readonly incidentCategories = incidentCategories;
+  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<IncidentsI>[];
+  protected readonly cn = cn;
+  protected isSubmitting = signal(false)
+  protected destroy$ = new Subject<void>();
   protected selectedFilter = {
     name: "All Status",
     code: "all"
   }
-
+  protected incidents = signal<IncidentsI[]>([])
   protected incidentForm: FormGroup = new FormGroup({
     title: new FormControl("", [Validators.required]),
     category: new FormControl("", [Validators.required]),
@@ -80,27 +91,31 @@ export class MyIncidents implements OnInit, OnDestroy {
     location: new FormControl("", [Validators.required]),
     description: new FormControl("", [Validators.required]),
   });
-
   protected incidentFormControls = signal<string[]>(Object.keys(this.incidentForm.controls));
-  protected readonly incidentSeverities = incidentSeverities;
-  protected readonly incidentCategories = incidentCategories;
-  protected readonly cn = cn;
-  protected isSubmitting = signal(false)
-  protected destroy$ = new Subject<void>();
 
   ngOnInit() {
-    this.incidentsService.fetchUserIncidents().pipe(takeUntil(this.destroy$)).subscribe({
-      next: data => {
-        console.log(data)
-      }, error: err => {
-        this.handleError(err as Error)
-      }
-    })
+
+    if (this.incidents().length < 1) {
+      this.isFetchingIncidents.set(true)
+      this.fetchIncidents()
+    }
   }
 
   ngOnDestroy() {
     this.destroy$.next()
     this.destroy$.complete()
+  }
+
+  protected fetchIncidents() {
+    this.incidentsService.fetchUserIncidents().pipe(takeUntil(this.destroy$)).subscribe({
+      next: data => {
+        this.isFetchingIncidents.set(false)
+        this.incidents.set(data.incidents)
+      }, error: err => {
+        this.isFetchingIncidents.set(false)
+        this.handleError(err as Error)
+      }
+    })
   }
 
   protected getInputType(key: string): string {
@@ -188,6 +203,8 @@ export class MyIncidents implements OnInit, OnDestroy {
 
       this.incidentsService.createIncident(incidentData).pipe(take(1)).subscribe({
         next: data => {
+          this.showAddIncidentModal = false
+          this.fetchIncidents()
           console.log(data)
         }, error: err => {
           this.handleError(err as Error)

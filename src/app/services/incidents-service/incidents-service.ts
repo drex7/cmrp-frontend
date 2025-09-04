@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@/environments/environment';
-import {IIncidentDetails} from '@/interfaces/incident-interface';
+import {IIncidentDetails, IncidentsI} from '@/interfaces/incident-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,15 @@ export class IncidentsService {
   }
 
   public fetchUserIncidents() {
-    return this.http.get(`${environment.baseUrl}/incidents/mine`)
+    return this.http.get<
+      {
+        incidents: IncidentsI[]
+        summary: {
+          total: number
+          
+        }
+      }
+    >(`${environment.baseUrl}/incidents/mine`)
   }
 
   public fetchIncidents() {
