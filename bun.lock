@@ -27,6 +27,7 @@
         "tailwind-merge": "^3.3.1",
         "tailwindcss": "^4.1.11",
         "tailwindcss-primeui": "^0.6.1",
+        "ts-cacheable": "^1.0.19",
         "tslib": "^2.3.0",
       },
       "devDependencies": {
@@ -2280,6 +2281,8 @@
     "trim-right": ["trim-right@1.0.1", "", {}, "sha512-WZGXGstmCWgeevgTL54hrCuw1dyMQIzWy7ZfqRJfSmJZBwklI15egmQytFP6bPidmw3M8d5yEowl1niq4vmqZw=="],
 
     "ts-algebra": ["ts-algebra@2.0.0", "", {}, "sha512-FPAhNPFMrkwz76P7cdjdmiShwMynZYN6SgOujD1urY4oNm80Ou9oMdmbR45LotcKOXoy7wSmHkRFE6Mxbrhefw=="],
+
+    "ts-cacheable": ["ts-cacheable@1.0.19", "", {}, "sha512-GU9bxrd57q/lwAcn60iEDJ2L59uHAUfCR/zfhNZk71EkwFeAO27HQ1nUbv0OiLmuVW4VryJ0aOJsNjljZd9DNw=="],
 
     "ts-dedent": ["ts-dedent@2.2.0", "", {}, "sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ=="],
 

@@ -246,7 +246,7 @@ export const incidentsSummary: IIncidentSummary[] = [
 ]
 
 export const incidentTableHeaders = [
-  "incident id", "title", "location", "severity", "status", "assigned officer", "reported", "actions"
+  "incident id", "title", "location", "severity", "status", "assigned officer", "reporter", "actions"
 ]
 
 export const incidentTable: IIncidentDetails[] = [

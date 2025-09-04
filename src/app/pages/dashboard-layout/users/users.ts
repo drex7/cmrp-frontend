@@ -90,7 +90,9 @@ export class Users implements OnInit, OnDestroy {
   protected confirmationService = inject(ConfirmationService)
 
   ngOnInit() {
-    this.fetchUsers()
+    if (this.users().length === 0) {
+      this.fetchUsers()
+    }
 
     this.regions = ghanaRegions.map(r => ({label: r.label, value: r.value}));
 
@@ -107,6 +109,7 @@ export class Users implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log(this.users())
     this.destroy$.next();
     this.destroy$.complete();
   }

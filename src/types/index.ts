@@ -5,6 +5,7 @@ export type IncidentType =
   | "medium"
   | "active"
   | "investigating"
+  | "critical"
   | "pending"
   | "resolved";
 
