@@ -17,14 +17,25 @@
       <p class="text-neutral-500">Active and ongoing incidents requiring attention</p>
     </div>
 
+
     <div class="flex flex-col sm:flex-row sm:items-center gap-4">
       <p-icon-field class="w-full">
         <p-inputicon class="pi pi-search"/>
-        <input class="w-full" pInputText placeholder="Search" type="search"/>
+        <input (ngModelChange)="searchValue.set($event)"
+               [ngModel]="searchValue()"
+               class="w-full"
+               pInputText
+               placeholder="Search"
+               type="search"
+        />
       </p-icon-field>
-
-      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-full"
-                optionLabel="name" placeholder="Select filter"
+      <p-select
+        (ngModelChange)="selectedStatus.set($event)"
+        [ngModel]="selectedStatus()"
+        [options]="incidentFilters"
+        class="w-full md:w-64"
+        optionLabel="name"
+        placeholder="Select status"
       />
     </div>
   </div>
@@ -36,7 +47,7 @@
     [paginator]="true"
     [rows]="10"
     [tableStyle]="{ 'min-width': '60rem' }"
-    [value]="isFetchingIncidents() ? tableSkeletonArray : incidentTable()"
+    [value]="isFetchingIncidents() ? tableSkeletonArray : filteredIncidents()"
     class="mt-5"
   >
     <ng-template #header>
@@ -99,7 +110,7 @@
       }
     </ng-template>
     <ng-template #footer>
-      @if (!isFetchingIncidents() && incidentTable().length === 0) {
+      @if (!isFetchingIncidents() && filteredIncidents().length === 0) {
         <tr>
           <td colspan="8">
             <div class="flex flex-col gap-2 items-center justify-center h-58">
@@ -111,7 +122,7 @@
         </tr>
       } @else {
         <tr>
-          <td colspan="8">In total there are {{ incidentTable() ? incidentTable().length : 0 }} incidents.</td>
+          <td colspan="8">In total there are {{ filteredIncidents() ? filteredIncidents().length : 0 }} incidents.</td>
         </tr>
       }
     </ng-template>
@@ -119,31 +130,31 @@
 </div>
 
 <!--Incident details modal-->
-@if (showIncidentDetailsModal) {
-  <p-dialog [(visible)]="showIncidentDetailsModal" [modal]="true"
-            [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"
-            [style]="{ width: '50vw' }"
-            [draggable]="false"
-            [resizable]="false">
-    <ng-template #header>
-      <div class="flex flex-col">
-        <span class="font-bold text-xl">{{ getIncidentDetails().title }}</span>
-        <span class="text-neutral-500">incident details - {{ getIncidentDetails().incidentId }}</span>
-      </div>
-    </ng-template>
-    <cmrp-incident-details
-      [showEditOptions]="showEditDetailsOptions()"
-      [incident]="getIncidentDetails()"/>
+<!--@if (showIncidentDetailsModal) {-->
+<!--  <p-dialog [(visible)]="showIncidentDetailsModal" [modal]="true"-->
+<!--            [breakpoints]="{ '5199px': '30vw', '1699px': '45vw', '1199px': '55vw', '1029px': '75vw', '575px': '90vw' }"-->
+<!--            [style]="{ width: '50vw' }"-->
+<!--            [draggable]="false"-->
+<!--            [resizable]="false">-->
+<!--    <ng-template #header>-->
+<!--      <div class="flex flex-col">-->
+<!--        <span class="font-bold text-xl">{{ getIncidentDetails().title }}</span>-->
+<!--        <span class="text-neutral-500">incident details - {{ getIncidentDetails().incidentId }}</span>-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--    <cmrp-incident-details-->
+<!--      [showEditOptions]="showEditDetailsOptions()"-->
+<!--      [incident]="getIncidentDetails()"/>-->
 
-    @if (showEditDetailsOptions()) {
-      <ng-template #footer>
-        <div class="flex items-center gap-4 justify-between">
-          <p-button
-            (keyup)="showIncidentDetailsModal=false"
-            (click)="showIncidentDetailsModal=false" label="Cancel" variant="outlined"/>
-          <button aria-label="Submit" pButton class="bg-primary!">Submit</button>
-        </div>
-      </ng-template>
-    }
-  </p-dialog>
-}
+<!--    @if (showEditDetailsOptions()) {-->
+<!--      <ng-template #footer>-->
+<!--        <div class="flex items-center gap-4 justify-between">-->
+<!--          <p-button-->
+<!--            (keyup)="showIncidentDetailsModal=false"-->
+<!--            (click)="showIncidentDetailsModal=false" label="Cancel" variant="outlined"/>-->
+<!--          <button aria-label="Submit" pButton class="bg-primary!">Submit</button>-->
+<!--        </div>-->
+<!--      </ng-template>-->
+<!--    }-->
+<!--  </p-dialog>-->
+<!--}-->

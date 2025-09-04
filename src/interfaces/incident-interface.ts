@@ -36,4 +36,5 @@ export interface IncidentsI {
   description: string
   assignedOfficer: string
   reporter: string
+  title: string
 }
