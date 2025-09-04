@@ -12,7 +12,7 @@ import {NgOptimizedImage, TitleCasePipe} from "@angular/common";
 import {Tag} from "primeng/tag";
 import {Button, ButtonDirective} from "primeng/button";
 import {Tooltip} from "primeng/tooltip";
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, take, takeUntil} from 'rxjs';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {MessageService} from 'primeng/api';
 import {Skeleton} from 'primeng/skeleton';
@@ -92,7 +92,10 @@ export class Incidents implements OnInit, OnDestroy {
       return matchesSearch && matchesStatus;
     });
   });
-  protected updateIncidentStatus
+  protected incidentStatus = signal({
+    status: "",
+    comments: ""
+  })
 
   ngOnInit() {
     this.fetchIncidents()
@@ -103,12 +106,29 @@ export class Incidents implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  protected updateIncidentStatus() {
+    this.incidentsService.updateIncidentStatus(this.selectedIncident(), this.incidentStatus()).pipe(take(1)).subscribe({
+      next: (val) => {
+        console.log(val)
+        this.showIncidentDetailsModal = false
+      },
+      error: err => {
+        const errorMessage = (err as { error: { error: string } }).error.error || "Unable to update incident status.";
+        this.messageService.add({
+          severity: "error",
+          summary: "Status Update Error",
+          detail: errorMessage,
+          life: 3000,
+        })
+      }
+    })
+  }
+
   protected fetchIncidents() {
     this.isFetchingIncidents.set(true)
     this.incidentsService.fetchIncidents().pipe(takeUntil(this.destroy$)).subscribe({
       next: data => {
         this.isFetchingIncidents.set(false)
-        console.log(data)
         this.incidents.set(data.incidents);
       },
       error: err => {

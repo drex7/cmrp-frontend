@@ -33,5 +33,7 @@ export class IncidentsService {
     return this.http.get<{ incidents: IncidentsI[] }>(`${environment.baseUrl}/incidents`)
   }
 
-
+  public updateIncidentStatus(incidentId: string, statusUpdate: { comments: string, status: string }) {
+    return this.http.put(`${environment.baseUrl}/incidents/${incidentId}/status`, statusUpdate);
+  }
 }

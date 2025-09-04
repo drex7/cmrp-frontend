@@ -25,7 +25,7 @@ export class UsersService {
 
   public deleteUser(username: string) {
     return this.http.delete<{ message: string }>(`${environment.baseUrl}/users`, {
-      body: {username}
+      body: {username},
     });
   }
 }

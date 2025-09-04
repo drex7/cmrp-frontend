@@ -91,6 +91,7 @@
                 icon="pi pi-eye"
                 pTooltip="View incident"
                 tooltipPosition="top"
+                tooltipStyleClass="w-max!"
                 type="button"
                 variant="text"
               />
@@ -101,6 +102,7 @@
                 icon="pi pi-pencil"
                 pTooltip="Update incident"
                 tooltipPosition="top"
+                tooltipStyleClass="w-max!"
                 variant="text"
               />
             </div>
@@ -148,7 +150,9 @@
     </ng-template>
     <cmrp-incident-details
       [showEditOptions]="showEditDetailsOptions()"
-      [incident]="getIncidentDetails()"/>
+      [incident]="getIncidentDetails()"
+      (updateIncidentStatus)="incidentStatus.set($event)"
+    />
 
     @if (showEditDetailsOptions()) {
       <ng-template #footer>
@@ -156,7 +160,10 @@
           <p-button
             (keyup)="showIncidentDetailsModal=false"
             (click)="showIncidentDetailsModal=false" label="Cancel" variant="outlined"/>
-          <button aria-label="Submit" pButton class="bg-primary!">Submit</button>
+          <button aria-label="Submit"
+                  (click)=" updateIncidentStatus()"
+                  pButton class="bg-primary!">Submit
+          </button>
         </div>
       </ng-template>
     }

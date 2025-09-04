@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, effect, input, OnInit, output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, effect, input, OnInit, output, signal} from '@angular/core';
 import {IncidentsI} from '@/interfaces/incident-interface';
 import {Tag} from 'primeng/tag';
 import {getIncidentSeverity} from '@/lib/utils';
@@ -30,14 +30,17 @@ export class IncidentDetails implements OnInit {
     reporter: "",
     status: "pending"
   })
-  public updateInfo = output()
+  public updateIncidentStatus = output<{
+    comments: string,
+    status: string
+  }>()
   protected readonly getIncidentSeverity = getIncidentSeverity;
-  protected updateValue = "";
+  protected comment = signal("");
 
-  protected selectedStatus = {
+  protected selectedStatus = signal({
     name: "",
     code: ""
-  }
+  })
   protected statuses = [
     {name: 'Pending', code: 'pending'},
     {name: 'Investigating', code: 'investigating'},
@@ -47,16 +50,19 @@ export class IncidentDetails implements OnInit {
 
   constructor() {
     effect(() => {
-      if (this.selectedStatus || this.updateValue) {
-        console.log(this.updateValue, this.selectedStatus);
+      if (this.selectedStatus() || this.comment()) {
+        this.updateIncidentStatus.emit({
+          comments: this.comment(),
+          status: this.selectedStatus().code
+        })
       }
     });
   }
 
   ngOnInit() {
-    this.selectedStatus = {
+    this.selectedStatus.set({
       name: this.incident().status.charAt(0).toUpperCase() + this.incident().status.slice(1),
       code: this.incident().status
-    }
+    })
   }
 }
