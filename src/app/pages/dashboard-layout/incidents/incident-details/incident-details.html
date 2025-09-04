@@ -2,14 +2,12 @@
   <div class="grid grid-cols-2">
     <span class="flex flex-col gap-1">
       <span class="font-semibold">Status</span>
-      @let incidentStatus = incident().status.toLowerCase();
-      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incidentStatus)" [value]="incident().status"
+      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident().status)" [value]="incident().status"
              class="w-max px-4!"/>
     </span>
     <span class="flex flex-col gap-1">
-      <span class="font-semibold">Priority</span>
-      @let incidentPriority = incident().severity.toLowerCase();
-      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incidentPriority)" [value]="incident().severity"
+      <span class="font-semibold">Severity</span>
+      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident().severity)" [value]="incident().severity"
              class="w-max px-4!"/>
     </span>
   </div>

@@ -10,13 +10,15 @@ import {cn, getIncidentSeverity} from "@/lib/utils";
 import {TableModule} from "primeng/table";
 import {NgOptimizedImage, TitleCasePipe} from "@angular/common";
 import {Tag} from "primeng/tag";
-import {Button} from "primeng/button";
+import {Button, ButtonDirective} from "primeng/button";
 import {Tooltip} from "primeng/tooltip";
 import {Subject, takeUntil} from 'rxjs';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {MessageService} from 'primeng/api';
 import {Skeleton} from 'primeng/skeleton';
 import {IncidentsI} from '@/interfaces/incident-interface';
+import {Dialog} from 'primeng/dialog';
+import {IncidentDetails} from '@/pages/dashboard-layout/incidents/incident-details/incident-details';
 
 @Component({
   selector: 'cmrp-incidents',
@@ -36,7 +38,10 @@ import {IncidentsI} from '@/interfaces/incident-interface';
     Button,
     Tooltip,
     Skeleton,
-    NgOptimizedImage
+    NgOptimizedImage,
+    Dialog,
+    IncidentDetails,
+    ButtonDirective
   ],
 
 })
@@ -87,7 +92,7 @@ export class Incidents implements OnInit, OnDestroy {
       return matchesSearch && matchesStatus;
     });
   });
-
+  protected updateIncidentStatus
 
   ngOnInit() {
     this.fetchIncidents()
@@ -123,10 +128,12 @@ export class Incidents implements OnInit, OnDestroy {
   protected getIncidentDetails() {
     return this.incidents().find(incident => incident.incidentId === this.selectedIncident()) ?? {
       incidentId: "",
-      assignedOfficer: "",
-      severity: "",
+      category: "",
       description: "",
-      status: "",
+      assignedOfficer: "",
+      severity: "low",
+      reporter: "",
+      status: "pending",
       reported: "",
       location: "",
       title: ""

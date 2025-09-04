@@ -31,10 +31,11 @@ export interface IncidentsI {
   status: "pending" | "investigating" | "resolved"
   incidentId: string
   category: string
-  createdAt: string
-  imageUrls: string[]
+  createdAt?: string
+  imageUrls?: string[]
   description: string
   assignedOfficer: string
+  severity: "low" | "critical"
   reporter: string
   title: string
 }
