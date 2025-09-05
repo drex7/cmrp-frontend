@@ -19,6 +19,7 @@ import {Skeleton} from 'primeng/skeleton';
 import {IncidentsI} from '@/interfaces/incident-interface';
 import {Dialog} from 'primeng/dialog';
 import {IncidentDetails} from '@/pages/dashboard-layout/incidents/incident-details/incident-details';
+import {IncidentType} from '@/types/index';
 
 @Component({
   selector: 'cmrp-incidents',
@@ -107,9 +108,14 @@ export class Incidents implements OnInit, OnDestroy {
   }
 
   protected updateIncidentStatus() {
-    this.incidentsService.updateIncidentStatus(this.selectedIncident(), this.incidentStatus()).pipe(take(1)).subscribe({
-      next: (val) => {
-        console.log(val)
+    const status = {
+      status: this.incidentStatus().status.toUpperCase(),
+      comments: this.incidentStatus().comments
+    }
+    this.incidentsService.updateIncidentStatus(this.selectedIncident(), status).pipe(take(1)).subscribe({
+      next: ({incident, message}) => {
+        console.log(incident)
+        console.log(message)
         this.showIncidentDetailsModal = false
       },
       error: err => {
@@ -146,19 +152,27 @@ export class Incidents implements OnInit, OnDestroy {
   }
 
   protected getIncidentDetails() {
-    return this.incidents().find(incident => incident.incidentId === this.selectedIncident()) ?? {
-      incidentId: "",
-      category: "",
-      description: "",
-      assignedOfficer: "",
-      severity: "low",
-      reporter: "",
-      status: "pending",
-      reported: "",
-      location: "",
-      title: ""
+    const incident =
+      this.incidents().find(
+        (incident) => incident.incidentId === this.selectedIncident()
+      ) ?? {
+        incidentId: "",
+        category: "",
+        description: "",
+        assignedOfficer: "",
+        severity: "low",
+        reporter: "",
+        status: "pending",
+        location: "",
+        title: "",
+      };
+
+    return {
+      ...incident,
+      status: incident.status.toLowerCase() as IncidentType,
     };
   }
+
 
   protected incidentAction(incidentId: string, showEditOptions: boolean) {
     this.selectedIncident.set(incidentId);

@@ -73,7 +73,7 @@ export const getIncidentSeverity = (incident: IncidentType) => {
     medium: "warn",
     active: "danger",
     critical: "danger",
-    investigating: "info",
+    in_progress: "info",
     resolved: "success",
     pending: "warn",
   };

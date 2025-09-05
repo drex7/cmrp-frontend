@@ -68,6 +68,7 @@
           }
         </tr>
       } @else {
+        @let status = incident.status.toLowerCase().split("_").join(" ");
         <tr>
           <td class="uppercase">{{ incident.incidentId.slice(0, 7) }}</td>
           <td>{{ incident.title }}</td>
@@ -77,8 +78,8 @@
                    [value]="incident.severity"/>
           </td>
           <td>
-            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.status)"
-                   [value]="incident.status"/>
+            <p-tag [rounded]="true" class="w-max" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
+                   [value]="status"/>
           </td>
           <td>{{ incident.assignedOfficer }}</td>
           <td>{{ incident.reported }}</td>

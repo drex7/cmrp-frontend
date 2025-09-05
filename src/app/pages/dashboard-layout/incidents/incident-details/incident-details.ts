@@ -28,7 +28,8 @@ export class IncidentDetails implements OnInit {
     location: "",
     severity: "low",
     reporter: "",
-    status: "pending"
+    status: "pending",
+    imageUrls: []
   })
   public updateIncidentStatus = output<{
     comments: string,
@@ -43,7 +44,7 @@ export class IncidentDetails implements OnInit {
   })
   protected statuses = [
     {name: 'Pending', code: 'pending'},
-    {name: 'Investigating', code: 'investigating'},
+    {name: 'In Progress', code: 'in_progress'},
     {name: 'Resolved', code: 'resolved'}
   ];
 

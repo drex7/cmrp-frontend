@@ -2,19 +2,17 @@
   <div class="grid grid-cols-2">
     <span class="flex flex-col gap-1">
       <span class="font-semibold">Status</span>
-      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident().status)" [value]="incident().status"
-             class="w-max px-4!"/>
+      @let status = incident().status.toLowerCase().split("_").join(" ");
+      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident().status)" [value]="status"
+             class="w-max px-2!"/>
     </span>
     <span class="flex flex-col gap-1">
       <span class="font-semibold">Severity</span>
       <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident().severity)" [value]="incident().severity"
-             class="w-max px-4!"/>
+             class="w-max px-2!"/>
     </span>
   </div>
-  <div class="flex flex-col gap-1">
-    <span class="font-semibold">Description</span>
-    <span>{{ incident().description }}</span>
-  </div>
+
 
   <div class="grid grid-cols-2">
     <span class="flex flex-col gap-1">
@@ -27,6 +25,32 @@
     </span>
   </div>
 
+  <div class="grid grid-cols-2">
+    <span class="flex flex-col gap-1">
+      <span class="font-semibold">Created By</span>
+      <span>{{ incident().createdBy ?? "-" }}</span>
+    </span>
+
+    @if (incident().updatedBy) {
+      <span class="flex flex-col gap-1">
+      <span class="font-semibold">Updated By By</span>
+      <span>{{ incident().updatedBy }}</span>
+    </span>
+    }
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <span class="font-semibold">Description</span>
+    <span>{{ incident().description }}</span>
+  </div>
+
+  @if (incident()?.imageUrls?.length) {
+    <div class="flex flex-col gap-1">
+      <span class="font-semibold">Images</span>
+      <div class="flex gap-4 flex-wrap">
+      </div>
+    </div>
+  }
 
   <!--  Edit option-->
   @if (showEditOptions()) {

@@ -1,3 +1,5 @@
+import {IncidentType} from '@/types/index';
+
 export interface IIncident {
   title: string
   status: string
@@ -28,14 +30,17 @@ export interface IIncidentDetails extends Pick<IIncident, "title" | "location" |
 
 export interface IncidentsI {
   location: string
-  status: "pending" | "investigating" | "resolved"
+  status: IncidentType
   incidentId: string
   category: string
-  createdAt?: string
-  imageUrls?: string[]
   description: string
   assignedOfficer: string
   severity: "low" | "critical"
   reporter: string
   title: string
+  imageUrls?: string[]
+  createdBy?: string
+  createdAt?: Date
+  updatedBy?: string
+  updatedAt?: Date
 }
