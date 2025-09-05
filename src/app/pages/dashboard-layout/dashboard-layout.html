@@ -3,7 +3,6 @@
   <p-drawer [(visible)]="isSidebarOpen" closable="false" styleClass="border-none">
     <ng-template #headless>
       <aside class="h-full py-4 bg-primary relative w-max rounded-r-lg">
-
         <button
           (click)="isSidebarOpen = false"
           class="rounded-full absolute top-2 right-2 z-20 p-2 h-max w-max cursor-pointer flex self-end items-center justify-center bg-white text-primary hover:rotate-90 hover:scale-110 transition-all duration-200 ease-linear">
@@ -32,10 +31,17 @@
           </button>
         }
         <div class="flex flex-col">
-          @if (isSignedIn() && userStore.userData()().name) {
-            @let userName = userStore.userData()().name;
-            <span class="text-primary font-semibold text-xl">Welcome Back,</span>
-            <span class="text-primary-light font-black text-2xl">{{ userName }}</span>
+          @if (isFetchingUser()) {
+            <div class="flex flex-col gap-6">
+              <p-skeleton width="12rem"/>
+              <p-skeleton width="12rem"/>
+            </div>
+          } @else {
+            @if (isSignedIn() && userStore.userData()().name) {
+              @let userName = userStore.userData()().name;
+              <span class="text-primary font-semibold text-xl">Welcome Back,</span>
+              <span class="text-primary-light font-black text-2xl">{{ userName }}</span>
+            }
           }
         </div>
       </div>
@@ -67,11 +73,11 @@
     }
   </div>
 
-  <!--  Loader component-->
-  @if (isFetchingUser()) {
-    <div
-      class="absolute top-0 left-0 w-full h-full bg-primary-light/50 z-50 backdrop-blur-sm flex items-center justify-center">
-      <cmrp-loader-component/>
-    </div>
-  }
+  <!--  &lt;!&ndash;  Loader component&ndash;&gt;-->
+  <!--  @if (isFetchingUser()) {-->
+  <!--    <div-->
+  <!--      class="absolute top-0 left-0 w-full h-full bg-primary-light/50 z-50 backdrop-blur-sm flex items-center justify-center">-->
+  <!--      <cmrp-loader-component/>-->
+  <!--    </div>-->
+  <!--  }-->
 </div>

@@ -152,32 +152,31 @@ export const incidentsData = [
     description: "All reported incidents",
     increment: true,
     incOrDecValue: 12,
-    total: 156,
+    total: 0,
     icon: PrimeIcons.EXCLAMATION_TRIANGLE
   }, {
     title: "pending review",
     description: "awaiting assignment",
     increment: false,
     incOrDecValue: 8,
-    total: 24,
+    total: 0,
     icon: PrimeIcons.CLOCK
   }, {
     title: "in progress",
     description: "currently being resolved",
     increment: true,
     incOrDecValue: 15,
-    total: 18,
+    total: 0,
     icon: PrimeIcons.CHART_LINE
   }, {
     title: "resolved",
     description: "successfully completed",
     increment: true,
     incOrDecValue: 25,
-    total: 144,
+    total: 0,
     icon: PrimeIcons.CHECK_CIRCLE
   },
-] as const
-
+]
 
 export const recentIncidentsData = [
   {
