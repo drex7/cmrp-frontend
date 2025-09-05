@@ -7,6 +7,8 @@
 
 <!--incidents summary section-->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+
+  <!--Skeleton loader if incidents are being fetched-->
   @if (isFetchingIncidents()) {
     @let skeletonArray = Array(4).fill(0);
 
@@ -26,6 +28,7 @@
       </div>
     }
   } @else {
+    <!--Incidents summary cards-->
     @for (incident of incidentSummaryCards(); track incident.title) {
       <p-card class="w-full rounded-lg border border-dark-gray/50 flex flex-col gap-2">
         <div class="flex items-center justify-between gap-4">

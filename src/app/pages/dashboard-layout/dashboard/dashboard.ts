@@ -76,8 +76,8 @@ export class Dashboard implements OnInit, OnDestroy {
 
           const totalsMap: Record<string, number> = {
             "total incidents": totalItems,
-            "pending review": totalInReview,
-            "in progress": totalPending,
+            "pending review": totalPending,
+            "in progress": totalInReview,
             "resolved": totalResolved,
           };
 
