@@ -6,7 +6,6 @@ import {
   incidentFilters,
   incidentSeverities,
   incidentsSummary,
-  incidentTable,
   incidentTableHeaders
 } from '@/constants/index';
 import {IconField} from 'primeng/iconfield';
@@ -64,7 +63,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected userStore = inject(UserStore);
   protected readonly incidentsSummary = incidentsSummary.slice(0, 3);
   protected readonly getIncidentSeverity = getIncidentSeverity;
-  protected readonly incidentTable = incidentTable;
+  protected readonly incidentTable = signal<IncidentsI[]>([]);
   protected readonly incidentTableHeaders = incidentTableHeaders;
   protected readonly incidentFilters = incidentFilters;
   protected showIncidentDetailsModal = false
@@ -166,16 +165,18 @@ export class MyIncidents implements OnInit, OnDestroy {
   }
 
   protected getIncidentDetails() {
-    return this.incidentTable.find(incident => incident.incidentId === this.selectedIncident()) ?? {
+    return this.incidentTable().find(incident => incident.incidentId === this.selectedIncident()) ?? {
       incidentId: "",
-      assignedOfficer: "",
-      severity: "",
+      severity: "low",
       description: "",
-      status: "",
-      reported: "",
+      status: "pending",
       location: "",
-      title: ""
-    };
+      title: "",
+      category: "",
+      reporter: "",
+      assignedOfficer: "",
+
+    }
   }
 
   protected incidentAction(incidentId: string, showEditOptions: boolean) {
