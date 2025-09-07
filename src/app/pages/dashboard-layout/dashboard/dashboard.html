@@ -3,42 +3,50 @@
     <h4 class="font-bold text-3xl">Dashboard</h4>
     <p class="text-neutral-500">Manage and track city incidents and reports</p>
   </div>
-
-  <!--  TODO: Add search and filter functionalities-->
-  <!--  <div class="flex items-center gap-4">-->
-  <!--    <button class="flex items-center gap-2" pButton>-->
-  <!--      <i class="pi pi-filter"></i>-->
-  <!--      <span>Filter</span>-->
-  <!--    </button>-->
-  <!--  </div>-->
 </div>
 
 <!--incidents summary section-->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-  @for (incident of incidentsData; track incident.title) {
-    <p-card class="w-full rounded-lg border border-dark-gray/50 flex flex-col gap-2">
-      <div class="flex items-center justify-between gap-4">
-        <span class="capitalize text-black text-md font-semibold">{{ incident.title }}</span>
-        <div
-          [class]="cn('text-white h-10 w-10 rounded-lg flex items-center justify-center', {
+
+  <!--Skeleton loader if incidents are being fetched-->
+  @if (isFetchingIncidents()) {
+    @let skeletonArray = Array(4).fill(0);
+
+    @for (el of skeletonArray; track $index) {
+      <div class="rounded-md border shadow border-surface-200 p-4 bg-surface-0">
+        <div class="flex justify-between gap-2 mb-4">
+          <p-skeleton width="12rem"/>
+          <p-skeleton shape="square" size="2.5rem"/>
+        </div>
+        <div class="flex flex-col gap-2 mt-6">
+          <div class="flex gap-2">
+            <p-skeleton width="1rem" height="1.5rem"/>
+          </div>
+          <p-skeleton height=".7rem"/>
+        </div>
+
+      </div>
+    }
+  } @else {
+    <!--Incidents summary cards-->
+    @for (incident of incidentSummaryCards(); track incident.title) {
+      <p-card class="w-full rounded-lg border border-dark-gray/50 flex flex-col gap-2">
+        <div class="flex items-center justify-between gap-4">
+          <span class="capitalize text-black text-md font-semibold">{{ incident.title }}</span>
+          <div
+            [class]="cn('text-white h-10 w-10 rounded-lg flex items-center justify-center', {
           'bg-linear-to-t from-sky-500 to-indigo-500': ['total incidents', 'in progress'].includes(incident.title.toLowerCase()),
           'bg-yellow-500': incident.title.toLowerCase() === 'pending review',
           'bg-green-500': incident.title.toLowerCase() === 'resolved',
           })"
-        >
-          <i [class]="incident.icon" style="font-size: 1.3rem"></i>
+          >
+            <i [class]="incident.icon" style="font-size: 1.3rem"></i>
+          </div>
         </div>
-      </div>
-      <span class="font-bold text-2xl">{{ incident.total }}</span>
-      <p class="text-neutral-500 text-sm my-2">{{ incident.description }}</p>
-      <p class="text-neutral-500 text-sm flex items-center gap-1.5">
-        <span
-          [class]="incident.increment ? 'text-green-600' : 'text-red-600'"
-        >
-          {{ (incident.increment ? "+" : "-") + incident.incOrDecValue + "%" }}</span>
-        <span>from last week</span>
-      </p>
-    </p-card>
+        <span class="font-bold text-2xl">{{ incident.total }}</span>
+        <p class="text-neutral-500 text-sm my-2">{{ incident.description }}</p>
+      </p-card>
+    }
   }
 </div>
 
@@ -59,10 +67,10 @@
   </div>
 </p-card>
 
-<!--Quicksight integration-->
-<div class=" border mt-6">
-  <iframe class="w-full h-[32rem] lg:h-[38rem]"
-          src="https://eu-west-1.quicksight.aws.amazon.com/sn/embed/share/accounts/605134436600/dashboards/9824a03f-fef9-4507-b432-bdd619b87d96/sheets/9824a03f-fef9-4507-b432-bdd619b87d96_b70df44b-adab-43d2-9a1c-94cdd5ee335f/visuals/9824a03f-fef9-4507-b432-bdd619b87d96_0f868001-1281-4183-9ec8-8eaa2901e2d2?directory_alias=GroupOne"
-          title="Incidents"
-  ></iframe>
-</div>
+<!--&lt;!&ndash;Quicksight integration&ndash;&gt;-->
+<!--<div class=" border mt-6">-->
+<!--  <iframe class="w-full h-[32rem] lg:h-[38rem]"-->
+<!--          src="https://eu-west-1.quicksight.aws.amazon.com/sn/embed/share/accounts/605134436600/dashboards/9824a03f-fef9-4507-b432-bdd619b87d96/sheets/9824a03f-fef9-4507-b432-bdd619b87d96_b70df44b-adab-43d2-9a1c-94cdd5ee335f/visuals/9824a03f-fef9-4507-b432-bdd619b87d96_0f868001-1281-4183-9ec8-8eaa2901e2d2?directory_alias=GroupOne"-->
+<!--          title="Incidents"-->
+<!--  ></iframe>-->
+<!--</div>-->

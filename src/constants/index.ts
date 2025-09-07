@@ -152,32 +152,31 @@ export const incidentsData = [
     description: "All reported incidents",
     increment: true,
     incOrDecValue: 12,
-    total: 156,
+    total: 0,
     icon: PrimeIcons.EXCLAMATION_TRIANGLE
   }, {
     title: "pending review",
     description: "awaiting assignment",
     increment: false,
     incOrDecValue: 8,
-    total: 24,
+    total: 0,
     icon: PrimeIcons.CLOCK
   }, {
     title: "in progress",
     description: "currently being resolved",
     increment: true,
     incOrDecValue: 15,
-    total: 18,
+    total: 0,
     icon: PrimeIcons.CHART_LINE
   }, {
     title: "resolved",
     description: "successfully completed",
     increment: true,
     incOrDecValue: 25,
-    total: 144,
+    total: 0,
     icon: PrimeIcons.CHECK_CIRCLE
   },
-] as const
-
+]
 
 export const recentIncidentsData = [
   {
@@ -246,63 +245,63 @@ export const incidentsSummary: IIncidentSummary[] = [
 ]
 
 export const incidentTableHeaders = [
-  "incident id", "title", "location", "severity", "status", "assigned officer", "reported", "actions"
+  "incident id", "title", "location", "severity", "status", "assigned officer", "reporter", "actions"
 ]
 
 export const incidentTable: IIncidentDetails[] = [
   {
-    id: "INC-001",
+    incidentId: "INC-001",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-002",
+    incidentId: "INC-002",
     title: "Water on road",
     location: "Town",
-    priority: "low",
+    severity: "low",
     status: "resolved",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-003",
+    incidentId: "INC-003",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-004",
+    incidentId: "INC-004",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-005",
+    incidentId: "INC-005",
     title: "Water on road",
     location: "Town",
-    priority: "medium",
+    severity: "medium",
     status: "investigating",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-006",
+    incidentId: "INC-006",
     title: "Water on road",
     location: "Town",
-    priority: "high",
+    severity: "high",
     status: "pending",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
   }, {
-    id: "INC-007",
+    incidentId: "INC-007",
     title: "Water on road",
     location: "Town",
-    priority: "urgent",
+    severity: "urgent",
     status: "resolved",
     assignedOfficer: "John doe",
     reported: "2024-01-15 08:30 AM"
@@ -311,6 +310,6 @@ export const incidentTable: IIncidentDetails[] = [
 
 export const userTableHeaders = [
   "User ID", "Name", "Email", "Phone", "Region", "City", "Role",
-  // "Action"
+  "Action"
 ]
 

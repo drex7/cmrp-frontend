@@ -2,6 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@/environments/environment';
 import {AuthFormInterface} from '@/interfaces/user-interface';
+import {Cacheable} from 'ts-cacheable';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import {AuthFormInterface} from '@/interfaces/user-interface';
 export class UsersService {
   private readonly http = inject(HttpClient);
 
+  @Cacheable()
   public fetchUsers() {
     return this.http.get<{
       counts: {
@@ -19,5 +21,11 @@ export class UsersService {
       },
       users: Partial<AuthFormInterface>[]
     }>(`${environment.baseUrl}/users`)
+  }
+
+  public deleteUser(username: string) {
+    return this.http.delete<{ message: string }>(`${environment.baseUrl}/users`, {
+      body: {username},
+    });
   }
 }

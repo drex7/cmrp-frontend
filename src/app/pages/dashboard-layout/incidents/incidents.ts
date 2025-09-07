@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {incidentFilters, incidentsSummary, incidentTableHeaders} from "@/constants/index";
 import {IncidentHighlight} from "@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight";
 import {IconField} from "primeng/iconfield";
@@ -12,13 +12,14 @@ import {NgOptimizedImage, TitleCasePipe} from "@angular/common";
 import {Tag} from "primeng/tag";
 import {Button, ButtonDirective} from "primeng/button";
 import {Tooltip} from "primeng/tooltip";
-import {Dialog} from "primeng/dialog";
-import {IncidentDetails} from "@/pages/dashboard-layout/incidents/incident-details/incident-details";
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, take, takeUntil} from 'rxjs';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {MessageService} from 'primeng/api';
 import {Skeleton} from 'primeng/skeleton';
-import {IIncidentDetails} from '@/interfaces/incident-interface';
+import {IncidentsI} from '@/interfaces/incident-interface';
+import {Dialog} from 'primeng/dialog';
+import {IncidentDetails} from '@/pages/dashboard-layout/incidents/incident-details/incident-details';
+import {IncidentType} from '@/types/index';
 
 @Component({
   selector: 'cmrp-incidents',
@@ -37,33 +38,65 @@ import {IIncidentDetails} from '@/interfaces/incident-interface';
     Tag,
     Button,
     Tooltip,
+    Skeleton,
+    NgOptimizedImage,
     Dialog,
     IncidentDetails,
-    ButtonDirective,
-    Skeleton,
-    NgOptimizedImage
+    ButtonDirective
   ],
 
 })
 export class Incidents implements OnInit, OnDestroy {
   protected readonly cn = cn;
   protected readonly getIncidentSeverity = getIncidentSeverity;
-  protected readonly incidentTable = signal<IIncidentDetails[]>([]);
+  protected readonly incidents = signal<IncidentsI[]>([]);
   protected readonly incidentTableHeaders = incidentTableHeaders;
   protected showIncidentDetailsModal = false
   protected selectedIncident = signal("")
   protected showEditDetailsOptions = signal(false)
   protected readonly incidentsSummary = incidentsSummary;
   protected destroy$ = new Subject<void>();
-  protected selectedFilter = {
-    name: "All Status",
-    code: "all"
-  }
+
   protected readonly incidentFilters = incidentFilters;
-  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as Partial<IIncidentDetails>[];
+  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as IncidentsI[];
   protected isFetchingIncidents = signal(false)
   protected incidentsService = inject(IncidentsService);
   protected messageService = inject(MessageService);
+
+  protected searchValue = signal<string>('');
+  protected selectedStatus = signal<{
+    code: string
+    name: string
+  }>({
+    code: "all",
+    name: "All",
+  });
+
+  protected filteredIncidents = computed(() => {
+    const search = this.searchValue().toLowerCase().trim();
+    const status = this.selectedStatus()?.code ?? 'all';
+
+    return this.incidents().filter(incident => {
+      const title = (incident.title ?? '').toLowerCase();
+      const location = (incident.location ?? '').toLowerCase();
+      const assigned = (incident.assignedOfficer ?? incident.assignedOfficer ?? '').toLowerCase();
+      const reporter = (incident.reporter ?? '').toLowerCase();
+
+      const matchesSearch = search
+        ? [title, location, assigned, reporter].some(text => text.includes(search))
+        : true;
+
+      const matchesStatus = status === 'all'
+        ? true
+        : ((incident.status ?? '').toLowerCase() === status);
+
+      return matchesSearch && matchesStatus;
+    });
+  });
+  protected incidentStatus = signal({
+    status: "",
+    comments: ""
+  })
 
   ngOnInit() {
     this.fetchIncidents()
@@ -74,12 +107,35 @@ export class Incidents implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  protected updateIncidentStatus() {
+    const status = {
+      status: this.incidentStatus().status.toUpperCase(),
+      comments: this.incidentStatus().comments
+    }
+    this.incidentsService.updateIncidentStatus(this.selectedIncident(), status).pipe(take(1)).subscribe({
+      next: ({incident, message}) => {
+        console.log(incident)
+        console.log(message)
+        this.showIncidentDetailsModal = false
+      },
+      error: err => {
+        const errorMessage = (err as { error: { error: string } }).error.error || "Unable to update incident status.";
+        this.messageService.add({
+          severity: "error",
+          summary: "Status Update Error",
+          detail: errorMessage,
+          life: 3000,
+        })
+      }
+    })
+  }
+
   protected fetchIncidents() {
     this.isFetchingIncidents.set(true)
     this.incidentsService.fetchIncidents().pipe(takeUntil(this.destroy$)).subscribe({
       next: data => {
         this.isFetchingIncidents.set(false)
-        console.log(data)
+        this.incidents.set(data.incidents);
       },
       error: err => {
         this.isFetchingIncidents.set(false)
@@ -96,17 +152,27 @@ export class Incidents implements OnInit, OnDestroy {
   }
 
   protected getIncidentDetails() {
-    return this.incidentTable().find(incident => incident.id === this.selectedIncident()) ?? {
-      id: "",
-      assignedOfficer: "",
-      priority: "",
-      description: "",
-      status: "",
-      reported: "",
-      location: "",
-      title: ""
+    const incident =
+      this.incidents().find(
+        (incident) => incident.incidentId === this.selectedIncident()
+      ) ?? {
+        incidentId: "",
+        category: "",
+        description: "",
+        assignedOfficer: "",
+        severity: "low",
+        reporter: "",
+        status: "pending",
+        location: "",
+        title: "",
+      };
+
+    return {
+      ...incident,
+      status: incident.status.toLowerCase() as IncidentType,
     };
   }
+
 
   protected incidentAction(incidentId: string, showEditOptions: boolean) {
     this.selectedIncident.set(incidentId);

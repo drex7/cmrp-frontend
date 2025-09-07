@@ -20,11 +20,21 @@
     <div class="flex flex-col sm:flex-row sm:items-center gap-4">
       <p-icon-field class="w-full">
         <p-inputicon class="pi pi-search"/>
-        <input class="w-full" pInputText placeholder="Search" type="search"/>
+        <input (ngModelChange)="searchValue.set($event)"
+               [ngModel]="searchValue()"
+               class="w-full"
+               pInputText
+               placeholder="Search"
+               type="search"
+        />
       </p-icon-field>
-
-      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-full"
-                optionLabel="name" placeholder="Select filter"
+      <p-select
+        (ngModelChange)="selectedStatus.set($event)"
+        [ngModel]="selectedStatus()"
+        [options]="incidentFilters"
+        class="w-full md:w-64"
+        optionLabel="name"
+        placeholder="Select status"
       />
     </div>
   </div>
@@ -36,7 +46,7 @@
     [paginator]="true"
     [rows]="10"
     [tableStyle]="{ 'min-width': '60rem' }"
-    [value]="isFetchingIncidents() ? tableSkeletonArray : incidentTable()"
+    [value]="isFetchingIncidents() ? tableSkeletonArray : filteredIncidents()"
     class="mt-5"
   >
     <ng-template #header>
@@ -58,39 +68,42 @@
           }
         </tr>
       } @else {
+        @let status = incident.status.toLowerCase().split("_").join(" ");
         <tr>
-          <td>{{ incident.id }}</td>
+          <td class="uppercase">{{ incident.incidentId.slice(0, 7) }}</td>
           <td>{{ incident.title }}</td>
           <td>{{ incident.location }}</td>
           <td>
-            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.priority.toLowerCase())"
-                   [value]="incident.priority"/>
+            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.severity)"
+                   [value]="incident.severity"/>
           </td>
           <td>
-            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
-                   [value]="incident.status"/>
+            <p-tag [rounded]="true" class="w-max" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
+                   [value]="status"/>
           </td>
           <td>{{ incident.assignedOfficer }}</td>
           <td>{{ incident.reported }}</td>
           <td>
             <div class="flex items-center gap-2">
               <p-button
-                (click)="incidentAction(incident.id, false)"
-                (keyup)="incidentAction(incident.id, false)"
+                (click)="incidentAction(incident.incidentId, false)"
+                (keyup)="incidentAction(incident.incidentId, false)"
                 aria-label="view incident"
                 icon="pi pi-eye"
                 pTooltip="View incident"
                 tooltipPosition="top"
+                tooltipStyleClass="w-max!"
                 type="button"
                 variant="text"
               />
               <p-button
-                (click)="incidentAction(incident.id, true)"
-                (keyup)="incidentAction(incident.id, true)"
+                (click)="incidentAction(incident.incidentId, true)"
+                (keyup)="incidentAction(incident.incidentId, true)"
                 aria-label="update incident"
                 icon="pi pi-pencil"
                 pTooltip="Update incident"
                 tooltipPosition="top"
+                tooltipStyleClass="w-max!"
                 variant="text"
               />
             </div>
@@ -99,7 +112,7 @@
       }
     </ng-template>
     <ng-template #footer>
-      @if (!isFetchingIncidents() && incidentTable().length === 0) {
+      @if (!isFetchingIncidents() && filteredIncidents().length === 0) {
         <tr>
           <td colspan="8">
             <div class="flex flex-col gap-2 items-center justify-center h-58">
@@ -111,7 +124,7 @@
         </tr>
       } @else {
         <tr>
-          <td colspan="8">In total there are {{ incidentTable() ? incidentTable().length : 0 }} incidents.</td>
+          <td colspan="8">In total there are {{ filteredIncidents() ? filteredIncidents().length : 0 }} incidents.</td>
         </tr>
       }
     </ng-template>
@@ -128,12 +141,19 @@
     <ng-template #header>
       <div class="flex flex-col">
         <span class="font-bold text-xl">{{ getIncidentDetails().title }}</span>
-        <span class="text-neutral-500">incident details - {{ getIncidentDetails().id }}</span>
+        <span
+          class="text-neutral-500">incident details -
+          <span class="uppercase">
+          {{ getIncidentDetails().incidentId.slice(0, 7) }}
+          </span>
+        </span>
       </div>
     </ng-template>
     <cmrp-incident-details
       [showEditOptions]="showEditDetailsOptions()"
-      [incident]="getIncidentDetails()"/>
+      [incident]="getIncidentDetails()"
+      (updateIncidentStatus)="incidentStatus.set($event)"
+    />
 
     @if (showEditDetailsOptions()) {
       <ng-template #footer>
@@ -141,7 +161,10 @@
           <p-button
             (keyup)="showIncidentDetailsModal=false"
             (click)="showIncidentDetailsModal=false" label="Cancel" variant="outlined"/>
-          <button aria-label="Submit" pButton class="bg-primary!">Submit</button>
+          <button aria-label="Submit"
+                  (click)=" updateIncidentStatus()"
+                  pButton class="bg-primary!">Submit
+          </button>
         </div>
       </ng-template>
     }

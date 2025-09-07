@@ -41,14 +41,14 @@ export class AuthService {
 
   public onboardUser(data: AuthFormInterface) {
 
-    const telephone = `+233${data.telephone.slice(1)}`
+    const phone_number = `+233${data.telephone.slice(1)}`
     const user = {
       name: data.name,
       email: data.email,
       role: data.role,
       region: data.region,
       city: data.city,
-      telephone,
+      phone_number,
 
     }
     return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)

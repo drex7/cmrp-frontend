@@ -2,21 +2,17 @@
   <div class="grid grid-cols-2">
     <span class="flex flex-col gap-1">
       <span class="font-semibold">Status</span>
-      @let incidentStatus = incident().status.toLowerCase();
-      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incidentStatus)" [value]="incident().status"
-             class="w-max px-4!"/>
+      @let status = incident().status.toLowerCase().split("_").join(" ");
+      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident().status)" [value]="status"
+             class="w-max px-2!"/>
     </span>
     <span class="flex flex-col gap-1">
-      <span class="font-semibold">Priority</span>
-      @let incidentPriority = incident().priority.toLowerCase();
-      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incidentPriority)" [value]="incident().priority"
-             class="w-max px-4!"/>
+      <span class="font-semibold">Severity</span>
+      <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident().severity)" [value]="incident().severity"
+             class="w-max px-2!"/>
     </span>
   </div>
-  <div class="flex flex-col gap-1">
-    <span class="font-semibold">Description</span>
-    <span>{{ incident().description }}</span>
-  </div>
+
 
   <div class="grid grid-cols-2">
     <span class="flex flex-col gap-1">
@@ -29,6 +25,32 @@
     </span>
   </div>
 
+  <div class="grid grid-cols-2">
+    <span class="flex flex-col gap-1">
+      <span class="font-semibold">Created By</span>
+      <span>{{ incident().createdBy ?? "-" }}</span>
+    </span>
+
+    @if (incident().updatedBy) {
+      <span class="flex flex-col gap-1">
+      <span class="font-semibold">Updated By By</span>
+      <span>{{ incident().updatedBy }}</span>
+    </span>
+    }
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <span class="font-semibold">Description</span>
+    <span>{{ incident().description }}</span>
+  </div>
+
+  @if (incident().imageUrls?.length) {
+    <div class="flex flex-col gap-1">
+      <span class="font-semibold">Images</span>
+      <div class="flex gap-4 flex-wrap">
+      </div>
+    </div>
+  }
 
   <!--  Edit option-->
   @if (showEditOptions()) {
@@ -46,7 +68,7 @@
         <span class="capitalize font-semibold">Add update info</span>
         <span class="text-red-600">*</span>
       </div>
-      <textarea [(ngModel)]="updateValue" placeholder="Add update info..." [autoResize]="false" class="resize-none"
+      <textarea [(ngModel)]="comment" placeholder="Add update info..." [autoResize]="false" class="resize-none"
                 cols="35" pInputTextarea
                 rows="5"></textarea>
     </div>

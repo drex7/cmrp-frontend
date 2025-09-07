@@ -65,19 +65,20 @@ export const matchPasswordValidator = (passwordKey: string, confirmPasswordKey: 
   };
 }
 
-export const getIncidentSeverity = (incident: IncidentType | string) => {
+export const getIncidentSeverity = (incident: IncidentType) => {
   const dataMap: Record<IncidentType, string> = {
     low: "secondary",
     urgent: "danger",
     high: "danger",
     medium: "warn",
     active: "danger",
-    investigating: "info",
+    critical: "danger",
+    in_progress: "info",
     resolved: "success",
     pending: "warn",
   };
 
-  return dataMap[incident as IncidentType];
+  return dataMap[incident];
 }
 
 
