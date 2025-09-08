@@ -105,16 +105,18 @@
                 type="button"
                 variant="text"
               />
-              <p-button
-                (click)="incidentAction(incident.incidentId, true)"
-                (keyup)="incidentAction(incident.incidentId, true)"
-                aria-label="update incident"
-                icon="pi pi-pencil"
-                pTooltip="Update incident"
-                tooltipPosition="top"
-                tooltipStyleClass="w-max!"
-                variant="text"
-              />
+              @if (status !== 'resolved') {
+                <p-button
+                  (click)="incidentAction(incident.incidentId, true)"
+                  (keyup)="incidentAction(incident.incidentId, true)"
+                  aria-label="update incident"
+                  icon="pi pi-pencil"
+                  pTooltip="Update incident"
+                  tooltipPosition="top"
+                  tooltipStyleClass="w-max!"
+                  variant="text"
+                />
+              }
             </div>
           </td>
         </tr>
