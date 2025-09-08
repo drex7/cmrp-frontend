@@ -4,11 +4,11 @@
     <div class="flex items-center gap-2">
       <p-chip
         [class]="cn('text-sm text-white font-semibold', {
-            'bg-blue-500': incident().status === 'in progress',
-            'bg-yellow-500': incident().status === 'pending',
-            'bg-green-500': incident().status === 'resolved',
+            'bg-blue-500': incident().status.toLowerCase() === 'in_progress',
+            'bg-yellow-500': incident().status.toLowerCase() === 'pending',
+            'bg-green-500': incident().status.toLowerCase() === 'resolved',
             })"
-      >{{ incident().status }}
+      >{{ incident().status.toLowerCase().split("_").join(" ") }}
       </p-chip>
       <p-chip
         [class]="cn('text-sm text-white font-semibold', {
@@ -21,28 +21,31 @@
       </p-chip>
     </div>
   </div>
-  <p class="text-sm text-neutral-500">{{ incident().details }}</p>
+  <p class="text-sm text-neutral-500">{{ incident().description }}</p>
   <div class="flex flex-col gap-2 text-neutral-500 text-sm">
     <!--location-->
     <span class="flex items-center gap-2">
-            <i class="pi pi-map-marker"></i>
-            <span class="capitalize">{{ incident().location }}</span>
+      @let region = incident().region;
+      @let city = incident().city;
+      @let location = incident().location;
+      <i class="pi pi-map-marker"></i>
+            <span class="capitalize">{{ `${location}, ${city}, ${region}` }}</span>
           </span>
     <!--reporter-->
     <span class="flex items-center gap-2">
             <i class="pi pi-user"></i>
-            <span class="capitalize">reported by: {{ incident().reporter }}</span>
+            <span class="capitalize">reported by: {{ incident().createdBy }}</span>
           </span>
     <!--date-->
     <span class="flex items-center gap-2">
             <i class="pi pi-calendar"></i>
-            <span class="capitalize">{{ incident().date }}</span>
+            <span class="capitalize">{{ incident().createdAt | date: 'dd-MM-y' }}</span>
           </span>
     <!--assigned to-->
-    @if (incident().assignedTo.length > 2) {
+    @if (incident().assignedOfficer.length > 2) {
       <span class="flex items-center gap-2">
             <i class="pi pi-user"></i>
-            <span class="capitalize">assigned to: {{ incident().assignedTo }}</span>
+            <span class="capitalize">assigned to: {{ incident().assignedOfficer }}</span>
           </span>
     }
   </div>

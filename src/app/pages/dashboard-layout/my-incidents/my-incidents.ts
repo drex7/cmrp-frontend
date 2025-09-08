@@ -26,7 +26,7 @@ import {Textarea} from 'primeng/textarea';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {ToastService} from '@/services/toast-service/toast-service';
 import {Subject, take, takeUntil} from 'rxjs';
-import {IncidentsI} from '@/interfaces/incident-interface';
+import {IncidentI} from '@/interfaces/incident-interface';
 import {Skeleton} from 'primeng/skeleton';
 
 @Component({
@@ -63,7 +63,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected userStore = inject(UserStore);
   protected readonly incidentsSummary = incidentsSummary.slice(0, 3);
   protected readonly getIncidentSeverity = getIncidentSeverity;
-  protected readonly incidentTable = signal<IncidentsI[]>([]);
+  protected readonly incidentTable = signal<IncidentI[]>([]);
   protected readonly incidentTableHeaders = incidentTableHeaders;
   protected readonly incidentFilters = incidentFilters;
   protected showIncidentDetailsModal = false
@@ -74,7 +74,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected isFetchingIncidents = signal(false)
   protected readonly incidentSeverities = incidentSeverities;
   protected readonly incidentCategories = incidentCategories;
-  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<IncidentsI>[];
+  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<IncidentI>[];
   protected readonly cn = cn;
   protected isSubmitting = signal(false)
   protected destroy$ = new Subject<void>();
@@ -82,7 +82,7 @@ export class MyIncidents implements OnInit, OnDestroy {
     name: "All Status",
     code: "all"
   }
-  protected incidents = signal<IncidentsI[]>([])
+  protected incidents = signal<IncidentI[]>([])
   protected incidentForm: FormGroup = new FormGroup({
     title: new FormControl("", [Validators.required]),
     category: new FormControl("", [Validators.required]),

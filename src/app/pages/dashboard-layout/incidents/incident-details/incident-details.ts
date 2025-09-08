@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, effect, input, OnInit, output, signal} from '@angular/core';
-import {IncidentsI} from '@/interfaces/incident-interface';
+import {IncidentI} from '@/interfaces/incident-interface';
 import {Tag} from 'primeng/tag';
 import {getIncidentSeverity} from '@/lib/utils';
 import {Select} from 'primeng/select';
@@ -20,14 +20,14 @@ import {Textarea} from 'primeng/textarea';
 })
 export class IncidentDetails implements OnInit {
   public showEditOptions = input(false)
-  public incident = input<IncidentsI>({
+  public incident = input<IncidentI>({
     category: '', description: '',
     title: "",
     assignedOfficer: "",
     incidentId: "",
     location: "",
     severity: "low",
-    reporter: "",
+    createdBy: "",
     status: "pending",
     imageUrls: []
   })

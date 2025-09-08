@@ -16,7 +16,7 @@ import {Subject, take, takeUntil} from 'rxjs';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {MessageService} from 'primeng/api';
 import {Skeleton} from 'primeng/skeleton';
-import {IncidentsI} from '@/interfaces/incident-interface';
+import {IncidentI} from '@/interfaces/incident-interface';
 import {Dialog} from 'primeng/dialog';
 import {IncidentDetails} from '@/pages/dashboard-layout/incidents/incident-details/incident-details';
 import {IncidentType} from '@/types/index';
@@ -49,7 +49,7 @@ import {IncidentType} from '@/types/index';
 export class Incidents implements OnInit, OnDestroy {
   protected readonly cn = cn;
   protected readonly getIncidentSeverity = getIncidentSeverity;
-  protected readonly incidents = signal<IncidentsI[]>([]);
+  protected readonly incidents = signal<IncidentI[]>([]);
   protected readonly incidentTableHeaders = incidentTableHeaders;
   protected showIncidentDetailsModal = false
   protected selectedIncident = signal("")
@@ -58,7 +58,7 @@ export class Incidents implements OnInit, OnDestroy {
   protected destroy$ = new Subject<void>();
 
   protected readonly incidentFilters = incidentFilters;
-  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as IncidentsI[];
+  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as IncidentI[];
   protected isFetchingIncidents = signal(false)
   protected incidentsService = inject(IncidentsService);
   protected messageService = inject(MessageService);
@@ -80,7 +80,7 @@ export class Incidents implements OnInit, OnDestroy {
       const title = (incident.title ?? '').toLowerCase();
       const location = (incident.location ?? '').toLowerCase();
       const assigned = (incident.assignedOfficer ?? incident.assignedOfficer ?? '').toLowerCase();
-      const reporter = (incident.reporter ?? '').toLowerCase();
+      const reporter = (incident.createdBy ?? '').toLowerCase();
 
       const matchesSearch = search
         ? [title, location, assigned, reporter].some(text => text.includes(search))

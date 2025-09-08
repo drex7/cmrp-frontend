@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@/environments/environment';
-import {IncidentsI} from '@/interfaces/incident-interface';
+import {IncidentI} from '@/interfaces/incident-interface';
 import {Cacheable} from 'ts-cacheable';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class IncidentsService {
   public fetchUserIncidents() {
     return this.http.get<
       {
-        incidents: IncidentsI[]
+        incidents: IncidentI[]
         summary: {
           total: number
 
@@ -30,12 +30,12 @@ export class IncidentsService {
 
   @Cacheable()
   public fetchIncidents() {
-    return this.http.get<{ incidents: IncidentsI[] }>(`${environment.baseUrl}/incidents`)
+    return this.http.get<{ incidents: IncidentI[] }>(`${environment.baseUrl}/incidents`)
   }
 
   public updateIncidentStatus(incidentId: string, statusUpdate: { comments: string, status: string }) {
     return this.http.put<{
-      incident: IncidentsI,
+      incident: IncidentI,
       message: string
     }>(`${environment.baseUrl}/incidents/${incidentId}/status`, statusUpdate);
   }
