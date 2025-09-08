@@ -85,7 +85,7 @@ export class Users implements OnInit, OnDestroy {
   });
   protected userFormControls = signal<string[]>(Object.keys(this.userForm.controls));
   protected readonly Array = Array;
-  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
+  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
   protected destroy$ = new Subject<void>();
   protected confirmationService = inject(ConfirmationService)
 

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {incidentFilters, incidentsSummary, incidentTableHeaders} from "@/constants/index";
+import {incidentFilters, incidentSeverities, incidentsSummary, incidentTableHeaders} from "@/constants/index";
 import {IncidentHighlight} from "@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight";
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
@@ -58,23 +58,22 @@ export class Incidents implements OnInit, OnDestroy {
   protected destroy$ = new Subject<void>();
 
   protected readonly incidentFilters = incidentFilters;
-  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as IncidentI[];
+  protected readonly incidentSeverities = incidentSeverities;
+  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as IncidentI[];
   protected isFetchingIncidents = signal(false)
+  protected isUpdatingIncident = signal(false)
   protected incidentsService = inject(IncidentsService);
   protected messageService = inject(MessageService);
 
   protected searchValue = signal<string>('');
-  protected selectedStatus = signal<{
-    code: string
-    name: string
-  }>({
-    code: "all",
-    name: "All",
-  });
+  protected selectedSeverity = signal(this.incidentSeverities[0])
+  protected selectedStatus = signal(this.incidentFilters[0]);
 
   protected filteredIncidents = computed(() => {
     const search = this.searchValue().toLowerCase().trim();
-    const status = this.selectedStatus()?.code ?? 'all';
+    const status = this.selectedStatus()?.value ?? 'all';
+    const severity = this.selectedSeverity()?.value ?? 'all';
+    console.log(search, status, severity);
 
     return this.incidents().filter(incident => {
       const title = (incident.title ?? '').toLowerCase();
@@ -86,11 +85,15 @@ export class Incidents implements OnInit, OnDestroy {
         ? [title, location, assigned, reporter].some(text => text.includes(search))
         : true;
 
+      const matchesSeverity = severity === 'all'
+        ? true
+        : ((incident.severity ?? '').toLowerCase() === severity);
+
       const matchesStatus = status === 'all'
         ? true
         : ((incident.status ?? '').toLowerCase() === status);
 
-      return matchesSearch && matchesStatus;
+      return matchesSearch && matchesSeverity && matchesStatus;
     });
   });
   protected incidentStatus = signal({
@@ -108,17 +111,31 @@ export class Incidents implements OnInit, OnDestroy {
   }
 
   protected updateIncidentStatus() {
+    this.isUpdatingIncident.set(true);
     const status = {
       status: this.incidentStatus().status.toUpperCase(),
       comments: this.incidentStatus().comments
     }
     this.incidentsService.updateIncidentStatus(this.selectedIncident(), status).pipe(take(1)).subscribe({
       next: ({incident, message}) => {
-        console.log(incident)
-        console.log(message)
+        this.messageService.add({
+          severity: "success",
+          summary: "Status Update Success",
+          detail: message,
+          life: 3000,
+        })
+
         this.showIncidentDetailsModal = false
+        this.isUpdatingIncident.set(false);
+        this.incidents.update(incidents =>
+          incidents.map(item =>
+            item.incidentId === incident.incidentId ? {...item, ...incident} : item
+          )
+        );
+        this.showEditDetailsOptions.set(false)
       },
       error: err => {
+        this.isUpdatingIncident.set(false);
         const errorMessage = (err as { error: { error: string } }).error.error || "Unable to update incident status.";
         this.messageService.add({
           severity: "error",
@@ -172,7 +189,6 @@ export class Incidents implements OnInit, OnDestroy {
       status: incident.status.toLowerCase() as IncidentType,
     };
   }
-
 
   protected incidentAction(incidentId: string, showEditOptions: boolean) {
     this.selectedIncident.set(incidentId);

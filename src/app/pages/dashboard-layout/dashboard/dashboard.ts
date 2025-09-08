@@ -72,7 +72,6 @@ export class Dashboard implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: ({statistics: {totalInReview, totalResolved, totalItems, totalPending, items}}) => {
-          console.log(items)
           const incidents = items.map((item) => ({
             ...item,
             assignedOfficer: "-",

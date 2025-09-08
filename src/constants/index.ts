@@ -28,14 +28,8 @@ export const sidebarData = [
   },
 ]
 
-export const incidentFilters = [
-  {name: 'All Status', code: 'all'},
-  {name: 'Pending', code: 'pending'},
-  {name: 'Investigating', code: 'investigating'},
-  {name: 'Resolved', code: 'resolved'}
-];
-
 export const incidentSeverities = [
+  {label: 'All Severities', value: 'all'},
   {
     label: "Low",
     value: "low"
@@ -53,6 +47,15 @@ export const incidentSeverities = [
     value: "critical"
   }
 ]
+
+export const incidentFilters = [
+  {label: 'All Status', value: 'all'},
+  {label: 'Pending', value: 'pending'},
+  {label: 'In Progress', value: 'in_progress'},
+  {label: 'Resolved', value: 'resolved'}
+];
+
+
 export const incidentCategories = [
   {
     label: "Public Safety",
@@ -148,29 +151,30 @@ export const ghanaRegions: RegionI[] = [
 
 export const incidentsSummary: IIncidentSummary[] = [
   {
+    title: "total incidents",
+    icon: PrimeIcons.EXCLAMATION_CIRCLE,
+    number: 45,
+    description: "total",
+  },
+  {
     title: "active incidents",
     icon: PrimeIcons.EXCLAMATION_TRIANGLE,
     number: 23,
-    description: "3+ since yesterday",
+    description: "active",
   },
   {
     title: "under investigation",
     icon: PrimeIcons.CLOCK,
     number: 15,
-    description: "Average resolution: 4.2h",
+    description: "in-progress",
   },
   {
-    title: "resolved today",
+    title: "total resolved incidents",
     icon: PrimeIcons.CHECK_CIRCLE,
     number: 41,
-    description: "+18% fro yesterday",
+    description: "resolved",
   },
-  {
-    title: "response time",
-    icon: PrimeIcons.CLOCK,
-    number: 2.1,
-    description: "average response time",
-  },
+
 ]
 
 export const incidentTableHeaders = [
