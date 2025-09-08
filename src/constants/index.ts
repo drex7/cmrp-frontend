@@ -1,5 +1,5 @@
 import {PrimeIcons} from 'primeng/api';
-import {IIncidentDetails, IIncidentSummary} from '@/interfaces/incident-interface';
+import {IIncidentSummary} from '@/interfaces/incident-interface';
 import {RegionI} from "@/interfaces/user-interface";
 
 export const sidebarData = [
@@ -179,66 +179,6 @@ export const incidentsSummary: IIncidentSummary[] = [
 
 export const incidentTableHeaders = [
   "incident id", "title", "location", "severity", "status", "assigned officer", "reporter", "actions"
-]
-
-export const incidentTable: IIncidentDetails[] = [
-  {
-    incidentId: "INC-001",
-    title: "Water on road",
-    location: "Town",
-    severity: "urgent",
-    status: "pending",
-    assignedOfficer: "John doe",
-    reported: "2024-01-15 08:30 AM"
-  }, {
-    incidentId: "INC-002",
-    title: "Water on road",
-    location: "Town",
-    severity: "low",
-    status: "resolved",
-    assignedOfficer: "John doe",
-    reported: "2024-01-15 08:30 AM"
-  }, {
-    incidentId: "INC-003",
-    title: "Water on road",
-    location: "Town",
-    severity: "urgent",
-    status: "pending",
-    assignedOfficer: "John doe",
-    reported: "2024-01-15 08:30 AM"
-  }, {
-    incidentId: "INC-004",
-    title: "Water on road",
-    location: "Town",
-    severity: "urgent",
-    status: "pending",
-    assignedOfficer: "John doe",
-    reported: "2024-01-15 08:30 AM"
-  }, {
-    incidentId: "INC-005",
-    title: "Water on road",
-    location: "Town",
-    severity: "medium",
-    status: "investigating",
-    assignedOfficer: "John doe",
-    reported: "2024-01-15 08:30 AM"
-  }, {
-    incidentId: "INC-006",
-    title: "Water on road",
-    location: "Town",
-    severity: "high",
-    status: "pending",
-    assignedOfficer: "John doe",
-    reported: "2024-01-15 08:30 AM"
-  }, {
-    incidentId: "INC-007",
-    title: "Water on road",
-    location: "Town",
-    severity: "urgent",
-    status: "resolved",
-    assignedOfficer: "John doe",
-    reported: "2024-01-15 08:30 AM"
-  },
 ]
 
 export const userTableHeaders = [

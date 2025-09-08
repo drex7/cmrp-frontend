@@ -73,7 +73,6 @@ export class Incidents implements OnInit, OnDestroy {
     const search = this.searchValue().toLowerCase().trim();
     const status = this.selectedStatus()?.value ?? 'all';
     const severity = this.selectedSeverity()?.value ?? 'all';
-    console.log(search, status, severity);
 
     return this.incidents().filter(incident => {
       const title = (incident.title ?? '').toLowerCase();

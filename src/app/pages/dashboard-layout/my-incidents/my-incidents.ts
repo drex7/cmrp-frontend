@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {IncidentHighlight} from '@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight';
 import {
@@ -15,7 +15,6 @@ import {Select} from 'primeng/select';
 import {TableModule} from 'primeng/table';
 import {Tag} from 'primeng/tag';
 import {NgOptimizedImage, TitleCasePipe} from '@angular/common';
-import {Tooltip} from 'primeng/tooltip';
 import {cn, getIncidentSeverity} from '@/lib/utils';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Dialog} from 'primeng/dialog';
@@ -46,7 +45,6 @@ import {Skeleton} from 'primeng/skeleton';
     TableModule,
     Tag,
     TitleCasePipe,
-    Tooltip,
     FormsModule,
     Dialog,
     IncidentDetails,
@@ -64,7 +62,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected readonly incidentsSummary = incidentsSummary.slice(0, 3);
   protected readonly getIncidentSeverity = getIncidentSeverity;
   protected readonly incidentTable = signal<IncidentI[]>([]);
-  protected readonly incidentTableHeaders = incidentTableHeaders;
+  protected readonly incidentTableHeaders = incidentTableHeaders.filter(ind => !["reporter", "actions"].includes(ind));
   protected readonly incidentFilters = incidentFilters;
   protected showIncidentDetailsModal = false
   protected showAddIncidentModal = false
@@ -78,10 +76,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected readonly cn = cn;
   protected isSubmitting = signal(false)
   protected destroy$ = new Subject<void>();
-  protected selectedFilter = {
-    name: "All Status",
-    code: "all"
-  }
+
   protected incidents = signal<IncidentI[]>([])
   protected incidentForm: FormGroup = new FormGroup({
     title: new FormControl("", [Validators.required]),
@@ -92,8 +87,39 @@ export class MyIncidents implements OnInit, OnDestroy {
   });
   protected incidentFormControls = signal<string[]>(Object.keys(this.incidentForm.controls));
 
-  ngOnInit() {
+  protected searchValue = signal("")
+  protected selectedSeverity = signal(this.incidentSeverities[0])
+  protected selectedStatus = signal(this.incidentFilters[0]);
 
+  protected filteredIncidents = computed(() => {
+    const search = this.searchValue().toLowerCase().trim();
+    const status = this.selectedStatus()?.value ?? 'all';
+    const severity = this.selectedSeverity()?.value ?? 'all';
+
+    return this.incidents().filter(incident => {
+      const title = (incident.title ?? '').toLowerCase();
+      const location = (incident.location ?? '').toLowerCase();
+      const assigned = (incident.assignedOfficer ?? incident.assignedOfficer ?? '').toLowerCase();
+      const reporter = (incident.createdBy ?? '').toLowerCase();
+
+      const matchesSearch = search
+        ? [title, location, assigned, reporter].some(text => text.includes(search))
+        : true;
+
+      const matchesSeverity = severity === 'all'
+        ? true
+        : ((incident.severity ?? '').toLowerCase() === severity);
+
+      const matchesStatus = status === 'all'
+        ? true
+        : ((incident.status ?? '').toLowerCase() === status);
+
+      return matchesSearch && matchesSeverity && matchesStatus;
+    });
+  });
+
+
+  ngOnInit() {
     if (this.incidents().length < 1) {
       this.isFetchingIncidents.set(true)
       this.fetchIncidents()
