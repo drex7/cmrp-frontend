@@ -44,4 +44,20 @@ export interface IncidentI {
   updatedAt?: Date
   region?: string
   city?: string
+  reporter_region?: string
+  report_city?: string
+}
+
+export interface ImageI {
+  file: File;
+  url: string;
+}
+
+export interface CreateIncidentI {
+  title: string
+  category: string
+  severity: string
+  location: string
+  description: string
+  images: ImageI[]
 }

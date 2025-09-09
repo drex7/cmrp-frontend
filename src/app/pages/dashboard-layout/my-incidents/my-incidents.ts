@@ -25,7 +25,7 @@ import {Textarea} from 'primeng/textarea';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {ToastService} from '@/services/toast-service/toast-service';
 import {Subject, take, takeUntil} from 'rxjs';
-import {IncidentI} from '@/interfaces/incident-interface';
+import {CreateIncidentI, ImageI, IncidentI} from '@/interfaces/incident-interface';
 import {Skeleton} from 'primeng/skeleton';
 
 @Component({
@@ -68,7 +68,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected showAddIncidentModal = false
   protected selectedIncident = signal("")
   protected showEditDetailsOptions = signal(false)
-  protected images = signal<{ file: File, url: string }[]>([]);
+  protected images = signal<ImageI[]>([]);
   protected isFetchingIncidents = signal(false)
   protected readonly incidentSeverities = incidentSeverities;
   protected readonly incidentCategories = incidentCategories;
@@ -215,6 +215,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected cancelIncidentOperation() {
     this.isSubmitting.set(false)
     this.incidentForm.reset();
+    this.images.set([])
   }
 
   protected async onSubmit() {
@@ -226,21 +227,23 @@ export class MyIncidents implements OnInit, OnDestroy {
         images: this.images(),
         reportedBy: this.userStore.userData()().userId,
         status: 'Pending',
-      };
+      } as CreateIncidentI;
 
       this.incidentsService.createIncident(incidentData).pipe(take(1)).subscribe({
         next: data => {
           this.showAddIncidentModal = false
           this.fetchIncidents()
-          console.log(data)
+          this.isSubmitting.set(false);
+          this.cancelIncidentOperation();
         }, error: err => {
           this.handleError(err as Error)
+          this.isSubmitting.set(false);
+          this.cancelIncidentOperation();
         }
       })
-      this.isSubmitting.set(false);
-      this.cancelIncidentOperation();
     }
   }
+
 
   private processFiles(files: FileList): void {
     Array.from(files).forEach(file => {

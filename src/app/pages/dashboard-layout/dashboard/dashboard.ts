@@ -75,8 +75,8 @@ export class Dashboard implements OnInit, OnDestroy {
           const incidents = items.map((item) => ({
             ...item,
             assignedOfficer: "-",
-            region: "",
-            city: ""
+            region: item.reporter_region ?? "-",
+            city: item.report_city ?? "-",
           }))
 
           this.recentIncidents.set(incidents)
