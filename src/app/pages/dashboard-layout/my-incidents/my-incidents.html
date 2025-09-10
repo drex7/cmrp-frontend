@@ -13,93 +13,109 @@
 
 <!--Incident highlights -->
 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-  @for (incident of incidentsSummary; track incident.title) {
+  @for (incident of incidentsSummary(); track incident.title) {
     <cmrp-incident-highlight [incident]="incident"/>
   }
 </div>
 
 <div class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
-  <div class="flex flex-col md:flex-row md:items-center gap-4 md:justify-between">
+  <div class="flex flex-col xl:flex-row gap-4 xl:justify-between">
     <div class="flex flex-col">
       <span class="font-bold text-3xl">Current Incidents</span>
       <p class="text-neutral-500">Active and ongoing incidents requiring attention</p>
     </div>
-
-    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-      <p-icon-field class="w-full">
+    <div class="flex flex-col gap-4 lg:flex-row">
+      <p-icon-field class="w-full h-max">
         <p-inputicon class="pi pi-search"/>
-        <input class="w-full" pInputText placeholder="Search" type="search"/>
+        <input (ngModelChange)="searchValue.set($event)"
+               [ngModel]="searchValue()"
+               class="w-full"
+               pInputText
+               placeholder="Search"
+               type="search"
+        />
       </p-icon-field>
-
-      <p-select [(ngModel)]="selectedFilter" [options]="incidentFilters" class="w-full"
-                optionLabel="name" placeholder="Select filter"
-      />
+      <div class="flex flex-col sm:flex-row h-max gap-4">
+        <p-select
+          (onChange)="selectedSeverity.set($event.value)"
+          [ngModel]="selectedSeverity()"
+          [options]="incidentSeverities"
+          class="w-full min-w-40"
+          optionLabel="label"
+          placeholder="Select Severity"
+        />
+        <p-select
+          (ngModelChange)="selectedStatus.set($event)"
+          [ngModel]="selectedStatus()"
+          [options]="incidentFilters"
+          class="w-full min-w-40"
+          optionLabel="label"
+          placeholder="Select status"
+        />
+      </div>
     </div>
   </div>
 
-
   <!--Incidents table-->
   <p-table
+    [alwaysShowPaginator]="false"
     [paginator]="true"
     [rows]="10"
     [tableStyle]="{ 'min-width': '60rem' }"
-    [value]="incidentTable"
+    [value]="isFetchingIncidents() ? tableSkeletonArray : filteredIncidents()"
     class="mt-5"
   >
     <ng-template #header>
       <tr>
         @for (header of incidentTableHeaders; track header) {
 
-          <th>{{ header | titlecase }}</th>
+          <th [id]="header">{{ header | titlecase }}</th>
         }
       </tr>
     </ng-template>
     <ng-template #body let-incident>
-      <tr>
-        <td>{{ incident.id }}</td>
-        <td>{{ incident.title }}</td>
-        <td>{{ incident.location }}</td>
-        <td>
-          <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.priority.toLowerCase())"
-                 [value]="incident.priority"/>
-        </td>
-        <td>
-          <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
-                 [value]="incident.status"/>
-        </td>
-        <td>{{ incident.assignedOfficer }}</td>
-        <td>{{ incident.reported }}</td>
-        <td>
-          <div class="flex items-center gap-2">
-            <p-button
-              (click)="incidentAction(incident.id, false)"
-              (keyup)="incidentAction(incident.id, false)"
-              aria-label="view incident"
-              icon="pi pi-eye"
-              pTooltip="View incident"
-              tooltipPosition="top"
-              type="button"
-              variant="text"
-            />
-            <p-button
-              (click)="incidentAction(incident.id, true)"
-              (keyup)="incidentAction(incident.id, true)"
-              aria-label="update incident"
-              icon="pi pi-pencil"
-              pTooltip="Update incident"
-              tooltipPosition="top"
-              variant="text"
-            />
-          </div>
-        </td>
 
-
-      </tr>
+      @if (isFetchingIncidents()) {
+        <tr class="border">
+          @for (el of tableSkeletonArray; track $index) {
+            <td>
+              <p-skeleton/>
+            </td>
+          }
+        </tr>
+      } @else {
+        @let status = incident.status.toLowerCase().split("_").join(" ");
+        <tr>
+          <td class="uppercase">{{ incident.incidentId.slice(0, 7) }}</td>
+          <td>{{ incident.title }}</td>
+          <td>{{ incident.location }}</td>
+          <td>
+            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.severity)"
+                   [value]="incident.severity"/>
+          </td>
+          <td>
+            <p-tag [rounded]="true" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
+                   [value]="status"/>
+          </td>
+        </tr>
+      }
     </ng-template>
     <ng-template #footer>
-      <tr>
-        <td colspan="8">In total there are {{ incidentTable ? incidentTable.length : 0 }} incidents.</td>
-      </tr>
+      @if (!isFetchingIncidents() && filteredIncidents().length === 0) {
+        <tr>
+          <td colspan="8">
+            <div class="flex flex-col gap-2 items-center justify-center h-58">
+              <img ngSrc="/assets/empty.svg" priority alt="empty" height="130" width="160">
+              <span class="text-sm text-slate-500">No incidents created :(</span>
+            </div>
+
+          </td>
+        </tr>
+      } @else if (!isFetchingIncidents()) {
+        <tr>
+          <td colspan="8">In total there are {{ filteredIncidents() ? filteredIncidents().length : 0 }} incidents.</td>
+        </tr>
+      }
     </ng-template>
   </p-table>
 </div>
@@ -235,7 +251,7 @@
     <ng-template #header>
       <div class="flex flex-col">
         <span class="font-bold text-xl">{{ getIncidentDetails().title }}</span>
-        <span class="text-neutral-500">incident details - {{ getIncidentDetails().id }}</span>
+        <span class="text-neutral-500">incident details - {{ getIncidentDetails().incidentId }}</span>
       </div>
     </ng-template>
     <cmrp-incident-details

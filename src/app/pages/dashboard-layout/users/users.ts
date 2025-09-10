@@ -12,14 +12,15 @@ import {Dialog} from 'primeng/dialog';
 import {cn, ghPhoneValidator} from '@/lib/utils';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputMask} from 'primeng/inputmask';
-import {TitleCasePipe} from '@angular/common';
+import {NgOptimizedImage, TitleCasePipe} from '@angular/common';
 import {AuthFormInterface, RegionOrCityOption} from '@/interfaces/user-interface';
 import {AuthService} from '@/services/auth-service/auth-service';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {UsersService} from '@/services/users/users-service';
 import {Skeleton} from 'primeng/skeleton';
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, take, takeUntil} from 'rxjs';
+import {Tooltip} from 'primeng/tooltip';
 
 @Component({
   selector: 'cmrp-users',
@@ -40,7 +41,9 @@ import {Subject, takeUntil} from 'rxjs';
     ReactiveFormsModule,
     TitleCasePipe,
     ConfirmDialog,
-    Skeleton
+    Skeleton,
+    Tooltip,
+    NgOptimizedImage
   ],
   templateUrl: './users.html',
   styleUrl: './users.css'
@@ -82,11 +85,14 @@ export class Users implements OnInit, OnDestroy {
   });
   protected userFormControls = signal<string[]>(Object.keys(this.userForm.controls));
   protected readonly Array = Array;
-  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
+  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
   protected destroy$ = new Subject<void>();
+  protected confirmationService = inject(ConfirmationService)
 
   ngOnInit() {
-    this.fetchUsers()
+    if (this.users().length === 0) {
+      this.fetchUsers()
+    }
 
     this.regions = ghanaRegions.map(r => ({label: r.label, value: r.value}));
 
@@ -118,12 +124,11 @@ export class Users implements OnInit, OnDestroy {
           {title: 'citizens', count: value.counts.citizens},
         ])
         this.users.set(value.users.map(user => {
-          console.log(user);
           return {
             ...user,
             user_id: user.user_id?.slice(0, 8),
             role: user.role === "CityOfficial" ? "City Official" : user.role,
-            telephone: user.telephone ? user.telephone.replace(/^\+233/, '0') : '-',
+            telephone: user.phone_number ? user.phone_number.replace(/^\+233/, '0') : '-',
           }
         }))
       },
@@ -138,6 +143,51 @@ export class Users implements OnInit, OnDestroy {
         });
       }
     })
+  }
+
+  protected deleteUser(event: Event, user: string, username: string) {
+
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: `Do you want to delete ${user} ?`,
+      header: 'Delete User',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.usersService.deleteUser(username).pipe(take(1)).subscribe({
+          next: ({message}) => {
+            this.fetchUsers()
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: message,
+              life: 3000
+            })
+          },
+          error: error => {
+            const errorMessage = error.error?.message || 'unable to delete user';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: errorMessage,
+              life: 3000
+            });
+          }
+        })
+      },
+
+    });
+
   }
 
   protected getUsers() {
@@ -194,7 +244,6 @@ export class Users implements OnInit, OnDestroy {
               summary: 'Error',
               detail: error.error?.message || 'Failed to onboard user'
             });
-            console.error('Error onboarding user:', error);
           }
         })
     }

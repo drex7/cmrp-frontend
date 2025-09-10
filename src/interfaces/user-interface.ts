@@ -7,12 +7,14 @@ export interface AuthFormInterface {
   region: string;
   role?: string;
   user_id?: string;
+  phone_number?: string
 }
 
 export interface UserInterface {
   user: Omit<AuthFormInterface, "password"> & {
     role: "Admin" | "CityOfficial" | "Citizen" | "";
     userId: string;
+    phone_number?: string
   };
   isSignedIn: boolean;
   auth: {

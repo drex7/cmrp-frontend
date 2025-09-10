@@ -4,24 +4,24 @@ import {Router, RouterOutlet} from "@angular/router";
 import {Message} from 'primeng/message';
 import {UserStore} from '@/store/user-store';
 import {Sidebar} from '@/components/sidebar/sidebar';
-import {LoaderComponent} from "@/components/loader-component/loader-component";
 import {BreakpointService} from '@/services/breakpoint-service/breakpoint-service';
 import {Drawer} from 'primeng/drawer';
 import {checkTokenExpiry} from '@/lib/utils';
+import {Skeleton} from 'primeng/skeleton';
 
 @Component({
   selector: 'cmrp-dashboard-layout',
+  templateUrl: './dashboard-layout.html',
+  styleUrl: './dashboard-layout.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ButtonDirective,
     RouterOutlet,
     Message,
     Sidebar,
-    LoaderComponent,
-    Drawer
+    Drawer,
+    Skeleton
   ],
-  templateUrl: './dashboard-layout.html',
-  styleUrl: './dashboard-layout.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardLayout implements OnInit {
   protected breakpointService = inject(BreakpointService);

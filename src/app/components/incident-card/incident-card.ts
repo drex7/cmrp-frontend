@@ -1,28 +1,31 @@
 import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {cn} from '@/lib/utils';
-import {IIncident} from '@/interfaces/incident-interface';
+import {IncidentI} from '@/interfaces/incident-interface';
 import {Chip} from 'primeng/chip';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'cmrp-incident-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     Chip,
+    DatePipe,
   ],
   templateUrl: './incident-card.html',
   styleUrl: './incident-card.css'
 })
 export class IncidentCard {
 
-  public incident = input<IIncident>({
+  public incident = input<IncidentI>({
+    incidentId: "",
     title: "",
     status: 'pending',
+    category: "",
     severity: "low",
-    details: "",
+    description: "",
     location: "",
-    reporter: "",
-    date: "",
-    assignedTo: "",
+    createdBy: "",
+    assignedOfficer: "",
     region: "",
     city: ""
   })

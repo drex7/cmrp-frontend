@@ -1,12 +1,13 @@
-import {Component, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {IIncidentSummary} from '@/interfaces/incident-interface';
 import {cn} from '@/lib/utils';
 
 @Component({
   selector: 'cmrp-incident-highlight',
-  imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './incident-highlight.html',
-  styleUrl: './incident-highlight.css'
+  styleUrl: './incident-highlight.css',
+  imports: [],
 })
 export class IncidentHighlight {
   public incident = input<IIncidentSummary>({
