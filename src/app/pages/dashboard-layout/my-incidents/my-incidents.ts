@@ -117,7 +117,7 @@ export class MyIncidents implements OnInit, OnDestroy {
       return matchesSearch && matchesSeverity && matchesStatus;
     });
   });
-
+  protected readonly Array = Array;
 
   ngOnInit() {
     if (this.incidents().length < 1) {
@@ -253,7 +253,6 @@ export class MyIncidents implements OnInit, OnDestroy {
           this.fetchIncidents()
           this.isSubmitting.set(false);
           this.cancelIncidentOperation();
-          console.log(data)
         }, error: err => {
           this.handleError(err as Error)
           this.isSubmitting.set(false);
@@ -261,7 +260,6 @@ export class MyIncidents implements OnInit, OnDestroy {
       })
     }
   }
-
 
   private processFiles(files: FileList): void {
     Array.from(files).forEach(file => {
