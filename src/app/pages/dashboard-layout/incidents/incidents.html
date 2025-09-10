@@ -4,11 +4,32 @@
 </div>
 
 <!--Incident highlights -->
-<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-  @for (incident of incidentsSummary; track incident.title) {
-    <cmrp-incident-highlight [incident]="incident"/>
-  }
-</div>
+
+@if (isFetchingIncidents()) {
+  @let skeletonArray = Array(4).fill(0);
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+    @for (el of skeletonArray; track $index) {
+      <div class="rounded-md border shadow border-surface-200 p-4 bg-surface-0">
+        <div class="flex justify-between gap-2 mb-4">
+          <p-skeleton width="12rem"/>
+          <p-skeleton shape="square" size="2.5rem"/>
+        </div>
+        <div class="flex flex-col gap-2">
+          <div class="flex gap-2">
+            <p-skeleton width="1rem" height="1.5rem"/>
+          </div>
+          <p-skeleton height=".7rem"/>
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+    @for (incident of incidentsSummary(); track incident.title) {
+      <cmrp-incident-highlight [incident]="incident"/>
+    }
+  </div>
+}
 
 <div class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
   <div class="flex flex-col xl:flex-row gap-4 xl:justify-between">

@@ -54,7 +54,6 @@ export class Incidents implements OnInit, OnDestroy {
   protected showIncidentDetailsModal = false
   protected selectedIncident = signal("")
   protected showEditDetailsOptions = signal(false)
-  protected readonly incidentsSummary = incidentsSummary;
   protected destroy$ = new Subject<void>();
 
   protected readonly incidentFilters = incidentFilters;
@@ -99,6 +98,25 @@ export class Incidents implements OnInit, OnDestroy {
     status: "",
     comments: ""
   })
+  protected incidentsSummary = computed(() => {
+    const incidents = this.incidents()
+    const total = incidents.length
+    const pendingIncidents = incidents.filter(incident => incident.status.toLowerCase() === "pending").length
+    const inProgressIncidents = incidents.filter(incident => incident.status.toLowerCase() === "in_progress").length
+    const resolvedIncidents = incidents.filter(incident => incident.status.toLowerCase() === "resolved").length
+    const summaryMap: Record<string, number> = {
+      "total": total,
+      pending: pendingIncidents,
+      "in-progress": inProgressIncidents,
+      "resolved": resolvedIncidents,
+    }
+
+    return incidentsSummary.map((item) => {
+      const total = summaryMap[item.description];
+      return total !== undefined ? {...item, number: total} : item;
+    })
+  })
+  protected readonly Array = Array;
 
   ngOnInit() {
     this.fetchIncidents()
@@ -152,6 +170,8 @@ export class Incidents implements OnInit, OnDestroy {
       next: data => {
         this.isFetchingIncidents.set(false)
         this.incidents.set(data.incidents);
+
+
       },
       error: err => {
         this.isFetchingIncidents.set(false)
