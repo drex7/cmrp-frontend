@@ -153,25 +153,25 @@ export const incidentsSummary: IIncidentSummary[] = [
   {
     title: "total incidents",
     icon: PrimeIcons.EXCLAMATION_CIRCLE,
-    number: 45,
+    number: 0,
     description: "total",
   },
   {
     title: "pending incidents",
     icon: PrimeIcons.EXCLAMATION_TRIANGLE,
-    number: 23,
+    number: 0,
     description: "pending",
   },
   {
     title: "under investigation",
     icon: PrimeIcons.CLOCK,
-    number: 15,
+    number: 0,
     description: "in-progress",
   },
   {
     title: "total resolved incidents",
     icon: PrimeIcons.CHECK_CIRCLE,
-    number: 41,
+    number: 0,
     description: "resolved",
   },
 
