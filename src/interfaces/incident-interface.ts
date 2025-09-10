@@ -28,19 +28,36 @@ export interface IIncidentDetails extends Pick<IIncident, "title" | "location" |
   description?: string
 }
 
-export interface IncidentsI {
+export interface IncidentI {
   location: string
   status: IncidentType
   incidentId: string
   category: string
   description: string
   assignedOfficer: string
-  severity: "low" | "critical"
-  reporter: string
+  severity: "low" | "medium" | "high" | "critical"
   title: string
   imageUrls?: string[]
   createdBy?: string
   createdAt?: Date
   updatedBy?: string
   updatedAt?: Date
+  region?: string
+  city?: string
+  reporter_region?: string
+  report_city?: string
+}
+
+export interface ImageI {
+  file: File;
+  url: string;
+}
+
+export interface CreateIncidentI {
+  title: string
+  category: string
+  severity: string
+  location: string
+  description: string
+  images: ImageI[]
 }

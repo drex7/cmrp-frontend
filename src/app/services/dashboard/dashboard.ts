@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {environment} from '@/environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Cacheable} from 'ts-cacheable';
-import {IncidentsI} from '@/interfaces/incident-interface';
+import {IncidentI} from '@/interfaces/incident-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class DashboardService {
   public fetchIncidentsOverview() {
     return this.http.get<{
       statistics: {
-        items: IncidentsI[]
+        items: IncidentI[]
         totalInReview: number
         totalItems: number
         totalPending: number

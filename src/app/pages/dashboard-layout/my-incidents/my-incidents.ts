@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {IncidentHighlight} from '@/pages/dashboard-layout/incidents/incident-highlight/incident-highlight';
 import {
@@ -15,7 +15,6 @@ import {Select} from 'primeng/select';
 import {TableModule} from 'primeng/table';
 import {Tag} from 'primeng/tag';
 import {NgOptimizedImage, TitleCasePipe} from '@angular/common';
-import {Tooltip} from 'primeng/tooltip';
 import {cn, getIncidentSeverity} from '@/lib/utils';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Dialog} from 'primeng/dialog';
@@ -26,7 +25,7 @@ import {Textarea} from 'primeng/textarea';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {ToastService} from '@/services/toast-service/toast-service';
 import {Subject, take, takeUntil} from 'rxjs';
-import {IncidentsI} from '@/interfaces/incident-interface';
+import {CreateIncidentI, IIncidentSummary, ImageI, IncidentI} from '@/interfaces/incident-interface';
 import {Skeleton} from 'primeng/skeleton';
 
 @Component({
@@ -46,7 +45,6 @@ import {Skeleton} from 'primeng/skeleton';
     TableModule,
     Tag,
     TitleCasePipe,
-    Tooltip,
     FormsModule,
     Dialog,
     IncidentDetails,
@@ -61,28 +59,25 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected toastService = inject(ToastService);
   protected incidentsService = inject(IncidentsService)
   protected userStore = inject(UserStore);
-  protected readonly incidentsSummary = incidentsSummary.slice(0, 3);
+  protected readonly incidentsSummary = signal<IIncidentSummary[]>(incidentsSummary);
   protected readonly getIncidentSeverity = getIncidentSeverity;
-  protected readonly incidentTable = signal<IncidentsI[]>([]);
-  protected readonly incidentTableHeaders = incidentTableHeaders;
+  protected readonly incidentTable = signal<IncidentI[]>([]);
+  protected readonly incidentTableHeaders = incidentTableHeaders.filter(ind => !["reporter", "actions", "assigned officer"].includes(ind));
   protected readonly incidentFilters = incidentFilters;
   protected showIncidentDetailsModal = false
   protected showAddIncidentModal = false
   protected selectedIncident = signal("")
   protected showEditDetailsOptions = signal(false)
-  protected images = signal<{ file: File, url: string }[]>([]);
+  protected images = signal<ImageI[]>([]);
   protected isFetchingIncidents = signal(false)
   protected readonly incidentSeverities = incidentSeverities;
   protected readonly incidentCategories = incidentCategories;
-  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<IncidentsI>[];
+  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<IncidentI>[];
   protected readonly cn = cn;
   protected isSubmitting = signal(false)
   protected destroy$ = new Subject<void>();
-  protected selectedFilter = {
-    name: "All Status",
-    code: "all"
-  }
-  protected incidents = signal<IncidentsI[]>([])
+
+  protected incidents = signal<IncidentI[]>([])
   protected incidentForm: FormGroup = new FormGroup({
     title: new FormControl("", [Validators.required]),
     category: new FormControl("", [Validators.required]),
@@ -92,8 +87,39 @@ export class MyIncidents implements OnInit, OnDestroy {
   });
   protected incidentFormControls = signal<string[]>(Object.keys(this.incidentForm.controls));
 
-  ngOnInit() {
+  protected searchValue = signal("")
+  protected selectedSeverity = signal(this.incidentSeverities[0])
+  protected selectedStatus = signal(this.incidentFilters[0]);
 
+  protected filteredIncidents = computed(() => {
+    const search = this.searchValue().toLowerCase().trim();
+    const status = this.selectedStatus()?.value ?? 'all';
+    const severity = this.selectedSeverity()?.value ?? 'all';
+
+    return this.incidents().filter(incident => {
+      const title = (incident.title ?? '').toLowerCase();
+      const location = (incident.location ?? '').toLowerCase();
+      const assigned = (incident.assignedOfficer ?? incident.assignedOfficer ?? '').toLowerCase();
+      const reporter = (incident.createdBy ?? '').toLowerCase();
+
+      const matchesSearch = search
+        ? [title, location, assigned, reporter].some(text => text.includes(search))
+        : true;
+
+      const matchesSeverity = severity === 'all'
+        ? true
+        : ((incident.severity ?? '').toLowerCase() === severity);
+
+      const matchesStatus = status === 'all'
+        ? true
+        : ((incident.status ?? '').toLowerCase() === status);
+
+      return matchesSearch && matchesSeverity && matchesStatus;
+    });
+  });
+
+
+  ngOnInit() {
     if (this.incidents().length < 1) {
       this.isFetchingIncidents.set(true)
       this.fetchIncidents()
@@ -107,9 +133,27 @@ export class MyIncidents implements OnInit, OnDestroy {
 
   protected fetchIncidents() {
     this.incidentsService.fetchUserIncidents().pipe(takeUntil(this.destroy$)).subscribe({
-      next: data => {
+      next: ({incidents, summary}) => {
         this.isFetchingIncidents.set(false)
-        this.incidents.set(data.incidents)
+        this.incidents.set(incidents)
+
+        const pendingIncidents = summary.byStatus.PENDING
+        const inProgressIncidents = summary.byStatus.IN_PROGRESS
+        const resolvedIncidents = summary.byStatus.RESOLVED
+        const summaryMap: Record<string, number> = {
+          "total": summary.total,
+          pending: pendingIncidents,
+          "in-progress": inProgressIncidents,
+          "resolved": resolvedIncidents,
+        }
+
+        this.incidentsSummary.update((incidents) =>
+          incidents.map((item) => {
+            const total = summaryMap[item.description];
+            return total !== undefined ? {...item, number: total} : item;
+          })
+        );
+
       }, error: err => {
         this.isFetchingIncidents.set(false)
         this.handleError(err as Error)
@@ -189,6 +233,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected cancelIncidentOperation() {
     this.isSubmitting.set(false)
     this.incidentForm.reset();
+    this.images.set([])
   }
 
   protected async onSubmit() {
@@ -200,21 +245,23 @@ export class MyIncidents implements OnInit, OnDestroy {
         images: this.images(),
         reportedBy: this.userStore.userData()().userId,
         status: 'Pending',
-      };
+      } as CreateIncidentI;
 
       this.incidentsService.createIncident(incidentData).pipe(take(1)).subscribe({
         next: data => {
           this.showAddIncidentModal = false
           this.fetchIncidents()
+          this.isSubmitting.set(false);
+          this.cancelIncidentOperation();
           console.log(data)
         }, error: err => {
           this.handleError(err as Error)
+          this.isSubmitting.set(false);
         }
       })
-      this.isSubmitting.set(false);
-      this.cancelIncidentOperation();
     }
   }
+
 
   private processFiles(files: FileList): void {
     Array.from(files).forEach(file => {
@@ -237,7 +284,7 @@ export class MyIncidents implements OnInit, OnDestroy {
     });
   }
 
-  private handleError(error: Error, type = "Login"): void {
+  private handleError(error: Error, type = "Image upload"): void {
     this.toastService.showToast("error", `${type} failed`, error.message);
     this.isSubmitting.set(false);
   }

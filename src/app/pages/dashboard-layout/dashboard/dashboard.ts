@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {recentIncidentsData} from "@/constants/index";
 import {Card} from 'primeng/card';
 import {cn} from '@/lib/utils';
 import {IncidentCard} from '@/components/incident-card/incident-card';
@@ -7,6 +6,7 @@ import {Subject, takeUntil} from 'rxjs';
 import {DashboardService} from '@/services/dashboard/dashboard';
 import {PrimeIcons} from 'primeng/api';
 import {Skeleton} from 'primeng/skeleton';
+import {IncidentI} from '@/interfaces/incident-interface';
 
 @Component({
   selector: 'cmrp-dashboard',
@@ -47,7 +47,7 @@ export class Dashboard implements OnInit, OnDestroy {
     ]
   );
   protected readonly cn = cn;
-  protected readonly recentIncidentsData = recentIncidentsData;
+  protected recentIncidents = signal<IncidentI[]>([]);
   protected isFetchingIncidents = signal(false)
   protected destroy$ = new Subject<void>()
 
@@ -71,7 +71,16 @@ export class Dashboard implements OnInit, OnDestroy {
     this.dashboardService.fetchIncidentsOverview()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({statistics: {totalInReview, totalResolved, totalItems, totalPending}}) => {
+        next: ({statistics: {totalInReview, totalResolved, totalItems, totalPending, items}}) => {
+          const incidents = items.map((item) => ({
+            ...item,
+            assignedOfficer: "-",
+            region: item.reporter_region ?? "-",
+            city: item.report_city ?? "-",
+          }))
+
+          this.recentIncidents.set(incidents)
+
           this.isFetchingIncidents.set(false);
 
           const totalsMap: Record<string, number> = {

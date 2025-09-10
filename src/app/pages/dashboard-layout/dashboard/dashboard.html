@@ -1,13 +1,12 @@
-<div class="flex gap-4 justify-between items-center">
-  <div class="flex flex-col mb-6">
+<div class="flex gap-4 justify-between items-center mt-4 mb-10">
+  <div class="flex flex-col gap-2">
     <h4 class="font-bold text-3xl">Dashboard</h4>
     <p class="text-neutral-500">Manage and track city incidents and reports</p>
   </div>
 </div>
 
 <!--incidents summary section-->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mb-10">
   <!--Skeleton loader if incidents are being fetched-->
   @if (isFetchingIncidents()) {
     @let skeletonArray = Array(4).fill(0);
@@ -18,7 +17,7 @@
           <p-skeleton width="12rem"/>
           <p-skeleton shape="square" size="2.5rem"/>
         </div>
-        <div class="flex flex-col gap-2 mt-6">
+        <div class="flex flex-col gap-2">
           <div class="flex gap-2">
             <p-skeleton width="1rem" height="1.5rem"/>
           </div>
@@ -57,20 +56,48 @@
     <span>recent incidents</span>
   </span>
 
-  <!--  incident cards-->
-  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
-    @for (incident of recentIncidentsData; track incident.title) {
-      <cmrp-incident-card
-        [incident]="incident"
-      />
-    }
-  </div>
-</p-card>
+  <!--Loading skeletons-->
+  @let skeletonArray = Array(3).fill(0);
+  @if (isFetchingIncidents()) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      @for (el of skeletonArray; track $index) {
+        <div class="rounded-md border shadow border-surface-200 px-4 py-6 bg-surface-0">
+          <div class="flex justify-between gap-2 mb-4">
+            <p-skeleton width="10rem"/>
+            <div class="flex items-center gap-2">
+              <p-skeleton width="3rem"/>
+              <p-skeleton width="3rem"/>
+            </div>
+          </div>
+          <div class="flex flex-col gap-6 mt-6">
+            <div class="flex gap-3 flex-col">
+              <p-skeleton height="1rem"/>
+              <p-skeleton height="1rem"/>
+            </div>
+            <div class="flex flex-col gap-3">
+              <p-skeleton height="1rem"/>
+              <p-skeleton height="1rem"/>
+              <p-skeleton height="1rem"/>
+              <p-skeleton height="1rem"/>
+            </div>
+          </div>
+        </div>
 
-<!--&lt;!&ndash;Quicksight integration&ndash;&gt;-->
-<!--<div class=" border mt-6">-->
-<!--  <iframe class="w-full h-[32rem] lg:h-[38rem]"-->
-<!--          src="https://eu-west-1.quicksight.aws.amazon.com/sn/embed/share/accounts/605134436600/dashboards/9824a03f-fef9-4507-b432-bdd619b87d96/sheets/9824a03f-fef9-4507-b432-bdd619b87d96_b70df44b-adab-43d2-9a1c-94cdd5ee335f/visuals/9824a03f-fef9-4507-b432-bdd619b87d96_0f868001-1281-4183-9ec8-8eaa2901e2d2?directory_alias=GroupOne"-->
-<!--          title="Incidents"-->
-<!--  ></iframe>-->
-<!--</div>-->
+      }
+    </div>
+  } @else {
+    <!--  incident cards-->
+    <div [class]="recentIncidents().length > 0 ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6' : ''">
+      @for (incident of recentIncidents(); track incident.incidentId) {
+        <cmrp-incident-card
+          [incident]="incident"
+        />
+      } @empty {
+        <div class="flex flex-col gap-2 items-center justify-center py-6">
+          <img src="assets/empty.svg" alt="empty">
+          <p class="text-slate-500">No incidents created :(</p>
+        </div>
+      }
+    </div>
+  }
+</p-card>

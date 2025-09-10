@@ -85,7 +85,7 @@ export class Users implements OnInit, OnDestroy {
   });
   protected userFormControls = signal<string[]>(Object.keys(this.userForm.controls));
   protected readonly Array = Array;
-  protected tableSkeletonArray = Array.from({length: 7}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
+  protected tableSkeletonArray = Array.from({length: 8}).map((_, i) => `Item #${i}`) as unknown as Partial<AuthFormInterface>[];
   protected destroy$ = new Subject<void>();
   protected confirmationService = inject(ConfirmationService)
 
@@ -109,7 +109,6 @@ export class Users implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log(this.users())
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -245,7 +244,6 @@ export class Users implements OnInit, OnDestroy {
               summary: 'Error',
               detail: error.error?.message || 'Failed to onboard user'
             });
-            console.error('Error onboarding user:', error);
           }
         })
     }

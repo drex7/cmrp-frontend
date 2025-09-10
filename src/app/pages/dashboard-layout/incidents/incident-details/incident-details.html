@@ -33,7 +33,7 @@
 
     @if (incident().updatedBy) {
       <span class="flex flex-col gap-1">
-      <span class="font-semibold">Updated By By</span>
+      <span class="font-semibold">Updated By</span>
       <span>{{ incident().updatedBy }}</span>
     </span>
     }
@@ -48,6 +48,10 @@
     <div class="flex flex-col gap-1">
       <span class="font-semibold">Images</span>
       <div class="flex gap-4 flex-wrap">
+        @for (image of incident().imageUrls; track image) {
+          {{ image }}
+          <img [src]="image" class="w-20 h-20" alt="">
+        }
       </div>
     </div>
   }
