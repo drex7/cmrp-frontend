@@ -25,7 +25,7 @@ import {Textarea} from 'primeng/textarea';
 import {IncidentsService} from '@/services/incidents-service/incidents-service';
 import {ToastService} from '@/services/toast-service/toast-service';
 import {Subject, take, takeUntil} from 'rxjs';
-import {CreateIncidentI, ImageI, IncidentI} from '@/interfaces/incident-interface';
+import {CreateIncidentI, IIncidentSummary, ImageI, IncidentI} from '@/interfaces/incident-interface';
 import {Skeleton} from 'primeng/skeleton';
 
 @Component({
@@ -59,7 +59,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected toastService = inject(ToastService);
   protected incidentsService = inject(IncidentsService)
   protected userStore = inject(UserStore);
-  protected readonly incidentsSummary = incidentsSummary.slice(0, 3);
+  protected readonly incidentsSummary = signal<IIncidentSummary[]>(incidentsSummary);
   protected readonly getIncidentSeverity = getIncidentSeverity;
   protected readonly incidentTable = signal<IncidentI[]>([]);
   protected readonly incidentTableHeaders = incidentTableHeaders.filter(ind => !["reporter", "actions"].includes(ind));
@@ -133,9 +133,27 @@ export class MyIncidents implements OnInit, OnDestroy {
 
   protected fetchIncidents() {
     this.incidentsService.fetchUserIncidents().pipe(takeUntil(this.destroy$)).subscribe({
-      next: data => {
+      next: ({incidents, summary}) => {
         this.isFetchingIncidents.set(false)
-        this.incidents.set(data.incidents)
+        this.incidents.set(incidents)
+
+        const pendingIncidents = summary.byStatus.PENDING
+        const inProgressIncidents = summary.byStatus.IN_PROGRESS
+        const resolvedIncidents = summary.byStatus.RESOLVED
+        const summaryMap: Record<string, number> = {
+          "total": summary.total,
+          pending: pendingIncidents,
+          "in-progress": inProgressIncidents,
+          "resolved": resolvedIncidents,
+        }
+
+        this.incidentsSummary.update((incidents) =>
+          incidents.map((item) => {
+            const total = summaryMap[item.description];
+            return total !== undefined ? {...item, number: total} : item;
+          })
+        );
+
       }, error: err => {
         this.isFetchingIncidents.set(false)
         this.handleError(err as Error)
@@ -235,10 +253,10 @@ export class MyIncidents implements OnInit, OnDestroy {
           this.fetchIncidents()
           this.isSubmitting.set(false);
           this.cancelIncidentOperation();
+          console.log(data)
         }, error: err => {
           this.handleError(err as Error)
           this.isSubmitting.set(false);
-          this.cancelIncidentOperation();
         }
       })
     }
@@ -266,7 +284,7 @@ export class MyIncidents implements OnInit, OnDestroy {
     });
   }
 
-  private handleError(error: Error, type = "Login"): void {
+  private handleError(error: Error, type = "Image upload"): void {
     this.toastService.showToast("error", `${type} failed`, error.message);
     this.isSubmitting.set(false);
   }

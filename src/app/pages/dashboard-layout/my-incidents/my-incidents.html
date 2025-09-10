@@ -13,7 +13,7 @@
 
 <!--Incident highlights -->
 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-  @for (incident of incidentsSummary; track incident.title) {
+  @for (incident of incidentsSummary(); track incident.title) {
     <cmrp-incident-highlight [incident]="incident"/>
   }
 </div>

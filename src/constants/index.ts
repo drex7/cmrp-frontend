@@ -157,12 +157,6 @@ export const incidentsSummary: IIncidentSummary[] = [
     description: "total",
   },
   {
-    title: "active incidents",
-    icon: PrimeIcons.EXCLAMATION_TRIANGLE,
-    number: 23,
-    description: "active",
-  },
-  {
     title: "under investigation",
     icon: PrimeIcons.CLOCK,
     number: 15,
