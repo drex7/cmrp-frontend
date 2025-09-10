@@ -48,7 +48,7 @@ export class AuthService {
       role: data.role,
       region: data.region,
       city: data.city,
-      phone_number,
+      telephone: phone_number,
 
     }
     return this.http.post<{ message: string }>(`${environment.baseUrl}/invite`, user)
