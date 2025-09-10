@@ -157,6 +157,12 @@ export const incidentsSummary: IIncidentSummary[] = [
     description: "total",
   },
   {
+    title: "pending incidents",
+    icon: PrimeIcons.EXCLAMATION_TRIANGLE,
+    number: 23,
+    description: "pending",
+  },
+  {
     title: "under investigation",
     icon: PrimeIcons.CLOCK,
     number: 15,

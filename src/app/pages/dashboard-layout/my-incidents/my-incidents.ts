@@ -62,7 +62,7 @@ export class MyIncidents implements OnInit, OnDestroy {
   protected readonly incidentsSummary = signal<IIncidentSummary[]>(incidentsSummary);
   protected readonly getIncidentSeverity = getIncidentSeverity;
   protected readonly incidentTable = signal<IncidentI[]>([]);
-  protected readonly incidentTableHeaders = incidentTableHeaders.filter(ind => !["reporter", "actions"].includes(ind));
+  protected readonly incidentTableHeaders = incidentTableHeaders.filter(ind => !["reporter", "actions", "assigned officer"].includes(ind));
   protected readonly incidentFilters = incidentFilters;
   protected showIncidentDetailsModal = false
   protected showAddIncidentModal = false

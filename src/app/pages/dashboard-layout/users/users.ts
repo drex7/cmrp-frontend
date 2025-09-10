@@ -109,7 +109,6 @@ export class Users implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log(this.users())
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -245,7 +244,6 @@ export class Users implements OnInit, OnDestroy {
               summary: 'Error',
               detail: error.error?.message || 'Failed to onboard user'
             });
-            console.error('Error onboarding user:', error);
           }
         })
     }

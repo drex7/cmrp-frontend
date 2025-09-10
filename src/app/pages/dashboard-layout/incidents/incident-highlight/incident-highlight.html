@@ -3,7 +3,7 @@
     <span class="font-semibold text-md capitalize">{{ incident().title }}</span>
     <i [class]="cn(`${incident().icon} text-2xl`, {
     'text-neutral-600': incident().description === 'total',
-    'text-red-600': incident().description === 'active',
+    'text-yellow-500': incident().description === 'pending',
     'text-blue-600': incident().description === 'in-progress',
     'text-green-600': incident().description === 'resolved',
     })"></i>
@@ -11,7 +11,7 @@
   <span class="font-bold text-2xl flex items-center">
     <span [class]="cn('text-black   ', {
     'text-neutral-600': incident().description === 'total',
-        'text-red-600': incident().description === 'active',
+        'text-yellow-500': incident().description === 'pending',
     'text-blue-600': incident().description === 'in-progress',
     'text-green-600': incident().description === 'resolved',
     })">{{ incident().number }}</span>

@@ -90,8 +90,8 @@
             <p-tag [rounded]="true" class="w-max" [severity]="getIncidentSeverity(incident.status.toLowerCase())"
                    [value]="status"/>
           </td>
-          <td>{{ incident.assignedOfficer }}</td>
-          <td>{{ incident.reported }}</td>
+          <td>{{ incident.updatedBy ?? "-" }}</td>
+          <td>{{ incident.createdBy ?? "-" }}</td>
           <td>
             <div class="flex items-center gap-2">
               <p-button
