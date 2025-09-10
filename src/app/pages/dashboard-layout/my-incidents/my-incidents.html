@@ -12,11 +12,31 @@
 </section>
 
 <!--Incident highlights -->
-<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-  @for (incident of incidentsSummary(); track incident.title) {
-    <cmrp-incident-highlight [incident]="incident"/>
-  }
-</div>
+@if (isFetchingIncidents()) {
+  @let skeletonArray = Array(4).fill(0);
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+    @for (el of skeletonArray; track $index) {
+      <div class="rounded-md border shadow border-surface-200 p-4 bg-surface-0">
+        <div class="flex justify-between gap-2 mb-4">
+          <p-skeleton width="12rem"/>
+          <p-skeleton shape="square" size="2.5rem"/>
+        </div>
+        <div class="flex flex-col gap-2">
+          <div class="flex gap-2">
+            <p-skeleton width="1rem" height="1.5rem"/>
+          </div>
+          <p-skeleton height=".7rem"/>
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+    @for (incident of incidentsSummary(); track incident.title) {
+      <cmrp-incident-highlight [incident]="incident"/>
+    }
+  </div>
+}
 
 <div class="rounded-md shadow border border-dark-gray/50 flex flex-col gap-3 p-4 mt-6">
   <div class="flex flex-col xl:flex-row gap-4 xl:justify-between">
@@ -188,34 +208,34 @@
   </form>
 
   <!--  Image selection-->
-  <div class="flex flex-col mt-4">
-    <div (dragleave)="onDragLeave($event)"
-         (dragover)="onDragOver($event)"
-         (drop)="onDrop($event)"
-         class="border-2 border-dashed border-[#ccc] rounded-lg bg-[#f9f9f9] transition-all duration-300 ease-in-out p-8 flex flex-col gap-4 items-center">
-      <p>Drag & drop your images here or</p>
-      <label class="upload-btn" for="file-input">
-        <input
-          (change)="onFileSelected($event)"
-          accept="image/*"
-          class="file-input"
-          id="file-input"
-          multiple
-          type="file"
-        />
-        Browse Images
-      </label>
+  <!--  <div class="flex flex-col mt-4">-->
+  <!--    <div (dragleave)="onDragLeave($event)"-->
+  <!--         (dragover)="onDragOver($event)"-->
+  <!--         (drop)="onDrop($event)"-->
+  <!--         class="border-2 border-dashed border-[#ccc] rounded-lg bg-[#f9f9f9] transition-all duration-300 ease-in-out p-8 flex flex-col gap-4 items-center">-->
+  <!--      <p>Drag & drop your images here or</p>-->
+  <!--      <label class="upload-btn" for="file-input">-->
+  <!--        <input-->
+  <!--          (change)="onFileSelected($event)"-->
+  <!--          accept="image/*"-->
+  <!--          class="file-input"-->
+  <!--          id="file-input"-->
+  <!--          multiple-->
+  <!--          type="file"-->
+  <!--        />-->
+  <!--        Browse Images-->
+  <!--      </label>-->
 
-    </div>
-    <div class="preview-container">
-      @for (image of images(); track $index) {
-        <div class="image-wrapper">
-          <img [src]="image.url" class="preview-image" alt="Preview">
-          <button class="remove-btn" (click)="removeImage($index)" title="Remove Image">×</button>
-        </div>
-      }
-    </div>
-  </div>
+  <!--    </div>-->
+  <!--    <div class="preview-container">-->
+  <!--      @for (image of images(); track $index) {-->
+  <!--        <div class="image-wrapper">-->
+  <!--          <img [src]="image.url" class="preview-image" alt="Preview">-->
+  <!--          <button class="remove-btn" (click)="removeImage($index)" title="Remove Image">×</button>-->
+  <!--        </div>-->
+  <!--      }-->
+  <!--    </div>-->
+  <!--  </div>-->
 
 
   <ng-template #footer>
